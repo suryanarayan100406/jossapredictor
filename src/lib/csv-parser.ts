@@ -1,4 +1,65 @@
 import Papa from 'papaparse';
+import { POPULAR_BRANCHES } from './constants';
+
+export function alignBranch(rawBranch: string): string | null {
+  const clean = rawBranch.trim().toLowerCase();
+  
+  // 1. Exact or direct substring match
+  for (const branch of POPULAR_BRANCHES) {
+    if (clean.includes(branch.toLowerCase())) {
+      return branch;
+    }
+  }
+
+  // 2. Fuzzy/manual mappings for common variations
+  const mappings: [RegExp, string][] = [
+    [/computer science/i, 'Computer Science and Engineering'],
+    [/cse/i, 'Computer Science and Engineering'],
+    [/electronics.*communication/i, 'Electronics and Communication Engineering'],
+    [/ece/i, 'Electronics and Communication Engineering'],
+    [/electronics/i, 'Electronics and Communication Engineering'],
+    [/electrical/i, 'Electrical Engineering'],
+    [/eee/i, 'Electrical Engineering'],
+    [/mechanical/i, 'Mechanical Engineering'],
+    [/me\b/i, 'Mechanical Engineering'],
+    [/civil/i, 'Civil Engineering'],
+    [/ce\b/i, 'Civil Engineering'],
+    [/chemical/i, 'Chemical Engineering'],
+    [/aerospace/i, 'Aerospace Engineering'],
+    [/space science/i, 'Aerospace Engineering'],
+    [/aeronautical/i, 'Aerospace Engineering'],
+    [/math/i, 'Mathematics and Computing'],
+    [/data science/i, 'Data Science and Artificial Intelligence'],
+    [/artificial intelligence/i, 'Artificial Intelligence'],
+    [/ai/i, 'Artificial Intelligence'],
+    [/physics/i, 'Engineering Physics'],
+    [/biotech/i, 'Biotechnology'],
+    [/bio.*engineering/i, 'Biotechnology'],
+    [/metallurg/i, 'Metallurgical and Materials Engineering'],
+    [/materials/i, 'Metallurgical and Materials Engineering'],
+    [/mining/i, 'Mining Engineering'],
+    [/production/i, 'Production and Industrial Engineering'],
+    [/industrial/i, 'Production and Industrial Engineering'],
+    [/manufacturing/i, 'Production and Industrial Engineering'],
+    [/information technology/i, 'Information Technology'],
+    [/instrumentation/i, 'Electronics and Instrumentation Engineering'],
+    [/biomedical/i, 'Biomedical Engineering'],
+    [/environmental/i, 'Environmental Engineering'],
+    [/chemistry/i, 'Industrial Chemistry'],
+    [/ocean/i, 'Ocean Engineering'],
+    [/agricultural/i, 'Agricultural and Food Engineering'],
+    [/textile/i, 'Textile Engineering'],
+    [/architecture/i, 'Architecture'],
+  ];
+
+  for (const [regex, branch] of mappings) {
+    if (regex.test(clean)) {
+      return branch;
+    }
+  }
+
+  return null;
+}
 
 export interface ParsedRow {
   year: number;
@@ -63,7 +124,7 @@ export function parseCSV(
     transformHeader: (h: string) => h.trim().toLowerCase(),
   });
 
-  const valid: ParsedRow[] = [];
+  const dedupedMap = new Map<string, ParsedRow>();
   const skipped: { row: number; reason: string }[] = [];
 
   (result.data as Record<string, string>[]).forEach((row, i) => {
@@ -98,22 +159,40 @@ export function parseCSV(
         return;
       }
 
-      valid.push({
+      const alignedBranch = alignBranch(program);
+      if (!alignedBranch) {
+        skipped.push({ row: i + 2, reason: `Branch "${program}" could not be mapped and was removed` });
+        return;
+      }
+
+      const record: ParsedRow = {
         year, round,
         instituteType: normalizeInstituteType(type),
         instituteName: institute.trim(),
-        branch: program.trim(),
+        branch: alignedBranch,
         quota: quota.trim().toUpperCase(),
         category: category.trim(),
         gender: gender.trim(),
         openingRank: isNaN(openingRank) ? 0 : openingRank,
         closingRank,
-      });
+      };
+
+      const key = `${record.year}-${record.round}-${record.instituteType}-${record.instituteName}-${record.branch}-${record.quota}-${record.category}-${record.gender}`.toLowerCase();
+      if (dedupedMap.has(key)) {
+        const existing = dedupedMap.get(key)!;
+        // Keep the one with the higher closing rank
+        if (record.closingRank > existing.closingRank) {
+          dedupedMap.set(key, record);
+        }
+      } else {
+        dedupedMap.set(key, record);
+      }
     } catch {
       skipped.push({ row: i + 2, reason: 'Parse error' });
     }
   });
 
+  const valid = Array.from(dedupedMap.values());
   return { valid, skipped, total: result.data.length };
 }
 
