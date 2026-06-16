@@ -1,5 +1,6 @@
+'use client';
 import React from 'react';
-import { MapPin, ArrowUpRight, Plus, Check, TrendingUp } from 'lucide-react';
+import { MapPin, TrendingUp } from 'lucide-react';
 import { PredictionResult } from '@/types';
 import { ChanceBadge } from './ChanceBadge';
 import { ProbabilityMeter } from './ProbabilityMeter';
@@ -23,91 +24,87 @@ export function ChanceCard({ result, isCompared, onCompareToggle }: ChanceCardPr
   });
 
   return (
-    <div className="relative group rounded-2xl border border-white/10 bg-gradient-to-br from-[#12121a]/80 to-[#1a1a25]/60 p-5 hover:border-indigo-500/30 hover:shadow-glow transition-all duration-300 backdrop-blur-md">
-      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-        {/* Left Side: Institute Info */}
-        <div className="space-y-3 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-white/10 text-white uppercase">
-              {result.instituteType}
-            </span>
-            <span className="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-indigo-500/10 text-indigo-400 uppercase">
-              {result.quota} Quota
-            </span>
-            <ChanceBadge chance={result.chance} />
-          </div>
-
-          <div>
-            <h3 className="font-bold text-white text-base sm:text-lg group-hover:text-indigo-400 transition-colors">
-              {result.instituteName}
-            </h3>
-            <p className="text-sm text-gray-300 font-medium mt-0.5">{result.branch}</p>
-          </div>
-
-          <div className="flex items-center gap-4 text-xs text-gray-400">
-            <div className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-gray-500" />
-              <span>
-                {result.instituteCity ? `${result.instituteCity}, ` : ''}
-                {result.instituteState}
-              </span>
-            </div>
-            <Link
-              href={`/trends?${trendParams.toString()}`}
-              className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 font-semibold"
-            >
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>View Trend</span>
-            </Link>
-          </div>
+    <div className={`chance-card-${result.chance}`} style={{
+      borderRadius: 'var(--radius-lg)',
+      border: '1px solid var(--border-default)',
+      padding: '16px 18px',
+      display: 'flex',
+      gap: 16,
+      transition: 'border-color 0.2s, box-shadow 0.2s',
+      cursor: 'default',
+    }} onMouseEnter={e => e.currentTarget.style.boxShadow = `var(--glow-${result.chance})`}
+       onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
+      
+      {/* Left: All text info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        
+        {/* Badges row */}
+        <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: 3, padding: '1px 6px', letterSpacing: '0.05em' }}>
+            {result.instituteType}
+          </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--brand)', background: 'var(--brand-dim)', border: '1px solid var(--border-accent)', borderRadius: 3, padding: '1px 6px', letterSpacing: '0.05em' }}>
+            {result.quota}
+          </span>
+          <ChanceBadge chance={result.chance} />
         </div>
-
-        {/* Right Side: Probability & Ranks */}
-        <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto border-t sm:border-t-0 border-white/5 pt-4 sm:pt-0 gap-4">
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
-                Admission Chance
-              </div>
-              <div className="text-xs text-gray-500 font-medium">Probability Estimate</div>
-            </div>
-            <ProbabilityMeter probability={result.probability} />
+        
+        {/* Institute name */}
+        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: 3, lineHeight: 1.3 }}>
+          {result.instituteName}
+        </h3>
+        
+        {/* Branch */}
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 10, lineHeight: 1.4 }}>
+          {result.branch}
+        </p>
+        
+        {/* Location + Trend link */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+            <MapPin className="w-3 h-3" />
+            <span>{result.instituteCity ? `${result.instituteCity}, ` : ''}{result.instituteState}</span>
           </div>
-
-          <div className="flex gap-6 text-right">
-            <div>
-              <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Opening</div>
-              <div className="text-sm font-bold text-gray-300">{formatRank(result.openingRank)}</div>
-            </div>
-            <div>
-              <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Closing</div>
-              <div className="text-sm font-bold text-white">{formatRank(result.closingRank)}</div>
-            </div>
-          </div>
+          <Link href={`/trends?${trendParams.toString()}`} style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--brand)', fontSize: '0.75rem', fontWeight: 500 }} className="hover:text-brand-hover">
+            <TrendingUp className="w-3 h-3" />
+            <span>Trend</span>
+          </Link>
         </div>
       </div>
-
-      {/* Compare Button */}
-      <div className="absolute top-4 right-4 sm:relative sm:top-0 sm:right-0 sm:flex sm:justify-end sm:mt-4 border-t border-white/5 pt-3 w-full sm:w-auto">
-        <button
-          onClick={onCompareToggle}
-          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-            isCompared
-              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-              : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white'
-          }`}
-        >
-          {isCompared ? (
-            <>
-              <Check className="w-3.5 h-3.5" />
-              <span>Added to Compare</span>
-            </>
-          ) : (
-            <>
-              <Plus className="w-3.5 h-3.5" />
-              <span>Compare</span>
-            </>
-          )}
+      
+      {/* Right: Probability arc + rank data */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', flexShrink: 0, width: 110 }}>
+        
+        {/* Arc gauge */}
+        <ProbabilityMeter probability={result.probability} size={72} />
+        
+        {/* Opening / Closing ranks */}
+        <div style={{ display: 'flex', gap: 16, marginTop: 6 }}>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 2 }}>OPEN</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{formatRank(result.openingRank)}</div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 2 }}>CLOSE</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatRank(result.closingRank)}</div>
+          </div>
+        </div>
+        
+        {/* Compare toggle */}
+        <button onClick={onCompareToggle} style={{
+          marginTop: 8,
+          padding: '4px 10px',
+          borderRadius: 'var(--radius-xs)',
+          fontSize: '0.7rem',
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 600,
+          border: `1px solid ${isCompared ? 'var(--safe-border)' : 'var(--border-default)'}`,
+          background: isCompared ? 'var(--safe-bg)' : 'transparent',
+          color: isCompared ? 'var(--safe-text)' : 'var(--text-muted)',
+          cursor: 'pointer',
+          transition: 'all 0.15s',
+        }}>
+          {isCompared ? '✓ Added' : '+ Compare'}
         </button>
       </div>
     </div>
