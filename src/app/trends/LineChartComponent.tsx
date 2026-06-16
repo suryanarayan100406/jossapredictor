@@ -34,13 +34,13 @@ export function LineChartComponent({ data }: { data: TrendRecord[] }) {
     return row;
   });
 
-  const colors = ['#1E80F0', '#00D4E8', '#4ADE80', '#FCD34D'];
+  const colors = ['#ffffff', '#a1a1aa', '#71717a', '#3f3f46'];
 
   return (
     <div className="w-full h-[360px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
           <XAxis
             dataKey="name"
             stroke="var(--text-secondary)"
@@ -62,13 +62,13 @@ export function LineChartComponent({ data }: { data: TrendRecord[] }) {
             contentStyle={{
               backgroundColor: 'var(--bg-elevated)',
               borderColor: 'var(--border-default)',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: 'var(--radius-xs)',
               color: 'var(--text-primary)',
               fontSize: '12px',
               fontFamily: 'var(--font-mono)',
             }}
             itemStyle={{ color: 'var(--text-primary)' }}
-            labelStyle={{ color: 'var(--text-muted)', fontWeight: 'bold' }}
+            labelStyle={{ color: 'var(--text-secondary)', fontWeight: 500 }}
             formatter={(value: any) => [value.toLocaleString('en-IN'), 'Closing Rank']}
           />
           <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 500 }} />
@@ -79,9 +79,9 @@ export function LineChartComponent({ data }: { data: TrendRecord[] }) {
               dataKey={y.toString()}
               name={`Year ${y}`}
               stroke={colors[idx % colors.length]}
-              strokeWidth={3}
-              dot={{ r: 4, strokeWidth: 2 }}
-              activeDot={{ r: 6 }}
+              strokeWidth={2}
+              dot={{ r: 3, strokeWidth: 1.5 }}
+              activeDot={{ r: 5 }}
               connectNulls
             />
           ))}

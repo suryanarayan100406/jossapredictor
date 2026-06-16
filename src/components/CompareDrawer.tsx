@@ -29,11 +29,11 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
         {/* Left Side: Count & Actions */}
         <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
           <div className="flex items-center gap-2">
-            <div style={{ width: 32, height: 32, borderRadius: 'var(--radius-sm)', background: 'var(--brand-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)' }}>
-              <GitCompare className="w-4 h-4" />
+            <div style={{ width: 30, height: 30, borderRadius: 'var(--radius-xs)', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)' }}>
+              <GitCompare className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="font-bold text-white text-sm font-display">Compare Colleges</h4>
+              <h4 className="font-medium text-white text-sm font-display">Compare Colleges</h4>
               <p className="text-xs text-[var(--text-secondary)] font-mono">
                 {selectedItems.length} of 4 selected
               </p>
@@ -41,7 +41,7 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
           </div>
           <button
             onClick={onClear}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[var(--ambitious-text)] hover:bg-white/5 transition-all cursor-pointer font-mono"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[var(--radius-xs)] text-xs font-medium text-[var(--text-secondary)] hover:text-white border border-transparent hover:border-zinc-800 hover:bg-white/5 transition-all cursor-pointer font-mono"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Clear All</span>
@@ -56,21 +56,21 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
               style={{
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-default)',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: 'var(--radius-xs)',
               }}
               className="flex items-center gap-2 px-3 py-1.5 text-xs text-white max-w-[240px] shrink-0"
             >
               <div className="truncate">
-                <span className="font-bold block text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-mono">
+                <span className="font-semibold block text-[10px] text-[var(--text-secondary)] uppercase tracking-wider font-mono">
                   {item.instituteType}
                 </span>
-                <span className="font-semibold truncate block max-w-[180px] font-display">
+                <span className="font-medium truncate block max-w-[180px] font-display">
                   {item.instituteName.replace('Indian Institute of Technology', 'IIT').replace('National Institute of Technology', 'NIT')}
                 </span>
               </div>
               <button
                 onClick={() => onRemove(item.id)}
-                className="text-gray-400 hover:text-white rounded-full p-0.5 hover:bg-white/10 transition-colors cursor-pointer"
+                className="text-gray-400 hover:text-white rounded-[var(--radius-xs)] p-0.5 hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -83,7 +83,7 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
           <button
             onClick={handleCompareClick}
             disabled={selectedItems.length < 2}
-            className="w-full md:w-auto btn-brand justify-center disabled:opacity-50"
+            className="w-full md:w-auto btn-brand justify-center disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <GitCompare className="w-4 h-4" />
             <span>Compare Side-by-Side</span>

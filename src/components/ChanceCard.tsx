@@ -24,88 +24,76 @@ export function ChanceCard({ result, isCompared, onCompareToggle }: ChanceCardPr
   });
 
   return (
-    <div className={`chance-card-${result.chance}`} style={{
-      borderRadius: 'var(--radius-lg)',
-      border: '1px solid var(--border-default)',
-      padding: '16px 18px',
-      display: 'flex',
-      gap: 16,
-      transition: 'border-color 0.2s, box-shadow 0.2s',
-      cursor: 'default',
-    }} onMouseEnter={e => e.currentTarget.style.boxShadow = `var(--glow-${result.chance})`}
-       onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
+    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-5 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-[var(--radius-md)] hover:border-[var(--border-strong)] transition-colors cursor-default">
       
       {/* Left: All text info */}
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="flex-1 min-w-0">
         
         {/* Badges row */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: 3, padding: '1px 6px', letterSpacing: '0.05em' }}>
+        <div className="flex flex-wrap gap-1.5 items-center mb-2.5">
+          <span className="font-mono text-[10px] font-semibold text-[var(--text-secondary)] bg-white/5 border border-[var(--border-default)] rounded px-1.5 py-0.5 tracking-wider">
             {result.instituteType}
           </span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--brand)', background: 'var(--brand-dim)', border: '1px solid var(--border-accent)', borderRadius: 3, padding: '1px 6px', letterSpacing: '0.05em' }}>
+          <span className="font-mono text-[10px] font-semibold text-[var(--text-secondary)] bg-white/5 border border-[var(--border-default)] rounded px-1.5 py-0.5 tracking-wider">
             {result.quota}
           </span>
           <ChanceBadge chance={result.chance} />
         </div>
         
         {/* Institute name */}
-        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: 3, lineHeight: 1.3 }}>
+        <h3 className="font-display font-medium text-[0.9rem] sm:text-base text-white mb-1.5 leading-snug">
           {result.instituteName}
         </h3>
         
         {/* Branch */}
-        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 10, lineHeight: 1.4 }}>
+        <p className="text-xs text-[var(--text-secondary)] mb-3 leading-relaxed">
           {result.branch}
         </p>
         
         {/* Location + Trend link */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-            <MapPin className="w-3 h-3" />
+        <div className="flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1 text-[var(--text-muted)]">
+            <MapPin className="w-3.5 h-3.5" />
             <span>{result.instituteCity ? `${result.instituteCity}, ` : ''}{result.instituteState}</span>
           </div>
-          <Link href={`/trends?${trendParams.toString()}`} style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--brand)', fontSize: '0.75rem', fontWeight: 500 }} className="hover:text-brand-hover">
-            <TrendingUp className="w-3 h-3" />
+          <Link href={`/trends?${trendParams.toString()}`} className="flex items-center gap-1 text-[var(--text-secondary)] hover:text-white font-mono text-[10px] uppercase tracking-wider transition-colors">
+            <TrendingUp className="w-3.5 h-3.5 text-[var(--text-muted)]" />
             <span>Trend</span>
           </Link>
         </div>
       </div>
       
       {/* Right: Probability arc + rank data */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', flexShrink: 0, width: 110 }}>
+      <div className="flex flex-row sm:flex-col sm:items-end justify-between shrink-0 w-full sm:w-[130px] border-t sm:border-t-0 border-[var(--border-default)] pt-4 sm:pt-0 mt-4 sm:mt-0 gap-4">
         
         {/* Arc gauge */}
-        <ProbabilityMeter probability={result.probability} size={72} />
-        
-        {/* Opening / Closing ranks */}
-        <div style={{ display: 'flex', gap: 16, marginTop: 6 }}>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 2 }}>OPEN</div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{formatRank(result.openingRank)}</div>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 2 }}>CLOSE</div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatRank(result.closingRank)}</div>
-          </div>
+        <div className="shrink-0 flex items-center justify-center">
+          <ProbabilityMeter probability={result.probability} size={68} />
         </div>
         
-        {/* Compare toggle */}
-        <button onClick={onCompareToggle} style={{
-          marginTop: 8,
-          padding: '4px 10px',
-          borderRadius: 'var(--radius-xs)',
-          fontSize: '0.7rem',
-          fontFamily: 'var(--font-mono)',
-          fontWeight: 600,
-          border: `1px solid ${isCompared ? 'var(--safe-border)' : 'var(--border-default)'}`,
-          background: isCompared ? 'var(--safe-bg)' : 'transparent',
-          color: isCompared ? 'var(--safe-text)' : 'var(--text-muted)',
-          cursor: 'pointer',
-          transition: 'all 0.15s',
-        }}>
-          {isCompared ? '✓ Added' : '+ Compare'}
-        </button>
+        <div className="flex flex-col sm:items-end gap-3 w-full sm:w-auto">
+          {/* Opening / Closing ranks */}
+          <div className="flex gap-4 sm:justify-end">
+            <div className="text-left sm:text-right">
+              <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-wider">OPEN</div>
+              <div className="font-mono text-xs font-medium text-[var(--text-secondary)]">{formatRank(result.openingRank)}</div>
+            </div>
+            <div className="text-left sm:text-right">
+              <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-wider">CLOSE</div>
+              <div className="font-mono text-xs font-semibold text-white">{formatRank(result.closingRank)}</div>
+            </div>
+          </div>
+          
+          {/* Compare toggle */}
+          <button
+            onClick={onCompareToggle}
+            className={`w-full sm:w-auto px-2.5 py-1 text-[10px] font-mono font-medium border border-[var(--border-default)] rounded hover:border-[var(--border-strong)] hover:text-white transition-all cursor-pointer ${
+              isCompared ? 'bg-white/5 text-white' : 'bg-transparent text-[var(--text-secondary)]'
+            }`}
+          >
+            {isCompared ? '✓ Added' : '+ Compare'}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -2,72 +2,65 @@
 @import "tailwindcss";
 
 :root {
-  /* Core backgrounds — blue-shifted dark, NOT pure black */
-  --bg-base: #050810;         /* page background */
-  --bg-surface: #090E1C;      /* card base */
-  --bg-elevated: #0D1525;     /* elevated surface */
-  --bg-overlay: #122035;      /* modals, drawers */
-  --bg-active: #162840;       /* selected state */
+  /* Core backgrounds — monochrome zinc base */
+  --bg-base: #09090b;         /* page background */
+  --bg-surface: #09090b;      /* flat surface base */
+  --bg-elevated: #18181b;     /* card / panel base */
+  --bg-overlay: #27272a;      /* modals, drawers */
+  --bg-active: #27272a;       /* selected state */
 
   /* Borders */
-  --border-subtle: #142030;   /* barely visible dividers */
-  --border-default: #1C334F;  /* standard card borders */
-  --border-strong: #2A4C70;   /* focused/hover borders */
-  --border-accent: #1E80F0;   /* brand accent borders */
+  --border-subtle: #18181b;   /* barely visible dividers */
+  --border-default: #27272a;  /* standard card borders */
+  --border-strong: #3f3f46;   /* focused/hover borders */
+  --border-accent: #e4e4e7;   /* brand accent borders */
 
-  /* Brand — Electric Azure, NOT indigo */
-  --brand: #1E80F0;
-  --brand-dim: rgba(30, 128, 240, 0.12);
-  --brand-glow: rgba(30, 128, 240, 0.22);
-  --brand-hover: #3D97FF;
+  /* Brand — Monochrome / High Contrast Stark White */
+  --brand: #ffffff;
+  --brand-dim: rgba(255, 255, 255, 0.06);
+  --brand-glow: rgba(255, 255, 255, 0.1);
+  --brand-hover: #f4f4f5;
 
-  /* Chance tiers — must be visually distinctive */
-  --safe: #16A34A;
-  --safe-text: #4ADE80;
-  --safe-bg: rgba(22, 163, 74, 0.10);
-  --safe-border: rgba(74, 222, 128, 0.22);
-  --safe-glow: rgba(22, 163, 74, 0.18);
+  /* Chance tiers — status indicators, clean and restrained */
+  --safe: #10b981;
+  --safe-text: #34d399;
+  --safe-bg: rgba(16, 185, 129, 0.06);
+  --safe-border: rgba(16, 185, 129, 0.15);
 
-  --moderate: #D97706;
-  --moderate-text: #FCD34D;
-  --moderate-bg: rgba(217, 119, 6, 0.10);
-  --moderate-border: rgba(252, 211, 77, 0.22);
-  --moderate-glow: rgba(217, 119, 6, 0.15);
+  --moderate: #f59e0b;
+  --moderate-text: #fbbf24;
+  --moderate-bg: rgba(245, 158, 11, 0.05);
+  --moderate-border: rgba(245, 158, 11, 0.15);
 
-  --ambitious: #DC2626;
-  --ambitious-text: #FCA5A5;
-  --ambitious-bg: rgba(220, 38, 38, 0.09);
-  --ambitious-border: rgba(252, 165, 165, 0.20);
-  --ambitious-glow: rgba(220, 38, 38, 0.14);
+  --ambitious: #ef4444;
+  --ambitious-text: #f87171;
+  --ambitious-bg: rgba(239, 68, 68, 0.05);
+  --ambitious-border: rgba(239, 68, 68, 0.15);
 
   /* Text */
-  --text-primary: #EAF1F8;    /* cool white */
-  --text-secondary: #7A9EC8;  /* blue-tinted mid */
-  --text-muted: #3D5A7A;      /* very dim */
-  --text-inverse: #05080F;
+  --text-primary: #f4f4f5;    /* cool white */
+  --text-secondary: #a1a1aa;  /* mid grey */
+  --text-muted: #52525b;      /* dark grey */
+  --text-inverse: #09090b;
 
   /* Accent for data numbers */
-  --data-highlight: #00D4E8;  /* cyan for rank numbers */
+  --data-highlight: #f4f4f5;  /* high contrast white for ranks */
 
   /* Fonts */
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Spacing & Shape */
-  --radius-xs: 4px;
+  /* Spacing & Shape — Crisp, clean, structural corners */
+  --radius-xs: 3px;
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
 
-  /* Shadows & Glows */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.35);
-  --shadow-elevated: 0 4px 16px rgba(0,0,0,0.5), 0 12px 40px rgba(0,0,0,0.35);
-  --glow-brand: 0 0 24px rgba(30, 128, 240, 0.20);
-  --glow-safe: 0 0 20px rgba(22, 163, 74, 0.20);
-  --glow-moderate: 0 0 20px rgba(217, 119, 6, 0.18);
-  --glow-ambitious: 0 0 20px rgba(220, 38, 38, 0.16);
+  /* Shadows — Flat, low-profile drop shadows only. Zero glows. */
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-elevated: 0 4px 12px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.2);
 }
 
 /* Base styles */
@@ -87,15 +80,15 @@ h1, h2, h3, h4 {
 }
 
 /* Surface classes */
-.surface { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); }
-.surface-elevated { background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); }
-.surface-overlay { background: var(--bg-overlay); border: 1px solid var(--border-strong); border-radius: var(--radius-xl); box-shadow: var(--shadow-elevated); }
+.surface { background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); }
+.surface-elevated { background: var(--bg-elevated); border: 1px solid var(--border-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-card); }
+.surface-overlay { background: var(--bg-overlay); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevated); }
 
-/* Chance tier left-border cards */
-.chance-card-safe    { border-left: 3px solid var(--safe); background: var(--bg-surface); }
-.chance-card-moderate { border-left: 3px solid var(--moderate); background: var(--bg-surface); }
-.chance-card-ambitious { border-left: 3px solid var(--ambitious); background: var(--bg-surface); }
-.chance-card-longshot  { border-left: 3px solid var(--ambitious); background: var(--bg-surface); }
+/* Chance tier left-border cards — monochrome with subtle indicator line */
+.chance-card-safe    { border-left: 2px solid var(--safe); background: var(--bg-elevated); }
+.chance-card-moderate { border-left: 2px solid var(--moderate); background: var(--bg-elevated); }
+.chance-card-ambitious { border-left: 2px solid var(--ambitious); background: var(--bg-elevated); }
+.chance-card-longshot  { border-left: 2px solid var(--ambitious); background: var(--bg-elevated); }
 
 /* Chance badges */
 .badge-safe      { background: var(--safe-bg); border: 1px solid var(--safe-border); color: var(--safe-text); }
@@ -106,20 +99,19 @@ h1, h2, h3, h4 {
 .rank-input {
   width: 100%;
   background: var(--bg-elevated);
-  border: 1.5px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xs);
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 2rem;
-  font-weight: 700;
-  padding: 16px 20px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 1.75rem;
+  font-weight: 500;
+  padding: 12px 16px;
+  transition: border-color 0.15s, box-shadow 0.15s;
   outline: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 .rank-input:focus {
-  border-color: var(--brand);
-  box-shadow: 0 0 0 3px var(--brand-dim);
+  border-color: var(--border-strong);
 }
 .rank-input::placeholder { color: var(--text-muted); font-weight: 400; }
 
@@ -133,78 +125,72 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+/* Button styles — clean, flat, high-contrast monochrome design */
+.btn-brand {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  background: var(--brand);
+  color: var(--text-inverse);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-xs);
+  border: none; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-brand:hover { opacity: 0.92; transform: translateY(-0.5px); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 18px;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--border-strong); bg: var(--bg-elevated); }
+
+/* Step progress dots (wizard) */
+.step-node { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 12px; font-weight: 600; transition: all 0.25s; }
+.step-node.active { background: var(--brand); color: var(--text-inverse); }
+.step-node.done { background: var(--safe-bg); border: 1px solid var(--safe-border); color: var(--safe-text); }
+.step-node.idle { background: var(--bg-elevated); border: 1px solid var(--border-default); color: var(--text-muted); }
+.step-track { height: 1px; background: var(--border-default); flex: 1; transition: background 0.3s; }
+.step-track.done { background: var(--safe-border); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
 /* Premium Grid Background Overlay */
 .premium-grid {
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(to right, rgba(30, 128, 240, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(30, 128, 240, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 50px 50px;
   mask-image: radial-gradient(circle 60% at 50% 50%, black 40%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle 60% at 50% 50%, black 40%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Button styles */
-.btn-brand {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 12px 24px;
-  background: var(--brand);
-  color: white;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.9rem;
-  border-radius: var(--radius-md);
-  border: none; cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
-}
-.btn-brand:hover { background: var(--brand-hover); box-shadow: var(--glow-brand); transform: translateY(-1px); }
-
-.btn-ghost {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 18px;
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 0.875rem;
-  border-radius: var(--radius-md);
+/* Collapsible separator grid lines */
+.minimal-grid-border {
   border: 1px solid var(--border-default);
-  cursor: pointer;
-  transition: all 0.2s;
 }
-.btn-ghost:hover { border-color: var(--border-strong); color: var(--text-primary); background: var(--bg-elevated); }
-
-/* Step progress dots (wizard) */
-.step-node { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 13px; font-weight: 600; transition: all 0.25s; }
-.step-node.active { background: var(--brand); color: white; box-shadow: 0 0 0 4px var(--brand-dim); }
-.step-node.done { background: var(--safe); color: white; }
-.step-node.idle { background: var(--bg-elevated); border: 1px solid var(--border-default); color: var(--text-muted); }
-.step-track { height: 2px; background: var(--border-default); flex: 1; transition: background 0.3s; }
-.step-track.done { background: var(--safe); }
-
-/* Probability arc */
-.prob-arc-safe path.fill-arc { stroke: var(--safe); }
-.prob-arc-moderate path.fill-arc { stroke: var(--moderate); }
-.prob-arc-ambitious path.fill-arc { stroke: var(--ambitious); }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
-
-/* Animation keyframes */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-@keyframes drawArc { from { stroke-dashoffset: 100%; } to { stroke-dashoffset: var(--target-offset); } }
-.animate-fadeUp { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
 /* Admin Layout */
 .admin-sidebar {
-  background: var(--bg-surface);
+  background: var(--bg-elevated);
   border-right: 1px solid var(--border-default);
   width: 260px;
   min-height: 100vh;

@@ -64,18 +64,18 @@ export function FilterSidebar({
     <aside style={{
       background: 'var(--bg-surface)',
       border: '1px solid var(--border-default)',
-      borderRadius: 'var(--radius-xl)',
+      borderRadius: 'var(--radius-md)',
       padding: '20px',
     }} className="w-full lg:w-80 shrink-0 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4">
-        <div className="flex items-center gap-2 text-white font-bold">
-          <SlidersHorizontal className="w-4 h-4 text-[var(--brand)]" />
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600 }}>Filters</span>
+      <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-4">
+        <div className="flex items-center gap-2 text-white">
+          <SlidersHorizontal className="w-4 h-4 text-[var(--text-secondary)]" />
+          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="text-sm font-semibold">Filters</span>
         </div>
         <button
           onClick={onReset}
-          className="flex items-center gap-1 text-xs font-semibold text-[var(--text-muted)] hover:text-white transition-colors cursor-pointer"
+          className="flex items-center gap-1 text-xs font-medium text-[var(--text-muted)] hover:text-white transition-colors cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset All</span>
@@ -84,7 +84,7 @@ export function FilterSidebar({
 
       {/* Smart Search */}
       <div className="space-y-2">
-        <label htmlFor="filter-search" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }} className="block uppercase">
+        <label htmlFor="filter-search" style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="block uppercase">
           Search College
         </label>
         <div className="relative">
@@ -100,14 +100,14 @@ export function FilterSidebar({
               border: '1px solid var(--border-default)',
               color: 'var(--text-primary)',
             }}
-            className="w-full text-sm rounded-xl pl-10 pr-4 py-2.5 placeholder-[var(--text-muted)] focus:border-[var(--brand)] focus:outline-none transition-colors"
+            className="w-full text-xs rounded-[var(--radius-xs)] pl-10 pr-4 py-2 placeholder-[var(--text-muted)] focus:border-[var(--border-strong)] focus:outline-none transition-colors"
           />
         </div>
       </div>
 
       {/* Sorting */}
       <div className="space-y-2">
-        <label htmlFor="filter-sort" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }} className="block uppercase">
+        <label htmlFor="filter-sort" style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="block uppercase">
           Sort Results By
         </label>
         <div className="grid grid-cols-2 gap-2">
@@ -120,40 +120,40 @@ export function FilterSidebar({
               border: '1px solid var(--border-default)',
               color: 'var(--text-primary)',
             }}
-            className="col-span-2 text-sm rounded-xl px-3.5 py-2.5 focus:border-[var(--brand)] focus:outline-none transition-colors cursor-pointer"
+            className="col-span-2 text-xs rounded-[var(--radius-xs)] px-3 py-2 focus:border-[var(--border-strong)] focus:outline-none transition-colors cursor-pointer"
           >
-            <option value="probability" className="bg-[#090e1c]">Probability Estimate</option>
-            <option value="closingRank" className="bg-[#090e1c]">Closing Cutoff Rank</option>
-            <option value="instituteName" className="bg-[#090e1c]">College Name</option>
+            <option value="probability" className="bg-[#18181b]">Probability Estimate</option>
+            <option value="closingRank" className="bg-[#18181b]">Closing Cutoff Rank</option>
+            <option value="instituteName" className="bg-[#18181b]">College Name</option>
           </select>
           <button
             onClick={() => onChange({ ...filters, sortOrder: 'asc' })}
             style={{
-              background: filters.sortOrder === 'asc' ? 'var(--brand-dim)' : 'var(--bg-elevated)',
-              border: filters.sortOrder === 'asc' ? '1px solid var(--border-accent)' : '1px solid var(--border-default)',
-              color: filters.sortOrder === 'asc' ? 'var(--brand-hover)' : 'var(--text-secondary)',
-              borderRadius: 'var(--radius-md)',
+              background: filters.sortOrder === 'asc' ? 'rgba(255,255,255,0.06)' : 'var(--bg-elevated)',
+              border: filters.sortOrder === 'asc' ? '1px solid var(--border-strong)' : '1px solid var(--border-default)',
+              color: filters.sortOrder === 'asc' ? 'var(--text-primary)' : 'var(--text-secondary)',
+              borderRadius: 'var(--radius-xs)',
             }}
-            className="px-3 py-2 text-xs font-bold transition-all cursor-pointer hover:border-[var(--border-strong)]"
+            className="px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer hover:border-[var(--border-strong)]"
           >
             Ascending
           </button>
           <button
             onClick={() => onChange({ ...filters, sortOrder: 'desc' })}
             style={{
-              background: filters.sortOrder === 'desc' ? 'var(--brand-dim)' : 'var(--bg-elevated)',
-              border: filters.sortOrder === 'desc' ? '1px solid var(--border-accent)' : '1px solid var(--border-default)',
-              color: filters.sortOrder === 'desc' ? 'var(--brand-hover)' : 'var(--text-secondary)',
-              borderRadius: 'var(--radius-md)',
+              background: filters.sortOrder === 'desc' ? 'rgba(255,255,255,0.06)' : 'var(--bg-elevated)',
+              border: filters.sortOrder === 'desc' ? '1px solid var(--border-strong)' : '1px solid var(--border-default)',
+              color: filters.sortOrder === 'desc' ? 'var(--text-primary)' : 'var(--text-secondary)',
+              borderRadius: 'var(--radius-xs)',
             }}
-            className="px-3 py-2 text-xs font-bold transition-all cursor-pointer hover:border-[var(--border-strong)]"
+            className="px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer hover:border-[var(--border-strong)]"
           >
             Descending
           </button>
         </div>
       </div>
 
-      <div className="border-t border-[var(--border-subtle)] my-4" />
+      <div className="border-t border-[var(--border-default)] my-4" />
 
       {/* Collapsible Sections */}
       <div className="space-y-5">
@@ -163,18 +163,18 @@ export function FilterSidebar({
             onClick={() => toggleSection('type')}
             className="flex items-center justify-between w-full text-left cursor-pointer"
           >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }} className="uppercase">Institute Type</span>
-            {openSections.type ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">Institute Type</span>
+            {openSections.type ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
           </button>
           {openSections.type && (
             <div className="space-y-2 pl-1">
               {['IIT', 'NIT', 'IIIT', 'GFTI'].map(type => (
-                <label key={type} className="flex items-center gap-2.5 text-sm font-semibold text-[var(--text-secondary)] cursor-pointer select-none">
+                <label key={type} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={filters.instituteTypes.includes(type)}
                     onChange={() => handleTypeToggle(type)}
-                    className="w-4 h-4 rounded border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--brand)] focus:ring-offset-0 focus:ring-[var(--brand)] accent-[var(--brand)]"
+                    className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
                   />
                   <span>{type}s</span>
                 </label>
@@ -189,8 +189,8 @@ export function FilterSidebar({
             onClick={() => toggleSection('chance')}
             className="flex items-center justify-between w-full text-left cursor-pointer"
           >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }} className="uppercase">Chance Level</span>
-            {openSections.chance ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">Chance Level</span>
+            {openSections.chance ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
           </button>
           {openSections.chance && (
             <div className="space-y-2 pl-1">
@@ -200,12 +200,12 @@ export function FilterSidebar({
                 { val: 'ambitious', label: 'Ambitious' },
                 { val: 'longshot', label: 'Long Shots' },
               ].map(({ val, label }) => (
-                <label key={val} className="flex items-center gap-2.5 text-sm font-semibold text-[var(--text-secondary)] cursor-pointer select-none">
+                <label key={val} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={filters.chances.includes(val as any)}
                     onChange={() => handleChanceToggle(val as any)}
-                    className="w-4 h-4 rounded border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--brand)] focus:ring-offset-0 focus:ring-[var(--brand)] accent-[var(--brand)]"
+                    className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
                   />
                   <span>{label}</span>
                 </label>
@@ -220,8 +220,8 @@ export function FilterSidebar({
             onClick={() => toggleSection('state')}
             className="flex items-center justify-between w-full text-left cursor-pointer"
           >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }} className="uppercase">State Preference</span>
-            {openSections.state ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">State Preference</span>
+            {openSections.state ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
           </button>
           {openSections.state && (
             <div className="space-y-2 pl-1 max-h-48 overflow-y-auto pr-1">
@@ -229,12 +229,12 @@ export function FilterSidebar({
                 <p className="text-xs text-[var(--text-muted)] italic">No states available</p>
               ) : (
                 availableStates.map(state => (
-                  <label key={state} className="flex items-center gap-2.5 text-sm font-semibold text-[var(--text-secondary)] cursor-pointer select-none">
+                  <label key={state} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={filters.states.includes(state)}
                       onChange={() => handleStateToggle(state)}
-                      className="w-4 h-4 rounded border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--brand)] focus:ring-offset-0 focus:ring-[var(--brand)] accent-[var(--brand)]"
+                      className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
                     />
                     <span>{state}</span>
                   </label>
@@ -250,8 +250,8 @@ export function FilterSidebar({
             onClick={() => toggleSection('branch')}
             className="flex items-center justify-between w-full text-left cursor-pointer"
           >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em' }} className="uppercase">Branch Filter</span>
-            {openSections.branch ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">Branch Filter</span>
+            {openSections.branch ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
           </button>
           {openSections.branch && (
             <div className="space-y-2 pl-1 max-h-48 overflow-y-auto pr-1">
@@ -259,12 +259,12 @@ export function FilterSidebar({
                 <p className="text-xs text-[var(--text-muted)] italic">No branches available</p>
               ) : (
                 availableBranches.map(branch => (
-                  <label key={branch} className="flex items-center gap-2.5 text-sm font-semibold text-[var(--text-secondary)] cursor-pointer select-none">
+                  <label key={branch} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={filters.branches.includes(branch)}
                       onChange={() => handleBranchToggle(branch)}
-                      className="w-4 h-4 rounded border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--brand)] focus:ring-offset-0 focus:ring-[var(--brand)] accent-[var(--brand)]"
+                      className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
                     />
                     <span className="truncate" title={branch}>{branch}</span>
                   </label>

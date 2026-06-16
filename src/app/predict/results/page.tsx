@@ -151,18 +151,18 @@ function ResultsContent() {
 
     // Title
     doc.setFontSize(22);
-    doc.setTextColor(30, 128, 240); // Electric Azure
+    doc.setTextColor(244, 244, 245); 
     doc.text('RankScope JoSAA Admission Report 2026', 14, 24);
 
     // Metadata
     doc.setFontSize(10);
-    doc.setTextColor(122, 158, 200);
+    doc.setTextColor(161, 161, 170);
     doc.text(`Generated on: ${new Date().toLocaleDateString()}  |  Target Year: ${year}`, 14, 30);
     doc.line(14, 34, 196, 34);
 
     // Student details
     doc.setFontSize(11);
-    doc.setTextColor(234, 241, 248);
+    doc.setTextColor(244, 244, 245);
     doc.setFont('Helvetica', 'bold');
     doc.text('Student Profile:', 14, 42);
     
@@ -189,32 +189,32 @@ function ResultsContent() {
       }
 
       // Border box background
-      doc.setFillColor(9, 14, 28);
+      doc.setFillColor(24, 24, 27);
       doc.rect(14, y, 182, 22, 'F');
       
       // Text drawing
-      doc.setTextColor(234, 241, 248);
+      doc.setTextColor(244, 244, 245);
       doc.setFont('Helvetica', 'bold');
       doc.text(`${index + 1}. ${item.instituteName}`, 16, y + 6);
       
       doc.setFont('Helvetica', 'normal');
-      doc.setTextColor(122, 158, 200);
+      doc.setTextColor(161, 161, 170);
       doc.text(`${item.branch} | Quota: ${item.quota}`, 16, y + 12);
       doc.text(`Closing Cutoff: ${item.closingRank.toLocaleString('en-IN')} | Probability: ${item.probability}%`, 16, y + 18);
 
       // Chance label in right side box
       doc.setFont('Helvetica', 'bold');
       if (item.chance === 'safe') {
-        doc.setTextColor(74, 222, 128);
+        doc.setTextColor(16, 185, 129);
         doc.text('SAFE', 165, y + 12);
       } else if (item.chance === 'moderate') {
-        doc.setTextColor(252, 211, 77);
+        doc.setTextColor(245, 158, 11);
         doc.text('MODERATE', 160, y + 12);
       } else if (item.chance === 'ambitious') {
-        doc.setTextColor(252, 165, 165);
+        doc.setTextColor(239, 68, 68);
         doc.text('AMBITIOUS', 160, y + 12);
       } else {
-        doc.setTextColor(252, 165, 165);
+        doc.setTextColor(239, 68, 68);
         doc.text('LONG SHOT', 160, y + 12);
       }
 
@@ -222,7 +222,7 @@ function ResultsContent() {
     });
 
     if (filteredResults.length > 30) {
-      doc.setTextColor(61, 90, 122);
+      doc.setTextColor(82, 82, 91);
       doc.setFont('Helvetica', 'italic');
       doc.setFontSize(9);
       doc.text(`* Showing top 30 of ${filteredResults.length} predicted matches.`, 14, y + 4);
@@ -284,91 +284,85 @@ function ResultsContent() {
   const longshotsColleges = filteredResults.filter(r => r.chance === 'longshot');
 
   return (
-    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative overflow-hidden select-none pb-32 pt-10">
+    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative pb-32">
       <div className="premium-grid" />
       {/* Navbar Branding */}
       <Navbar />
 
       {/* Results Center Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 relative pt-10">
         
         {/* Command-center style header */}
         <header style={{
-          background: 'var(--bg-surface)',
+          background: 'var(--bg-elevated)',
           border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-xl)',
+          borderRadius: 'var(--radius-md)',
           padding: '24px',
           marginBottom: '24px',
         }} className="w-full">
           <div className="flex flex-col md:flex-row justify-between gap-6">
             {/* Left Block: Profile Details */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-muted)] tracking-wider">
-                <span>PROFILE READOUT</span>
+              <div className="flex items-center gap-2 text-[10px] font-mono text-[var(--text-muted)] tracking-wider">
+                <span>PROFILE_READOUT</span>
               </div>
               
               <div className="flex flex-wrap items-baseline gap-x-4">
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2.5rem', fontWeight: 700, color: 'var(--data-highlight)', lineHeight: 1 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2.2rem', fontWeight: 500, color: 'var(--data-highlight)', lineHeight: 1 }}>
                   {rank.toLocaleString('en-IN')}
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                   {rankType === 'advanced' ? 'JEE Advanced' : 'JEE Main'} CRL
                 </span>
               </div>
               
-              <div className="flex flex-wrap gap-2 text-xs font-mono text-[var(--text-secondary)]">
-                <span style={{ background: 'var(--bg-overlay)', border: '1px solid var(--border-default)', padding: '4px 10px', borderRadius: 'var(--radius-xs)' }}>
+              <div className="flex flex-wrap gap-2 text-[10px] font-mono text-[var(--text-secondary)]">
+                <span style={{ background: 'var(--bg-base)', border: '1px solid var(--border-default)', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}>
                   {category} {pwdStatus ? '(PwD)' : ''}
                 </span>
-                <span style={{ background: 'var(--bg-overlay)', border: '1px solid var(--border-default)', padding: '4px 10px', borderRadius: 'var(--radius-xs)' }}>
+                <span style={{ background: 'var(--bg-base)', border: '1px solid var(--border-default)', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}>
                   {gender}
                 </span>
-                <span style={{ background: 'var(--bg-overlay)', border: '1px solid var(--border-default)', padding: '4px 10px', borderRadius: 'var(--radius-xs)' }}>
+                <span style={{ background: 'var(--bg-base)', border: '1px solid var(--border-default)', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}>
                   {homeState} (HS)
                 </span>
               </div>
             </div>
             
             {/* Middle Block: Count & Tier Breakdown */}
-            <div className="flex flex-col justify-center space-y-4 border-t md:border-t-0 md:border-l border-[var(--border-subtle)] pt-6 md:pt-0 md:pl-8">
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-muted)] tracking-wider">
-                <span>ADMISSION MATCHES</span>
+            <div className="flex flex-col justify-center space-y-4 border-t md:border-t-0 md:border-l border-[var(--border-default)] pt-6 md:pt-0 md:pl-8">
+              <div className="flex items-center gap-2 text-[10px] font-mono text-[var(--text-muted)] tracking-wider">
+                <span>ADMISSION_MATCHES</span>
               </div>
               
               <div className="flex items-baseline gap-2">
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2.2rem', fontWeight: 700, color: 'white', lineHeight: 1 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2rem', fontWeight: 500, color: 'white', lineHeight: 1 }}>
                   {filteredResults.length}
                 </span>
-                <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>programs matched</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>programs matched</span>
               </div>
               
-              <div className="flex flex-wrap gap-3 text-xs font-mono">
+              <div className="flex flex-wrap gap-3 text-[10px] font-mono">
                 <div className="flex items-center gap-1.5">
-                  <span style={{ width: 8, height: 8, borderRadius: 2, background: 'var(--safe)' }} />
-                  <span className="text-[var(--safe-text)]">Safe: {safeColleges.length}</span>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--safe)' }} />
+                  <span className="text-[var(--text-secondary)]">Safe: {safeColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span style={{ width: 8, height: 8, borderRadius: 2, background: 'var(--moderate)' }} />
-                  <span className="text-[var(--moderate-text)]">Moderate: {moderateColleges.length}</span>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--moderate)' }} />
+                  <span className="text-[var(--text-secondary)]">Moderate: {moderateColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span style={{ width: 8, height: 8, borderRadius: 2, background: 'var(--ambitious)' }} />
-                  <span className="text-[var(--ambitious-text)]">Ambitious: {ambitiousColleges.length}</span>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ambitious)' }} />
+                  <span className="text-[var(--text-secondary)]">Ambitious: {ambitiousColleges.length}</span>
                 </div>
-                {longshotsColleges.length > 0 && (
-                  <div className="flex items-center gap-1.5">
-                    <span style={{ width: 8, height: 8, borderRadius: 2, background: 'var(--text-muted)' }} />
-                    <span className="text-[var(--text-secondary)]">Longshot: {longshotsColleges.length}</span>
-                  </div>
-                )}
               </div>
             </div>
 
             {/* Right Block: Actions */}
-            <div className="flex flex-row md:flex-col items-stretch justify-center gap-2.5 border-t md:border-t-0 md:border-l border-[var(--border-subtle)] pt-6 md:pt-0 md:pl-8">
+            <div className="flex flex-col sm:flex-row md:flex-col items-stretch justify-center gap-2 border-t md:border-t-0 md:border-l border-[var(--border-default)] pt-6 md:pt-0 md:pl-8">
               <button
                 onClick={handleShare}
-                className={`btn-ghost text-xs ${shareCopied ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : ''}`}
+                className={`btn-ghost text-xs justify-center ${shareCopied ? 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5' : ''}`}
               >
                 <Check className={`w-3.5 h-3.5 transition-transform ${shareCopied ? 'scale-100' : 'scale-0'}`} />
                 <span>{shareCopied ? 'Link Copied!' : 'Share Results'}</span>
@@ -376,7 +370,7 @@ function ResultsContent() {
               </button>
               <button
                 onClick={handleDownloadPDF}
-                className="btn-ghost text-xs"
+                className="btn-ghost text-xs justify-center"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download PDF</span>
@@ -395,29 +389,28 @@ function ResultsContent() {
 
         {loading ? (
           <div className="space-y-6">
-            {/* Loading message */}
             <div className="flex items-center gap-3 justify-center py-6">
-              <Loader2 className="w-5 h-5 animate-spin text-[var(--brand)]" />
-              <span className="font-mono text-sm text-[var(--text-secondary)]">Analyzing historical cutoffs and compiling admission probabilities...</span>
+              <Loader2 className="w-4 h-4 animate-spin text-[var(--text-secondary)]" />
+              <span className="font-mono text-xs text-[var(--text-secondary)]">COMPILING_CUTOFF_DATA...</span>
             </div>
             
-            {/* Surface-elevated skeleton cards */}
+            {/* Minimal flat skeleton cards */}
             {[1, 2, 3].map(i => (
-              <div key={i} className="surface p-5 flex justify-between items-center opacity-60 animate-pulse">
+              <div key={i} className="surface p-5 flex justify-between items-center opacity-40 animate-pulse">
                 <div className="space-y-3 flex-1">
-                  <div className="h-4 bg-[var(--bg-overlay)] rounded w-1/4" />
-                  <div className="h-6 bg-[var(--bg-overlay)] rounded w-1/2" />
-                  <div className="h-4 bg-[var(--bg-overlay)] rounded w-1/3" />
+                  <div className="h-3 bg-[var(--border-default)] rounded w-1/4" />
+                  <div className="h-4 bg-[var(--border-default)] rounded w-1/2" />
+                  <div className="h-3 bg-[var(--border-default)] rounded w-1/3" />
                 </div>
-                <div className="w-24 h-16 bg-[var(--bg-overlay)] rounded-lg" />
+                <div className="w-20 h-12 bg-[var(--border-default)] rounded" />
               </div>
             ))}
           </div>
         ) : error ? (
-          <div className="max-w-md mx-auto text-center py-20 space-y-4 surface-elevated p-8">
-            <AlertTriangle className="w-12 h-12 text-red-400 mx-auto" />
-            <h3 className="font-bold text-white text-lg font-display">Failed to predict</h3>
-            <p className="text-sm text-[var(--text-secondary)]">{error}</p>
+          <div className="max-w-md mx-auto text-center py-20 space-y-4 surface p-8">
+            <AlertTriangle className="w-8 h-8 text-red-400 mx-auto" />
+            <h3 className="font-bold text-white text-base font-display">Execution Failed</h3>
+            <p className="text-xs text-[var(--text-secondary)]">{error}</p>
             <button
               onClick={() => router.push('/predict')}
               className="btn-brand"
@@ -440,13 +433,13 @@ function ResultsContent() {
             </div>
 
             {/* Mobile filters toggler */}
-            <div className="lg:hidden w-full flex items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-4 mb-2">
+            <div className="lg:hidden w-full flex items-center justify-between gap-4 border-b border-[var(--border-default)] pb-4 mb-2">
               <button
                 onClick={() => setShowMobileFilters(true)}
                 className="btn-ghost w-full justify-center"
               >
-                <SlidersHorizontal className="w-4 h-4 text-[var(--brand)]" />
-                <span>Filter & Sort Predictions</span>
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <span>Filter & Sort</span>
               </button>
             </div>
 
@@ -460,19 +453,19 @@ function ResultsContent() {
                   className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden flex justify-end"
                 >
                   <motion.div
-                    initial={{ x: 300 }}
+                    initial={{ x: 200 }}
                     animate={{ x: 0 }}
-                    exit={{ x: 300 }}
-                    className="w-full max-w-sm bg-[var(--bg-surface)] border-l border-[var(--border-default)] p-6 overflow-y-auto h-full flex flex-col justify-between"
+                    exit={{ x: 200 }}
+                    className="w-full max-w-sm bg-[var(--bg-elevated)] border-l border-[var(--border-default)] p-6 overflow-y-auto h-full flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex justify-between items-center mb-6">
-                        <h2 className="font-bold text-white text-lg font-display">Filters & Sort</h2>
+                        <h2 className="font-semibold text-white text-base font-display">Filters & Sort</h2>
                         <button
                           onClick={() => setShowMobileFilters(false)}
                           className="text-gray-400 hover:text-white p-1 cursor-pointer"
                         >
-                          <X className="w-6 h-6" />
+                          <X className="w-5 h-5" />
                         </button>
                       </div>
                       <FilterSidebar
@@ -499,44 +492,44 @@ function ResultsContent() {
               
               {/* Disclaimer */}
               {disclaimer && (
-                <div className="flex items-start gap-3 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] p-4 text-xs text-[var(--text-secondary)]">
-                  <Info className="w-4 h-4 text-[var(--brand)] shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 rounded bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 text-xs text-[var(--text-secondary)]">
+                  <Info className="w-4 h-4 text-[var(--text-secondary)] shrink-0 mt-0.5" />
                   <p>{disclaimer}</p>
                 </div>
               )}
 
               {/* View toggle & match count */}
               <div className="flex items-center justify-between">
-                <p className="text-sm text-[var(--text-secondary)] font-semibold">
-                  Found <span className="text-white font-bold">{filteredResults.length}</span> matching option(s)
+                <p className="text-xs text-[var(--text-secondary)] font-mono">
+                  MATCHES: <span className="text-white font-bold">{filteredResults.length}</span>
                 </p>
-                <div className="flex items-center gap-1 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl p-1">
+                <div className="flex items-center gap-1 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded p-1">
                   <button
                     onClick={() => setViewMode('grouped')}
-                    className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                    className={`p-1.5 rounded transition-colors cursor-pointer ${
                       viewMode === 'grouped' ? 'bg-[var(--bg-active)] text-white' : 'text-gray-400 hover:text-white'
                     }`}
                     title="Grouped Cards"
                   >
-                    <LayoutGrid className="w-4 h-4" />
+                    <LayoutGrid className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => setViewMode('table')}
-                    className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                    className={`p-1.5 rounded transition-colors cursor-pointer ${
                       viewMode === 'table' ? 'bg-[var(--bg-active)] text-white' : 'text-gray-400 hover:text-white'
                     }`}
                     title="Data Table"
                   >
-                    <Table2 className="w-4 h-4" />
+                    <Table2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
               {filteredResults.length === 0 ? (
-                <div className="text-center py-20 surface-elevated p-8 space-y-4">
-                  <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto" />
-                  <h3 className="font-bold text-white text-lg font-display">No matches found</h3>
-                  <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
+                <div className="text-center py-20 surface p-8 space-y-4">
+                  <AlertTriangle className="w-8 h-8 text-amber-500 mx-auto" />
+                  <h3 className="font-semibold text-white text-base font-display">No matches found</h3>
+                  <p className="text-xs text-[var(--text-secondary)] max-w-sm mx-auto">
                     Try checking other institute types or adding more branches in the filters. Alternatively, try modifying your rank search parameters.
                   </p>
                   <button
@@ -552,11 +545,11 @@ function ResultsContent() {
                   {/* Safe Colleges */}
                   {safeColleges.length > 0 && (
                     <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14, marginTop: 28 }}>
-                        <div style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--safe)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--safe-text)' }}>Safe Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>({safeColleges.length} programs)</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--safe-border)' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--safe)' }} />
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Safe Admits</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({safeColleges.length})</span>
+                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
                       </div>
                       <div className="grid grid-cols-1 gap-4">
                         {safeColleges.map(item => (
@@ -574,11 +567,11 @@ function ResultsContent() {
                   {/* Moderate Colleges */}
                   {moderateColleges.length > 0 && (
                     <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14, marginTop: 28 }}>
-                        <div style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--moderate)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--moderate-text)' }}>Moderate Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>({moderateColleges.length} programs)</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--moderate-border)' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--moderate)' }} />
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Moderate Admits</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({moderateColleges.length})</span>
+                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
                       </div>
                       <div className="grid grid-cols-1 gap-4">
                         {moderateColleges.map(item => (
@@ -596,11 +589,11 @@ function ResultsContent() {
                   {/* Ambitious Colleges */}
                   {ambitiousColleges.length > 0 && (
                     <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14, marginTop: 28 }}>
-                        <div style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--ambitious)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--ambitious-text)' }}>Ambitious Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>({ambitiousColleges.length} programs)</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--ambitious-border)' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ambitious)' }} />
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Ambitious Admits</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({ambitiousColleges.length})</span>
+                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
                       </div>
                       <div className="grid grid-cols-1 gap-4">
                         {ambitiousColleges.map(item => (
@@ -618,10 +611,10 @@ function ResultsContent() {
                   {/* Long Shot Colleges */}
                   {longshotsColleges.length > 0 && (
                     <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14, marginTop: 28 }}>
-                        <div style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--text-muted)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-secondary)' }}>Long Shot Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>({longshotsColleges.length} programs)</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--text-muted)' }} />
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Long Shot Admits</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({longshotsColleges.length})</span>
                         <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
                       </div>
                       <div className="grid grid-cols-1 gap-4">
@@ -640,54 +633,54 @@ function ResultsContent() {
               ) : (
                 /* Table View */
                 <div style={{
-                  background: 'var(--bg-surface)',
+                  background: 'var(--bg-elevated)',
                   border: '1px solid var(--border-default)',
-                  borderRadius: 'var(--radius-xl)',
+                  borderRadius: 'var(--radius-md)',
                   overflow: 'hidden',
                 }} className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-sm text-[var(--text-secondary)]">
+                  <table className="w-full border-collapse text-left text-xs text-[var(--text-secondary)]">
                     <thead style={{
-                      background: 'var(--bg-elevated)',
+                      background: 'rgba(255,255,255,0.015)',
                       borderBottom: '1px solid var(--border-default)',
                       fontFamily: 'var(--font-display)',
-                      fontWeight: 600,
+                      fontWeight: 500,
                       color: 'var(--text-primary)',
-                    }} className="text-xs uppercase tracking-wider">
+                    }} className="uppercase tracking-wider">
                       <tr>
-                        <th className="px-6 py-4">College Details</th>
-                        <th className="px-4 py-4 text-center">Type</th>
-                        <th className="px-4 py-4 text-center">Quota</th>
-                        <th className="px-4 py-4 text-right">Closing Cutoff</th>
-                        <th className="px-4 py-4 text-center">Chance</th>
-                        <th className="px-4 py-4 text-center">Probability</th>
-                        <th className="px-6 py-4 text-center">Action</th>
+                        <th className="px-5 py-3.5">College Details</th>
+                        <th className="px-4 py-3.5 text-center">Type</th>
+                        <th className="px-4 py-3.5 text-center">Quota</th>
+                        <th className="px-4 py-3.5 text-right">Closing Cutoff</th>
+                        <th className="px-4 py-3.5 text-center">Chance</th>
+                        <th className="px-4 py-3.5 text-center">Probability</th>
+                        <th className="px-5 py-3.5 text-center">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[var(--border-subtle)]">
+                    <tbody className="divide-y divide-[var(--border-default)]">
                       {filteredResults.map(item => {
                         const isCompared = !!compareList.find(c => c.id === item.id);
                         return (
-                          <tr key={item.id} className="hover:bg-white/5 transition-colors">
-                            <td className="px-6 py-4">
-                              <span className="font-bold text-white block">{item.instituteName}</span>
-                              <span className="text-xs text-[var(--text-secondary)] block mt-0.5">{item.branch}</span>
-                              <span className="text-[10px] text-[var(--text-muted)] block mt-0.5">{item.instituteCity ? `${item.instituteCity}, ` : ''}{item.instituteState}</span>
+                          <tr key={item.id} className="hover:bg-white/[0.01] transition-colors">
+                            <td className="px-5 py-4">
+                              <span className="font-semibold text-white block">{item.instituteName}</span>
+                              <span className="text-[10px] text-[var(--text-secondary)] block mt-0.5">{item.branch}</span>
+                              <span className="text-[9px] text-[var(--text-muted)] block mt-0.5">{item.instituteCity ? `${item.instituteCity}, ` : ''}{item.instituteState}</span>
                             </td>
                             <td className="px-4 py-4 text-center">
-                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', padding: '2px 6px', borderRadius: '3px' }}>
+                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', padding: '2px 5px', borderRadius: '2px' }}>
                                 {item.instituteType}
                               </span>
                             </td>
                             <td className="px-4 py-4 text-center">
-                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, background: 'var(--brand-dim)', border: '1px solid var(--border-accent)', color: 'var(--brand)', padding: '2px 6px', borderRadius: '3px' }}>
+                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', padding: '2px 5px', borderRadius: '2px' }}>
                                 {item.quota}
                               </span>
                             </td>
-                            <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-right font-bold text-white">
+                            <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-right font-medium text-white">
                               {item.closingRank.toLocaleString('en-IN')}
                             </td>
                             <td className="px-4 py-4 text-center">
-                              <span className={`text-xs font-bold uppercase ${
+                              <span className={`text-[10px] font-semibold uppercase ${
                                 item.chance === 'safe'
                                   ? 'text-[var(--safe-text)]'
                                   : item.chance === 'moderate'
@@ -697,24 +690,25 @@ function ResultsContent() {
                                 {item.chance}
                               </span>
                             </td>
-                            <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-center font-bold text-white">
+                            <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-center font-medium text-white">
                               {item.probability}%
                             </td>
-                            <td className="px-6 py-4 text-center">
+                            <td className="px-5 py-4 text-center">
                               <button
                                 onClick={() => handleCompareToggle(item)}
                                 style={{
-                                  padding: '4px 10px',
+                                  padding: '3px 8px',
                                   borderRadius: 'var(--radius-xs)',
-                                  fontSize: '0.7rem',
+                                  fontSize: '0.65rem',
                                   fontFamily: 'var(--font-mono)',
-                                  fontWeight: 600,
-                                  border: `1px solid ${isCompared ? 'var(--safe-border)' : 'var(--border-default)'}`,
-                                  background: isCompared ? 'var(--safe-bg)' : 'transparent',
-                                  color: isCompared ? 'var(--safe-text)' : 'var(--text-muted)',
+                                  fontWeight: 500,
+                                  border: '1px solid var(--border-default)',
+                                  background: isCompared ? 'rgba(255,255,255,0.06)' : 'transparent',
+                                  color: isCompared ? 'var(--text-primary)' : 'var(--text-secondary)',
                                   cursor: 'pointer',
-                                  transition: 'all 0.15s',
+                                  transition: 'all 0.1s',
                                 }}
+                                className="hover:border-[var(--border-strong)] hover:text-white"
                               >
                                 {isCompared ? 'Added' : 'Compare'}
                               </button>
@@ -729,11 +723,11 @@ function ResultsContent() {
 
               {/* Alternatives Section (if user didn't get many safe options) */}
               {alternatives.length > 0 && (
-                <div className="mt-12 space-y-4 pt-8 border-t border-[var(--border-subtle)]">
-                  <h3 className="font-bold text-white text-lg flex items-center gap-2 font-display">
+                <div className="mt-12 space-y-4 pt-8 border-t border-[var(--border-default)]">
+                  <h3 className="font-semibold text-white text-base flex items-center gap-2 font-display">
                     <span>💡 Alternative Options Nearby (Outside Preference Filters)</span>
                   </h3>
-                  <p className="text-xs text-[var(--text-secondary)]">
+                  <p className="text-[10px] text-[var(--text-secondary)]">
                     These are colleges just outside your rank filters or branches that might interest you with nearby cutoffs.
                   </p>
                   <div className="grid grid-cols-1 gap-4">
@@ -770,8 +764,8 @@ export default function ResultsPage() {
   return (
     <Suspense fallback={
       <div className="flex flex-col items-center justify-center py-32 space-y-4 bg-[var(--bg-base)] min-h-screen text-[var(--text-primary)]">
-        <Loader2 className="w-10 h-10 animate-spin text-[var(--brand)]" />
-        <p className="font-mono text-sm text-[var(--text-secondary)]">Loading RankScope predictions...</p>
+        <Loader2 className="w-6 h-6 animate-spin text-[var(--text-secondary)]" />
+        <p className="font-mono text-xs text-[var(--text-secondary)]">LOADING_RESULTS...</p>
       </div>
     }>
       <ResultsContent />
