@@ -85,7 +85,8 @@ function CompareContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] pb-20 pt-28">
+    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative overflow-hidden select-none pb-20 pt-10">
+      <div className="premium-grid" />
       {/* Navigation */}
       <Navbar />
 

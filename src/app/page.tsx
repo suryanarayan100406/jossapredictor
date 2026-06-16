@@ -58,14 +58,14 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative overflow-hidden select-none flex flex-col justify-between">
-      {/* Background visual detail */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.006)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.006)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
+      {/* Premium Grid Background */}
+      <div className="premium-grid" />
       
       {/* Shared Navigation */}
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-36 pb-20 px-6 lg:px-8 max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full flex-grow">
+      <section className="relative pt-16 pb-20 px-6 lg:px-8 max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full flex-grow">
         {/* Left Column: Text + CTA */}
         <div className="flex-1 text-left space-y-6 z-10">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', background: 'var(--brand-dim)', border: '1px solid var(--border-accent)', borderRadius: 'var(--radius-sm)', marginBottom: 4 }}>

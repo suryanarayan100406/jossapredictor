@@ -109,14 +109,15 @@ export default function PredictPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] flex flex-col pt-28 pb-16">
+    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative overflow-hidden select-none flex flex-col">
+      <div className="premium-grid" />
       {/* Navigation Header */}
       <Navbar />
 
-      <div className="flex-grow flex flex-col items-center justify-center px-4">
+      <div className="flex-grow flex flex-col items-center pt-10 pb-16 px-4 z-10">
         <div className="w-full max-w-xl">
           {/* Progress indicator */}
-          <div className="flex items-center justify-center mb-10 gap-2">
+          <div className="flex items-center justify-between w-full max-w-md mx-auto mb-10 gap-2">
             {WIZARD_STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
                 <div className={`step-node ${step > s.id ? 'done' : step === s.id ? 'active' : 'idle'}`}>

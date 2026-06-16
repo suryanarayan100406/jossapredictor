@@ -28,10 +28,10 @@ export default function AdminSettings() {
         return res.json();
       })
       .then(data => {
-        if (data) {
-          setSafeMultiplier(data.safeMultiplier);
-          setModerateMultiplier(data.moderateMultiplier);
-          setAmbitiousMultiplier(data.ambitiousMultiplier);
+        if (data && data.settings) {
+          setSafeMultiplier(data.settings.safeMultiplier ?? 0.90);
+          setModerateMultiplier(data.settings.moderateMultiplier ?? 1.10);
+          setAmbitiousMultiplier(data.settings.ambitiousMultiplier ?? 1.30);
         }
       })
       .catch(err => {

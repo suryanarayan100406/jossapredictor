@@ -284,7 +284,8 @@ function ResultsContent() {
   const longshotsColleges = filteredResults.filter(r => r.chance === 'longshot');
 
   return (
-    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] pb-32 pt-28">
+    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative overflow-hidden select-none pb-32 pt-10">
+      <div className="premium-grid" />
       {/* Navbar Branding */}
       <Navbar />
 
