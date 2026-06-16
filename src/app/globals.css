@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 /* ===================================
@@ -6,8 +7,12 @@
    =================================== */
 
 :root {
+  /* Fonts */
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
   /* Color System */
-  --background: #0a0a0f;
+  --background: #030305;
   --foreground: #f0f0f5;
   --card: #12121a;
   --card-hover: #1a1a25;
@@ -96,9 +101,10 @@ body {
    =================================== */
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
 }
 
 h1 {
