@@ -61,11 +61,25 @@ export async function predictColleges(input: PredictionInput): Promise<{
   }
 
   // Find latest round for the year
-  const latestRound = input.round ?? (await prisma.cutoffRecord.findFirst({
-    where: { year: input.year },
-    orderBy: { round: 'desc' },
-    select: { round: true },
-  }))?.round ?? 6;
+  let latestRound = input.round;
+  if (latestRound === undefined) {
+    const roundCounts = await prisma.cutoffRecord.groupBy({
+      by: ['round'],
+      where: { year: input.year },
+      _count: true,
+    });
+
+    if (roundCounts.length > 0) {
+      const maxCount = Math.max(...roundCounts.map(r => r._count));
+      // Select rounds that have at least 50% of the maximum record count for that year
+      const qualifyingRounds = roundCounts
+        .filter(r => r._count >= maxCount * 0.5)
+        .map(r => r.round);
+      latestRound = Math.max(...qualifyingRounds);
+    } else {
+      latestRound = 6;
+    }
+  }
 
   // Query matching records
   const where: Record<string, unknown> = {
