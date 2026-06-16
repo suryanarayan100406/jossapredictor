@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// Core cutoff data from JoSAA counselling
+model CutoffRecord {
+  id            Int      @id @default(autoincrement())
+  year          Int
+  round         Int
+  instituteType String   // IIT, NIT, IIIT, GFTI
+  instituteName String
+  branch        String   // academic program
+  quota         String   // AI, HS, OS, GO, JK, LA
+  category      String   // OPEN, OBC-NCL, SC, ST, EWS, + PwD variants
+  gender        String   // Gender-Neutral, Female-only
+  openingRank   Int
+  closingRank   Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([year, round, instituteType, instituteName, branch, quota, category, gender])
+  @@index([year, instituteType, category, quota, branch, closingRank])
+  @@index([instituteName])
+  @@index([closingRank])
+}
+
+/// Admin users with hashed passwords
+model Admin {
+  id           Int         @id @default(autoincrement())
+  email        String      @unique
+  passwordHash String
+  role         String      @default("admin")
+  createdAt    DateTime    @default(now())
+  importLogs   ImportLog[]
+}
+
+/// Audit trail for CSV imports
+model ImportLog {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  rowsTotal    Int
+  rowsImported Int
+  rowsSkipped  Int
+  errors       String   @default("[]") // JSON stringified array
+  importedAt   DateTime @default(now())
+  adminId      Int
+  admin        Admin    @relation(fields: [adminId], references: [id])
+}
+
+/// Institute enrichment data (state, city, NIRF, etc.)
+model Institute {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  type      String   // IIT, NIT, IIIT, GFTI
+  state     String
+  city      String   @default("")
+  website   String   @default("")
+  nirfRank  Int?
+  logoUrl   String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Admin-tunable prediction thresholds
+model PredictionSettings {
+  id                  Int   @id @default(autoincrement())
+  safeMultiplier      Float @default(0.90)
+  moderateMultiplier  Float @default(1.10)
+  ambitiousMultiplier Float @default(1.30)
+}
+
+/// Public feedback from users (no login required)
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  message   String
+  email     String   @default("")
+  createdAt DateTime @default(now())
+}

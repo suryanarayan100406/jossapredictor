@@ -1,0 +1,233 @@
+/**
+ * Comprehensive institute-to-state/city mapping.
+ * Used for Home State / Other State quota logic.
+ */
+
+export interface InstituteLocation {
+  state: string;
+  city: string;
+}
+
+// Pattern-based lookup: keys are lowercase substrings to match against institute names
+const INSTITUTE_PATTERNS: [string, InstituteLocation][] = [
+  // === IITs ===
+  ['iit bombay', { state: 'Maharashtra', city: 'Mumbai' }],
+  ['iit delhi', { state: 'Delhi', city: 'New Delhi' }],
+  ['iit kanpur', { state: 'Uttar Pradesh', city: 'Kanpur' }],
+  ['iit kharagpur', { state: 'West Bengal', city: 'Kharagpur' }],
+  ['iit madras', { state: 'Tamil Nadu', city: 'Chennai' }],
+  ['iit roorkee', { state: 'Uttarakhand', city: 'Roorkee' }],
+  ['iit guwahati', { state: 'Assam', city: 'Guwahati' }],
+  ['iit hyderabad', { state: 'Telangana', city: 'Hyderabad' }],
+  ['iit indore', { state: 'Madhya Pradesh', city: 'Indore' }],
+  ['iit (bhu)', { state: 'Uttar Pradesh', city: 'Varanasi' }],
+  ['iit varanasi', { state: 'Uttar Pradesh', city: 'Varanasi' }],
+  ['iit patna', { state: 'Bihar', city: 'Patna' }],
+  ['iit gandhinagar', { state: 'Gujarat', city: 'Gandhinagar' }],
+  ['iit jodhpur', { state: 'Rajasthan', city: 'Jodhpur' }],
+  ['iit ropar', { state: 'Punjab', city: 'Rupnagar' }],
+  ['iit bhubaneswar', { state: 'Odisha', city: 'Bhubaneswar' }],
+  ['iit mandi', { state: 'Himachal Pradesh', city: 'Mandi' }],
+  ['iit tirupati', { state: 'Andhra Pradesh', city: 'Tirupati' }],
+  ['iit palakkad', { state: 'Kerala', city: 'Palakkad' }],
+  ['iit dharwad', { state: 'Karnataka', city: 'Dharwad' }],
+  ['iit bhilai', { state: 'Chhattisgarh', city: 'Bhilai' }],
+  ['iit goa', { state: 'Goa', city: 'Ponda' }],
+  ['iit jammu', { state: 'Jammu and Kashmir', city: 'Jammu' }],
+  ['ism dhanbad', { state: 'Jharkhand', city: 'Dhanbad' }],
+  ['iit dhanbad', { state: 'Jharkhand', city: 'Dhanbad' }],
+  ['indian school of mines', { state: 'Jharkhand', city: 'Dhanbad' }],
+  // === NITs ===
+  ['nit tiruchirappalli', { state: 'Tamil Nadu', city: 'Tiruchirappalli' }],
+  ['nit trichy', { state: 'Tamil Nadu', city: 'Tiruchirappalli' }],
+  ['nit warangal', { state: 'Telangana', city: 'Warangal' }],
+  ['nit karnataka', { state: 'Karnataka', city: 'Mangalore' }],
+  ['nit surathkal', { state: 'Karnataka', city: 'Mangalore' }],
+  ['nit rourkela', { state: 'Odisha', city: 'Rourkela' }],
+  ['nit calicut', { state: 'Kerala', city: 'Kozhikode' }],
+  ['mnnit allahabad', { state: 'Uttar Pradesh', city: 'Prayagraj' }],
+  ['mnit jaipur', { state: 'Rajasthan', city: 'Jaipur' }],
+  ['nit kurukshetra', { state: 'Haryana', city: 'Kurukshetra' }],
+  ['nit durgapur', { state: 'West Bengal', city: 'Durgapur' }],
+  ['vnit nagpur', { state: 'Maharashtra', city: 'Nagpur' }],
+  ['svnit surat', { state: 'Gujarat', city: 'Surat' }],
+  ['manit bhopal', { state: 'Madhya Pradesh', city: 'Bhopal' }],
+  ['nit silchar', { state: 'Assam', city: 'Silchar' }],
+  ['nit hamirpur', { state: 'Himachal Pradesh', city: 'Hamirpur' }],
+  ['nit jalandhar', { state: 'Punjab', city: 'Jalandhar' }],
+  ['nit patna', { state: 'Bihar', city: 'Patna' }],
+  ['nit raipur', { state: 'Chhattisgarh', city: 'Raipur' }],
+  ['nit agartala', { state: 'Tripura', city: 'Agartala' }],
+  ['nit jamshedpur', { state: 'Jharkhand', city: 'Jamshedpur' }],
+  ['nit srinagar', { state: 'Jammu and Kashmir', city: 'Srinagar' }],
+  ['nit arunachal', { state: 'Arunachal Pradesh', city: 'Yupia' }],
+  ['nit manipur', { state: 'Manipur', city: 'Imphal' }],
+  ['nit meghalaya', { state: 'Meghalaya', city: 'Shillong' }],
+  ['nit mizoram', { state: 'Mizoram', city: 'Aizawl' }],
+  ['nit nagaland', { state: 'Nagaland', city: 'Dimapur' }],
+  ['nit sikkim', { state: 'Sikkim', city: 'Ravangla' }],
+  ['nit uttarakhand', { state: 'Uttarakhand', city: 'Srinagar' }],
+  ['nit andhra pradesh', { state: 'Andhra Pradesh', city: 'Tadepalligudem' }],
+  ['nit delhi', { state: 'Delhi', city: 'New Delhi' }],
+  ['nit goa', { state: 'Goa', city: 'Ponda' }],
+  ['nit puducherry', { state: 'Puducherry', city: 'Puducherry' }],
+  // === IIITs ===
+  ['iiit allahabad', { state: 'Uttar Pradesh', city: 'Prayagraj' }],
+  ['iiit hyderabad', { state: 'Telangana', city: 'Hyderabad' }],
+  ['iiit bangalore', { state: 'Karnataka', city: 'Bengaluru' }],
+  ['iiit delhi', { state: 'Delhi', city: 'New Delhi' }],
+  ['iiit gwalior', { state: 'Madhya Pradesh', city: 'Gwalior' }],
+  ['iiit jabalpur', { state: 'Madhya Pradesh', city: 'Jabalpur' }],
+  ['iiitdm jabalpur', { state: 'Madhya Pradesh', city: 'Jabalpur' }],
+  ['iiit kancheepuram', { state: 'Tamil Nadu', city: 'Kancheepuram' }],
+  ['iiitdm kancheepuram', { state: 'Tamil Nadu', city: 'Kancheepuram' }],
+  ['iiit kurnool', { state: 'Andhra Pradesh', city: 'Kurnool' }],
+  ['iiit lucknow', { state: 'Uttar Pradesh', city: 'Lucknow' }],
+  ['iiit nagpur', { state: 'Maharashtra', city: 'Nagpur' }],
+  ['iiit pune', { state: 'Maharashtra', city: 'Pune' }],
+  ['iiit ranchi', { state: 'Jharkhand', city: 'Ranchi' }],
+  ['iiit sri city', { state: 'Andhra Pradesh', city: 'Sri City' }],
+  ['iiit sonepat', { state: 'Haryana', city: 'Sonepat' }],
+  ['iiit tiruchirappalli', { state: 'Tamil Nadu', city: 'Tiruchirappalli' }],
+  ['iiit una', { state: 'Himachal Pradesh', city: 'Una' }],
+  ['iiit vadodara', { state: 'Gujarat', city: 'Vadodara' }],
+  ['iiit kalyani', { state: 'West Bengal', city: 'Kalyani' }],
+  ['iiit kota', { state: 'Rajasthan', city: 'Kota' }],
+  ['iiit manipur', { state: 'Manipur', city: 'Imphal' }],
+  ['iiit bhopal', { state: 'Madhya Pradesh', city: 'Bhopal' }],
+  ['iiit bhagalpur', { state: 'Bihar', city: 'Bhagalpur' }],
+  ['iiit agartala', { state: 'Tripura', city: 'Agartala' }],
+  ['iiit raichur', { state: 'Karnataka', city: 'Raichur' }],
+  ['iiit surat', { state: 'Gujarat', city: 'Surat' }],
+  // === GFTIs ===
+  ['iiest shibpur', { state: 'West Bengal', city: 'Howrah' }],
+  ['bit mesra', { state: 'Jharkhand', city: 'Ranchi' }],
+  ['birla institute of technology, mesra', { state: 'Jharkhand', city: 'Ranchi' }],
+  ['bit sindri', { state: 'Jharkhand', city: 'Dhanbad' }],
+  ['birla institute of technology, sindri', { state: 'Jharkhand', city: 'Dhanbad' }],
+  ['spa delhi', { state: 'Delhi', city: 'New Delhi' }],
+  ['school of planning and architecture, delhi', { state: 'Delhi', city: 'New Delhi' }],
+  ['spa bhopal', { state: 'Madhya Pradesh', city: 'Bhopal' }],
+  ['school of planning and architecture, bhopal', { state: 'Madhya Pradesh', city: 'Bhopal' }],
+  ['spa vijayawada', { state: 'Andhra Pradesh', city: 'Vijayawada' }],
+  ['school of planning and architecture, vijayawada', { state: 'Andhra Pradesh', city: 'Vijayawada' }],
+  ['sliet', { state: 'Punjab', city: 'Longowal' }],
+  ['tezpur university', { state: 'Assam', city: 'Tezpur' }],
+  ['assam university', { state: 'Assam', city: 'Silchar' }],
+  ['ghani khan', { state: 'West Bengal', city: 'Malda' }],
+  ['nifft ranchi', { state: 'Jharkhand', city: 'Ranchi' }],
+  ['national institute of foundry', { state: 'Jharkhand', city: 'Ranchi' }],
+  ['j.k. institute', { state: 'Uttar Pradesh', city: 'Prayagraj' }],
+  ['institute of infrastructure', { state: 'Gujarat', city: 'Ahmedabad' }],
+  ['mizoram university', { state: 'Mizoram', city: 'Aizawl' }],
+  ['jawaharlal nehru university', { state: 'Delhi', city: 'New Delhi' }],
+  ['naya raipur', { state: 'Chhattisgarh', city: 'Naya Raipur' }],
+];
+
+// City-to-state fallback map for fuzzy matching
+const CITY_STATE_FALLBACK: [string, InstituteLocation][] = [
+  ['bombay', { state: 'Maharashtra', city: 'Mumbai' }],
+  ['mumbai', { state: 'Maharashtra', city: 'Mumbai' }],
+  ['delhi', { state: 'Delhi', city: 'New Delhi' }],
+  ['chennai', { state: 'Tamil Nadu', city: 'Chennai' }],
+  ['kolkata', { state: 'West Bengal', city: 'Kolkata' }],
+  ['bangalore', { state: 'Karnataka', city: 'Bengaluru' }],
+  ['bengaluru', { state: 'Karnataka', city: 'Bengaluru' }],
+  ['hyderabad', { state: 'Telangana', city: 'Hyderabad' }],
+  ['kanpur', { state: 'Uttar Pradesh', city: 'Kanpur' }],
+  ['varanasi', { state: 'Uttar Pradesh', city: 'Varanasi' }],
+  ['lucknow', { state: 'Uttar Pradesh', city: 'Lucknow' }],
+  ['jaipur', { state: 'Rajasthan', city: 'Jaipur' }],
+  ['bhopal', { state: 'Madhya Pradesh', city: 'Bhopal' }],
+  ['patna', { state: 'Bihar', city: 'Patna' }],
+  ['ranchi', { state: 'Jharkhand', city: 'Ranchi' }],
+  ['guwahati', { state: 'Assam', city: 'Guwahati' }],
+  ['bhubaneswar', { state: 'Odisha', city: 'Bhubaneswar' }],
+  ['rourkela', { state: 'Odisha', city: 'Rourkela' }],
+  ['indore', { state: 'Madhya Pradesh', city: 'Indore' }],
+  ['jodhpur', { state: 'Rajasthan', city: 'Jodhpur' }],
+  ['gandhinagar', { state: 'Gujarat', city: 'Gandhinagar' }],
+  ['surat', { state: 'Gujarat', city: 'Surat' }],
+  ['nagpur', { state: 'Maharashtra', city: 'Nagpur' }],
+  ['pune', { state: 'Maharashtra', city: 'Pune' }],
+  ['warangal', { state: 'Telangana', city: 'Warangal' }],
+  ['tiruchirappalli', { state: 'Tamil Nadu', city: 'Tiruchirappalli' }],
+  ['trichy', { state: 'Tamil Nadu', city: 'Tiruchirappalli' }],
+  ['surathkal', { state: 'Karnataka', city: 'Mangalore' }],
+  ['mangalore', { state: 'Karnataka', city: 'Mangalore' }],
+  ['calicut', { state: 'Kerala', city: 'Kozhikode' }],
+  ['kozhikode', { state: 'Kerala', city: 'Kozhikode' }],
+  ['allahabad', { state: 'Uttar Pradesh', city: 'Prayagraj' }],
+  ['prayagraj', { state: 'Uttar Pradesh', city: 'Prayagraj' }],
+  ['kurukshetra', { state: 'Haryana', city: 'Kurukshetra' }],
+  ['durgapur', { state: 'West Bengal', city: 'Durgapur' }],
+  ['silchar', { state: 'Assam', city: 'Silchar' }],
+  ['hamirpur', { state: 'Himachal Pradesh', city: 'Hamirpur' }],
+  ['jalandhar', { state: 'Punjab', city: 'Jalandhar' }],
+  ['raipur', { state: 'Chhattisgarh', city: 'Raipur' }],
+  ['agartala', { state: 'Tripura', city: 'Agartala' }],
+  ['jamshedpur', { state: 'Jharkhand', city: 'Jamshedpur' }],
+  ['srinagar', { state: 'Jammu and Kashmir', city: 'Srinagar' }],
+  ['jammu', { state: 'Jammu and Kashmir', city: 'Jammu' }],
+  ['imphal', { state: 'Manipur', city: 'Imphal' }],
+  ['shillong', { state: 'Meghalaya', city: 'Shillong' }],
+  ['aizawl', { state: 'Mizoram', city: 'Aizawl' }],
+  ['dimapur', { state: 'Nagaland', city: 'Dimapur' }],
+  ['ravangla', { state: 'Sikkim', city: 'Ravangla' }],
+  ['roorkee', { state: 'Uttarakhand', city: 'Roorkee' }],
+  ['kharagpur', { state: 'West Bengal', city: 'Kharagpur' }],
+  ['madras', { state: 'Tamil Nadu', city: 'Chennai' }],
+  ['dhanbad', { state: 'Jharkhand', city: 'Dhanbad' }],
+  ['mandi', { state: 'Himachal Pradesh', city: 'Mandi' }],
+  ['tirupati', { state: 'Andhra Pradesh', city: 'Tirupati' }],
+  ['palakkad', { state: 'Kerala', city: 'Palakkad' }],
+  ['dharwad', { state: 'Karnataka', city: 'Dharwad' }],
+  ['bhilai', { state: 'Chhattisgarh', city: 'Bhilai' }],
+  ['goa', { state: 'Goa', city: 'Ponda' }],
+  ['ropar', { state: 'Punjab', city: 'Rupnagar' }],
+  ['rupnagar', { state: 'Punjab', city: 'Rupnagar' }],
+  ['howrah', { state: 'West Bengal', city: 'Howrah' }],
+  ['shibpur', { state: 'West Bengal', city: 'Howrah' }],
+  ['longowal', { state: 'Punjab', city: 'Longowal' }],
+  ['vijayawada', { state: 'Andhra Pradesh', city: 'Vijayawada' }],
+  ['tezpur', { state: 'Assam', city: 'Tezpur' }],
+  ['malda', { state: 'West Bengal', city: 'Malda' }],
+  ['ahmedabad', { state: 'Gujarat', city: 'Ahmedabad' }],
+  ['gwalior', { state: 'Madhya Pradesh', city: 'Gwalior' }],
+  ['kurnool', { state: 'Andhra Pradesh', city: 'Kurnool' }],
+  ['vadodara', { state: 'Gujarat', city: 'Vadodara' }],
+  ['sonepat', { state: 'Haryana', city: 'Sonepat' }],
+  ['kalyani', { state: 'West Bengal', city: 'Kalyani' }],
+  ['kota', { state: 'Rajasthan', city: 'Kota' }],
+  ['una', { state: 'Himachal Pradesh', city: 'Una' }],
+  ['bhagalpur', { state: 'Bihar', city: 'Bhagalpur' }],
+  ['raichur', { state: 'Karnataka', city: 'Raichur' }],
+  ['sri city', { state: 'Andhra Pradesh', city: 'Sri City' }],
+  ['kancheepuram', { state: 'Tamil Nadu', city: 'Kancheepuram' }],
+  ['tadepalligudem', { state: 'Andhra Pradesh', city: 'Tadepalligudem' }],
+  ['yupia', { state: 'Arunachal Pradesh', city: 'Yupia' }],
+];
+
+/**
+ * Find the state and city for a given institute name.
+ * Uses pattern matching against known institutes and cities.
+ */
+export function getInstituteLocation(instituteName: string): InstituteLocation | null {
+  const lowerName = instituteName.toLowerCase();
+
+  // Try specific institute patterns first (more specific = better)
+  for (const [pattern, location] of INSTITUTE_PATTERNS) {
+    if (lowerName.includes(pattern)) {
+      return location;
+    }
+  }
+
+  // Fallback: try city name matching
+  for (const [cityKey, location] of CITY_STATE_FALLBACK) {
+    if (lowerName.includes(cityKey)) {
+      return location;
+    }
+  }
+
+  return null;
+}
