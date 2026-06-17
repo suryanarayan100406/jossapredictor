@@ -66,20 +66,24 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 w-full flex-grow z-10 items-center">
+        {/* Ambient background blur auroras */}
+        <div className="ambient-glow top-[10%] left-[-5%] opacity-60" />
+        <div className="ambient-glow bottom-[20%] right-[5%] opacity-40 bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_70%)]" />
+
         {/* Left Column: Text + CTA */}
         <div className="lg:col-span-7 text-left space-y-6 z-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-border-default rounded-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-text-secondary inline-block animate-pulse" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-border-default rounded-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block animate-pulse" />
             <span className="font-mono text-[0.65rem] font-medium text-text-secondary tracking-widest">JOSAA INTELLIGENCE</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium font-display text-white leading-[1.1] tracking-tight">
             Know your exact<br />
-            <span className="text-text-secondary">admission chances.</span>
+            <span className="text-gradient-primary">admission chances.</span>
           </h1>
 
           <p className="text-sm text-text-secondary max-w-lg leading-relaxed">
-            Parsed from 12,274 historical cutoff records across 6 rounds. Evaluate your chances for IITs, NITs, IIITs, and GFTIs with zero friction.
+            Parsed from 65,086+ historical cutoff records across 6 rounds. Evaluate your chances for IITs, NITs, IIITs, and GFTIs with zero friction.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-2 items-center">
@@ -94,7 +98,7 @@ export default function HomePage() {
 
         {/* Right Column: Terminal Visualization Card */}
         <div className="lg:col-span-5 w-full flex justify-center lg:justify-end items-center z-10 relative">
-          <div className="bg-bg-elevated border border-border-default rounded-md p-6 shadow-card max-w-[380px] w-full">
+          <div className="bg-bg-elevated/70 backdrop-blur-xl border border-white/10 rounded-lg p-6 shadow-[0_0_50px_rgba(139,92,246,0.12)] hover:border-brand/40 transition-all duration-300 max-w-[380px] w-full">
             {/* Header row */}
             <div className="flex justify-between items-center mb-5 pb-3.5 border-b border-border-default">
               <span className="font-mono text-[10px] text-text-secondary font-medium tracking-widest">SYSTEM_READOUT</span>
@@ -207,18 +211,18 @@ export default function HomePage() {
       </section>
 
       {/* Stats Strip */}
-      <section className="z-10 relative border-t border-b border-border-default bg-bg-surface py-6">
+      <section className="z-10 relative border-t border-b border-border-default bg-bg-surface/60 backdrop-blur-md py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
           {[
-            { value: '12,274+', label: 'Cutoff Records' },
-            { value: '120+', label: 'Institutes' },
+            { value: '65,086+', label: 'Cutoff Records' },
+            { value: '127+', label: 'Institutes' },
             { value: '6', label: 'JoSAA Rounds' },
             { value: '2024–2025', label: 'Data Coverage' },
             { value: 'IITs · NITs · IIITs · GFTIs', label: 'Institute Types' },
           ].map((stat, i) => (
             <div key={i} className="text-left">
-              <div className="font-display font-medium text-sm sm:text-base text-text-primary">{stat.value}</div>
-              <div className="font-mono text-[10px] text-text-muted tracking-wider mt-0.5">{stat.label}</div>
+              <div className="font-display font-bold text-sm sm:text-base text-white">{stat.value}</div>
+              <div className="font-mono text-[10px] text-text-secondary tracking-wider mt-0.5">{stat.label}</div>
             </div>
           ))}
         </div>

@@ -138,8 +138,8 @@ function CompareContent() {
             </button>
           </div>
         ) : (
-          <div className="overflow-x-auto bg-bg-elevated border border-border-default rounded-md">
-            <div className="min-w-[800px] divide-y divide-border-default">
+          <div className="overflow-x-auto glass-panel border border-white/10 rounded-lg shadow-card">
+            <div className="min-w-[800px] divide-y divide-white/10">
               
               {/* Row 1: Cards with Delete option */}
               <div className="grid grid-cols-5 bg-white/[0.015]">

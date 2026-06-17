@@ -104,7 +104,7 @@ export default function AdminLayout({
       </nav>
 
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-white/5 bg-[#12121a]/50 shrink-0">
+      <aside className="hidden md:flex flex-col w-64 border-r border-white/5 bg-[#0c0c14]/80 backdrop-blur-md shrink-0">
         {/* Brand */}
         <div className="h-16 flex items-center gap-2 px-6 border-b border-white/5">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/10">
@@ -136,10 +136,10 @@ export default function AdminLayout({
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all group ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all border group ${
                   active
-                    ? 'bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 font-bold'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400 font-bold shadow-[0_0_15px_rgba(99,102,241,0.05)]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5 border-transparent'
                 }`}
               >
                 <Icon className={`w-4.5 h-4.5 transition-transform group-hover:scale-105 ${active ? 'text-indigo-400' : 'text-gray-500 group-hover:text-white'}`} />
@@ -153,7 +153,7 @@ export default function AdminLayout({
         <div className="p-4 border-t border-white/5 bg-white/[0.01]">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all cursor-pointer group"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all cursor-pointer group"
           >
             <LogOut className="w-4.5 h-4.5 text-red-400 group-hover:translate-x-0.5 transition-transform" />
             <span>Sign Out</span>

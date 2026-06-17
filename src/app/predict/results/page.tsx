@@ -369,16 +369,16 @@ function ResultsContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 relative pt-10">
         
         {/* Command-center style header */}
-        <header className="w-full bg-bg-elevated border border-border-default rounded-md p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-border-default">
+        <header className="w-full glass-panel border border-white/10 rounded-lg p-6 mb-6 shadow-[0_0_50px_rgba(139,92,246,0.05)]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
             {/* Left Block: Profile Details */}
             <div className="space-y-4 pb-6 md:pb-0 md:pr-6">
-              <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted tracking-wider">
+              <div className="flex items-center gap-2 text-[10px] font-mono text-brand tracking-wider">
                 <span>PROFILE_READOUT</span>
               </div>
               
               <div className="flex flex-wrap items-baseline gap-x-2">
-                <span className="font-mono text-3xl sm:text-4xl font-semibold text-text-primary leading-none">
+                <span className="font-mono text-3xl sm:text-4xl font-semibold text-white leading-none">
                   {rank.toLocaleString('en-IN')}
                 </span>
                 <span className="font-mono text-[10px] text-text-secondary uppercase">
@@ -387,13 +387,13 @@ function ResultsContent() {
               </div>
               
               <div className="flex flex-wrap gap-1.5 text-[10px] font-mono text-text-secondary">
-                <span className="bg-bg-base border border-border-default px-2 py-0.5 rounded-xs">
+                <span className="bg-bg-surface border border-white/5 px-2 py-0.5 rounded-sm">
                   {category} {pwdStatus ? '(PwD)' : ''}
                 </span>
-                <span className="bg-bg-base border border-border-default px-2 py-0.5 rounded-xs">
+                <span className="bg-bg-surface border border-white/5 px-2 py-0.5 rounded-sm">
                   {gender}
                 </span>
-                <span className="bg-bg-base border border-border-default px-2 py-0.5 rounded-xs">
+                <span className="bg-bg-surface border border-white/5 px-2 py-0.5 rounded-sm">
                   {homeState} (HS)
                 </span>
               </div>
@@ -401,7 +401,7 @@ function ResultsContent() {
             
             {/* Middle Block: Count & Tier Breakdown */}
             <div className="flex flex-col justify-center space-y-4 pt-6 md:pt-0 md:px-6">
-              <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted tracking-wider">
+              <div className="flex items-center gap-2 text-[10px] font-mono text-brand tracking-wider">
                 <span>ADMISSION_MATCHES</span>
               </div>
               
@@ -414,15 +414,15 @@ function ResultsContent() {
               
               <div className="flex flex-wrap gap-3 text-[10px] font-mono">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-safe" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-safe animate-pulse" />
                   <span className="text-text-secondary">Safe: {safeColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-moderate" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-moderate animate-pulse" />
                   <span className="text-text-secondary">Mod: {moderateColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-ambitious" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-ambitious animate-pulse" />
                   <span className="text-text-secondary">Amb: {ambitiousColleges.length}</span>
                 </div>
               </div>
@@ -538,7 +538,7 @@ function ResultsContent() {
 
             {/* Classic View Container */}
             {showClassic && (
-              <div className="flex flex-col lg:flex-row gap-8 items-start pt-6 border-t border-[var(--border-default)] border-dashed">
+              <div className="flex flex-col lg:flex-row gap-8 items-start pt-6 border-t border-white/10 border-dashed">
                 {/* Desktop Filter Sidebar */}
                 <div className="hidden lg:block">
                   <FilterSidebar

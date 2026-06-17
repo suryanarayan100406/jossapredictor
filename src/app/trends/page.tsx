@@ -146,12 +146,12 @@ function TrendsContent() {
             
             {/* Chart Column */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-bg-elevated border border-border-default rounded-md p-6">
+              <div className="glass-panel border border-white/10 rounded-lg p-6 shadow-card">
                 <h3 className="font-semibold text-white text-base mb-6 font-display">Closing Rank YoY Comparison</h3>
                 <LineChartComponent data={trends} />
               </div>
-              <div className="flex items-start gap-3 rounded-[var(--radius-xs)] bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 text-xs text-[var(--text-secondary)]">
-                <Info className="w-4 h-4 text-[var(--text-secondary)] shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 rounded-lg bg-white/[0.02] border border-white/10 p-4 text-xs text-text-secondary">
+                <Info className="w-4 h-4 text-text-secondary shrink-0 mt-0.5" />
                 <p>
                   This chart shows the Closing Rank (CRL) cutoffs for previous counselling years. Lower closing ranks indicate higher demand / competition for that specific college branch.
                 </p>
@@ -160,19 +160,19 @@ function TrendsContent() {
 
             {/* Stats Summary Column */}
             <div className="space-y-6">
-              <div className="bg-bg-elevated border border-border-default rounded-md p-6 space-y-6">
+              <div className="glass-panel border border-white/10 rounded-lg p-6 space-y-6 shadow-card">
                 <h3 className="font-semibold text-white text-base font-display">Trend Summary</h3>
                 
-                <div className="divide-y divide-[var(--border-default)] text-sm">
+                <div className="divide-y divide-white/10 text-sm">
                   {trends.map((t, idx) => (
                     <div key={idx} className="py-3.5 flex justify-between items-center">
                       <div>
                         <span className="font-semibold text-white font-display">Year {t.year}</span>
-                        <span className="text-xs text-[var(--text-secondary)] block font-mono">Round {t.round}</span>
+                        <span className="text-xs text-text-secondary block font-mono">Round {t.round}</span>
                       </div>
                       <div className="text-right">
                         <span className="font-mono font-medium text-white block">{t.closingRank.toLocaleString('en-IN')}</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] block font-mono">Closing Rank</span>
+                        <span className="text-[10px] text-text-secondary block font-mono">Closing Rank</span>
                       </div>
                     </div>
                   ))}

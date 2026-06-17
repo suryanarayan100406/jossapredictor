@@ -187,9 +187,9 @@ export default function PredictPage() {
       <Navbar />
 
       <div className="flex-grow flex flex-col items-center pt-10 pb-16 px-4 z-10">
-        <div className="w-full max-w-3xl">
+        <div className="w-full max-w-2xl mx-auto">
           {/* Progress indicator */}
-          <div className="flex items-center justify-between w-full max-w-3xl mx-auto mb-10 gap-4">
+          <div className="flex items-center justify-between w-full max-w-2xl mx-auto mb-10 gap-4">
             {WIZARD_STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
                 <div className={`step-node ${step > s.id ? 'done' : step === s.id ? 'active' : 'idle'}`}>
@@ -204,14 +204,14 @@ export default function PredictPage() {
 
           {/* Step label */}
           <div className="text-center mb-8">
-            <p className="text-xs font-semibold mb-1 uppercase tracking-wider font-mono text-[var(--text-secondary)]">
+            <p className="text-xs font-semibold mb-1 uppercase tracking-wider font-mono text-brand">
               Step {step} of 5 — {WIZARD_STEPS[step - 1].label}
             </p>
-            <p className="text-xs text-[var(--text-muted)]">{WIZARD_STEPS[step - 1].description}</p>
+            <p className="text-xs text-text-secondary">{WIZARD_STEPS[step - 1].description}</p>
           </div>
 
           {/* Step content */}
-          <div className="surface p-6 sm:p-8 min-h-[360px] relative overflow-hidden">
+          <div className="glass-panel p-6 sm:p-8 min-h-[360px] relative overflow-hidden shadow-[0_0_50px_rgba(139,92,246,0.06)] border border-white/10">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={step}
@@ -563,7 +563,6 @@ export default function PredictPage() {
                 onClick={handleSubmit}
                 disabled={loading}
                 className="btn-brand"
-                style={{ background: 'var(--brand)', color: 'var(--text-inverse)' }}
               >
                 {loading ? (
                   <>

@@ -141,14 +141,14 @@ export default function AdminDashboard() {
           return (
             <div
               key={idx}
-              className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#12121a] to-[#1a1a25] p-6 backdrop-blur-md flex items-center justify-between group hover:border-indigo-500/20 transition-all"
+              className="glass-panel border border-white/10 rounded-xl p-6 flex items-center justify-between group hover:border-indigo-500/30 transition-all duration-300 shadow-card"
             >
               <div className="space-y-1">
                 <span className="text-xs font-semibold text-gray-400">{kpi.title}</span>
                 <span className="text-2xl font-extrabold text-white block">{kpi.value}</span>
                 <span className="text-[10px] text-gray-500 font-bold block uppercase tracking-wider">{kpi.description}</span>
               </div>
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border ${kpi.color}`}>
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center border ${kpi.color}`}>
                 <Icon className="w-5 h-5" />
               </div>
             </div>

@@ -34,7 +34,7 @@ export function LineChartComponent({ data }: { data: TrendRecord[] }) {
     return row;
   });
 
-  const colors = ['#ffffff', '#a1a1aa', '#71717a', '#3f3f46'];
+  const colors = ['#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#f59e0b'];
 
   return (
     <div className="w-full h-[360px]">
