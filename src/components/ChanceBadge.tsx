@@ -2,27 +2,16 @@ import React from 'react';
 
 export function ChanceBadge({ chance }: { chance: string }) {
   const map = {
-    safe:      { label: 'Safe',      dotColor: 'var(--safe)',      className: 'badge-safe' },
-    moderate:  { label: 'Moderate',  dotColor: 'var(--moderate)',  className: 'badge-moderate' },
-    ambitious: { label: 'Ambitious', dotColor: 'var(--ambitious)', className: 'badge-ambitious' },
-    longshot:  { label: 'Longshot',  dotColor: 'var(--ambitious)', className: 'badge-ambitious' },
+    safe:      { label: 'Safe',      dotClass: 'bg-safe',      className: 'badge-safe' },
+    moderate:  { label: 'Moderate',  dotClass: 'bg-moderate',  className: 'badge-moderate' },
+    ambitious: { label: 'Ambitious', dotClass: 'bg-ambitious', className: 'badge-ambitious' },
+    longshot:  { label: 'Longshot',  dotClass: 'bg-ambitious', className: 'badge-ambitious' },
   };
-  const config = map[chance as keyof typeof map] ?? { label: chance, dotColor: 'var(--text-muted)', className: '' };
+  const config = map[chance as keyof typeof map] ?? { label: chance, dotClass: 'bg-text-muted', className: '' };
   
   return (
-    <span className={config.className} style={{
-      padding: '3px 8px',
-      borderRadius: 'var(--radius-xs)',
-      fontFamily: 'var(--font-mono)',
-      fontSize: '0.625rem',
-      fontWeight: 600,
-      textTransform: 'uppercase',
-      letterSpacing: '0.04em',
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '5px',
-    }}>
-      <span style={{ width: 5, height: 5, borderRadius: '50%', background: config.dotColor }} />
+    <span className={`${config.className} px-2 py-0.5 rounded-xs font-mono text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1.25`}>
+      <span className={`w-1.25 h-1.25 rounded-full ${config.dotClass}`} />
       {config.label}
     </span>
   );

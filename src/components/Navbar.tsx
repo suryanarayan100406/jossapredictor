@@ -35,16 +35,11 @@ export function Navbar() {
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
             return (
               <Link key={item.href} href={item.href}
-                style={{ 
-                  padding: '6px 14px', 
-                  borderRadius: 'var(--radius-sm)', 
-                  fontSize: '0.85rem', 
-                  fontWeight: 500, 
-                  color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  background: isActive ? 'var(--bg-active)' : 'transparent',
-                  transition: 'all 0.15s' 
-                }}
-                className="hover:text-white transition-colors">
+                className={`px-3.5 py-1.5 rounded-sm text-[0.85rem] font-medium transition-all duration-150 ${
+                  isActive 
+                    ? 'text-text-primary bg-bg-active' 
+                    : 'text-text-secondary hover:text-white hover:bg-white/5'
+                }`}>
                 {item.label}
               </Link>
             );

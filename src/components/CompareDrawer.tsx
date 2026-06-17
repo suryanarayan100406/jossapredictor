@@ -20,16 +20,12 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
   };
 
   return (
-    <div style={{
-      background: 'var(--bg-overlay)',
-      borderTop: '1px solid var(--border-default)',
-      boxShadow: 'var(--shadow-elevated)',
-    }} className="fixed bottom-0 left-0 right-0 z-40 px-4 sm:px-6 py-4">
+    <div className="fixed bottom-0 left-0 right-0 z-40 px-4 sm:px-6 py-4 bg-bg-overlay border-t border-border-default shadow-elevated">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Left Side: Count & Actions */}
         <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
           <div className="flex items-center gap-2">
-            <div style={{ width: 30, height: 30, borderRadius: 'var(--radius-xs)', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)' }}>
+            <div className="w-[30px] h-[30px] rounded-xs bg-white/[0.03] border border-border-default flex items-center justify-center text-text-primary">
               <GitCompare className="w-3.5 h-3.5" />
             </div>
             <div>
@@ -53,12 +49,7 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
           {selectedItems.map(item => (
             <div
               key={item.id}
-              style={{
-                background: 'var(--bg-surface)',
-                border: '1px solid var(--border-default)',
-                borderRadius: 'var(--radius-xs)',
-              }}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs text-white max-w-[240px] shrink-0"
+              className="flex items-center gap-2 px-3 py-1.5 text-xs text-white max-w-[240px] shrink-0 bg-bg-surface border border-border-default rounded-xs"
             >
               <div className="truncate">
                 <span className="font-semibold block text-[10px] text-[var(--text-secondary)] uppercase tracking-wider font-mono">

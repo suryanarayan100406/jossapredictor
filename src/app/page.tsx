@@ -68,14 +68,14 @@ export default function HomePage() {
       <section className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full flex-grow z-10">
         {/* Left Column: Text + CTA */}
         <div className="flex-1 text-left space-y-6 z-10">
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '3px 8px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-xs)' }}>
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--text-secondary)', display: 'inline-block' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-secondary)', letterSpacing: '0.08em' }}>JOSAA INTELLIGENCE</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-border-default rounded-xs">
+            <span className="w-1.25 h-1.25 rounded-full bg-text-secondary inline-block" />
+            <span className="font-mono text-[0.65rem] font-medium text-text-secondary tracking-widest">JOSAA INTELLIGENCE</span>
           </div>
 
-          <h1 style={{ fontWeight: 500, fontSize: '3rem' }} className="sm:text-4xl lg:text-5xl font-display text-white leading-[1.1]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium font-display text-white leading-[1.1]">
             Know your exact<br />
-            <span style={{ color: 'var(--text-secondary)' }}>admission chances.</span>
+            <span className="text-text-secondary">admission chances.</span>
           </h1>
 
           <p className="text-sm text-[var(--text-secondary)] max-w-lg leading-relaxed">
@@ -94,25 +94,17 @@ export default function HomePage() {
 
         {/* Right Column: Terminal Visualization Card */}
         <div className="flex-1 w-full max-w-md lg:max-w-none flex justify-center items-center z-10 relative">
-          <div style={{
-            background: 'var(--bg-elevated)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-md)',
-            padding: '20px',
-            boxShadow: 'var(--shadow-card)',
-            maxWidth: 380,
-            width: '100%',
-          }}>
+          <div className="bg-bg-elevated border border-border-default rounded-md p-5 shadow-card max-w-[380px] w-full">
             {/* Header row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, paddingBottom: 14, borderBottom: '1px solid var(--border-default)' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-secondary)', fontWeight: 500, letterSpacing: '0.08em' }}>SYSTEM_READOUT</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>LIVE PREVIEW</span>
+            <div className="flex justify-between items-center mb-5 pb-3.5 border-b border-border-default">
+              <span className="font-mono text-[10px] text-text-secondary font-medium tracking-widest">SYSTEM_READOUT</span>
+              <span className="font-mono text-[10px] text-text-muted tracking-wider">LIVE PREVIEW</span>
             </div>
             
             {/* Rank + Type row */}
-            <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-              <div style={{ flex: 1, background: 'var(--bg-base)', borderRadius: 'var(--radius-xs)', padding: '10px 14px', border: '1px solid var(--border-default)' }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', marginBottom: 4, letterSpacing: '0.04em' }}>CRL RANK</div>
+            <div className="flex gap-3 mb-4">
+              <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-border-default">
+                <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">CRL RANK</div>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentPreview.rank}
@@ -120,14 +112,14 @@ export default function HomePage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 2 }}
                     transition={{ duration: 0.15 }}
-                    style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', fontWeight: 500, color: 'var(--text-primary)' }}
+                    className="font-mono text-xl font-medium text-text-primary"
                   >
                     {currentPreview.rank}
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <div style={{ flex: 1, background: 'var(--bg-base)', borderRadius: 'var(--radius-xs)', padding: '10px 14px', border: '1px solid var(--border-default)' }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', marginBottom: 4, letterSpacing: '0.04em' }}>EXAM</div>
+              <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-border-default">
+                <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">EXAM</div>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentPreview.type}
@@ -135,8 +127,7 @@ export default function HomePage() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15 }}
-                    style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-primary)' }}
-                    className="mt-1"
+                    className="font-mono text-[13px] font-medium text-text-primary mt-1"
                   >
                     JEE {currentPreview.type}
                   </motion.div>
@@ -145,9 +136,9 @@ export default function HomePage() {
             </div>
             
             {/* Institute block */}
-            <div style={{ background: 'var(--bg-base)', borderRadius: 'var(--radius-xs)', padding: '14px', border: '1px solid var(--border-default)', marginBottom: 14 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>MATCH</span>
+            <div className="bg-bg-base rounded-xs p-3.5 border border-border-default mb-3.5">
+              <div className="flex justify-between items-start mb-2">
+                <span className="font-mono text-[9px] text-text-muted tracking-wider">MATCH</span>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentPreview.chance}
@@ -160,7 +151,7 @@ export default function HomePage() {
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <div style={{ minHeight: '60px' }}>
+              <div className="min-h-[60px]">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentPreview.college}
@@ -169,10 +160,10 @@ export default function HomePage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <div style={{ fontWeight: 500, fontSize: '0.8rem', color: 'var(--text-primary)', marginBottom: 2, lineHeight: 1.3 }}>
+                    <div className="font-medium text-[13px] text-text-primary mb-0.5 leading-snug">
                       {currentPreview.college}
                     </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+                    <div className="text-[11px] text-text-secondary">
                       {currentPreview.branch}
                     </div>
                   </motion.div>
@@ -181,7 +172,7 @@ export default function HomePage() {
             </div>
             
             {/* Arc probability gauge */}
-            <div style={{ display: 'flex', justifyContent: 'center', margin: '8px 0' }}>
+            <div className="flex justify-center my-2">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentPreview.probability}
@@ -196,8 +187,8 @@ export default function HomePage() {
             </div>
             
             {/* Footer */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--border-default)' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)' }}>CLOSING_THRESHOLD</span>
+            <div className="flex justify-between mt-3.5 pt-3 border-t border-border-default">
+              <span className="font-mono text-[9px] text-text-muted">CLOSING_THRESHOLD</span>
               <AnimatePresence mode="wait">
                 <motion.span
                   key={currentPreview.closing}
@@ -205,7 +196,7 @@ export default function HomePage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.15 }}
-                  style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-primary)' }}
+                  className="font-mono text-xs font-medium text-text-primary"
                 >
                   {currentPreview.closing}
                 </motion.span>
@@ -216,7 +207,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats Strip */}
-      <section style={{ borderTop: '1px solid var(--border-default)', borderBottom: '1px solid var(--border-default)', background: 'var(--bg-surface)', padding: '14px 0' }} className="z-10 relative">
+      <section className="z-10 relative border-t border-b border-border-default bg-bg-surface py-3.5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between gap-6 flex-wrap">
           {[
             { value: '12,274+', label: 'Cutoff Records' },
@@ -226,8 +217,8 @@ export default function HomePage() {
             { value: 'IITs · NITs · IIITs · GFTIs', label: 'Institute Types' },
           ].map((stat, i) => (
             <div key={i} className="text-left">
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }}>{stat.value}</div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.04em', marginTop: 2 }}>{stat.label}</div>
+              <div className="font-display font-medium text-sm sm:text-base text-text-primary">{stat.value}</div>
+              <div className="font-mono text-[10px] text-text-muted tracking-wider mt-0.5">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -236,7 +227,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
         <div className="text-left mb-16 space-y-2">
-          <h2 style={{ fontWeight: 500 }} className="text-3xl font-display text-white">
+          <h2 className="text-3xl font-display text-white font-medium">
             Built for serious aspirants.
           </h2>
           <p className="text-[var(--text-secondary)] text-sm max-w-md">
@@ -282,11 +273,11 @@ export default function HomePage() {
               key={i}
               className="p-6 bg-[var(--bg-surface)] hover:bg-[rgba(255,255,255,0.01)] transition-colors border border-[var(--border-default)] -ml-[1px] -mt-[1px]"
             >
-              <div style={{ width: 32, height: 32, borderRadius: 'var(--radius-xs)', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <div className="w-8 h-8 rounded-xs bg-white/[0.03] border border-border-default flex items-center justify-center mb-4">
                 {feature.icon}
               </div>
               <h3 className="text-sm font-semibold text-white mb-2 font-display">{feature.title}</h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{feature.desc}</p>
+              <p className="text-xs text-text-secondary leading-relaxed">{feature.desc}</p>
             </div>
           ))}
         </div>
@@ -294,16 +285,11 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
-        <div style={{
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-md)',
-          padding: '36px 40px',
-        }} className="flex flex-col md:flex-row items-center gap-12 justify-between">
+        <div className="flex flex-col md:flex-row items-center gap-12 justify-between bg-bg-elevated border border-border-default rounded-md px-10 py-9">
           
           {/* Left Column: Heading + button */}
           <div className="space-y-4 max-w-md">
-            <h2 style={{ fontWeight: 500 }} className="text-2xl font-display text-white">
+            <h2 className="text-2xl font-display text-white font-medium">
               Your list is 60 seconds away.
             </h2>
             <p className="text-[var(--text-secondary)] text-xs leading-relaxed">
@@ -323,19 +309,10 @@ export default function HomePage() {
               { college: 'IIT Madras', branch: 'Electrical Engineering', chance: 'moderate' },
               { college: 'NIT Trichy', branch: 'Computer Science', chance: 'safe' },
             ].map((row, i) => (
-              <div key={i} style={{
-                background: 'var(--bg-base)',
-                border: '1px solid var(--border-default)',
-                borderRadius: 'var(--radius-xs)',
-                padding: '10px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 12,
-              }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-primary)' }}>{row.college}</div>
-                  <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{row.branch}</div>
+              <div key={i} className="flex items-center justify-between gap-3 bg-bg-base border border-border-default rounded-xs px-3.5 py-2.5">
+                <div className="flex-1 min-w-0">
+                  <div className="text-[13px] font-medium text-text-primary">{row.college}</div>
+                  <div className="text-[11px] text-text-secondary">{row.branch}</div>
                 </div>
                 <ChanceBadge chance={row.chance} />
               </div>
@@ -345,20 +322,20 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ borderTop: '1px solid var(--border-default)', background: 'var(--bg-surface)', padding: '24px 0' }} className="w-full z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem' }}>
+      <footer className="w-full z-10 border-t border-border-default bg-bg-surface py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-display font-semibold text-[0.85rem]">
               RankScope
             </span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-muted)' }}>v2026</span>
+            <span className="font-mono text-[10px] text-text-muted">v2026</span>
           </div>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-muted)', maxWidth: 420, textAlign: 'center', lineHeight: 1.6 }}>
+          <p className="font-mono text-[10px] text-text-muted max-w-[420px] text-center leading-relaxed">
             Predictions are computed from 2024–2025 JoSAA historical cutoff data and do not guarantee actual seat allotment.
           </p>
-          <div style={{ display: 'flex', gap: 16 }}>
+          <div className="flex gap-4">
             {['Predict', 'Trends', 'Compare'].map(l => (
-              <Link key={l} href={`/${l.toLowerCase()}`} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }} className="hover:text-white transition-colors">{l}</Link>
+              <Link key={l} href={`/${l.toLowerCase()}`} className="font-mono text-[11px] text-text-muted hover:text-white transition-colors">{l}</Link>
             ))}
           </div>
         </div>

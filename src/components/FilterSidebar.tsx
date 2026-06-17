@@ -61,17 +61,12 @@ export function FilterSidebar({
   };
 
   return (
-    <aside style={{
-      background: 'var(--bg-surface)',
-      border: '1px solid var(--border-default)',
-      borderRadius: 'var(--radius-md)',
-      padding: '20px',
-    }} className="w-full lg:w-80 shrink-0 space-y-6">
+    <aside className="w-full lg:w-80 shrink-0 space-y-6 bg-bg-surface border border-border-default rounded-md p-5">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-4">
         <div className="flex items-center gap-2 text-white">
           <SlidersHorizontal className="w-4 h-4 text-[var(--text-secondary)]" />
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="text-sm font-semibold">Filters</span>
+          <span className="font-display font-medium text-sm">Filters</span>
         </div>
         <button
           onClick={onReset}
@@ -84,7 +79,7 @@ export function FilterSidebar({
 
       {/* Smart Search */}
       <div className="space-y-2">
-        <label htmlFor="filter-search" style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="block uppercase">
+        <label htmlFor="filter-search" className="block uppercase font-display font-medium text-[0.75rem] text-text-muted tracking-wider">
           Search College
         </label>
         <div className="relative">
@@ -95,19 +90,14 @@ export function FilterSidebar({
             placeholder="Type college name..."
             value={filters.search}
             onChange={handleSearchChange}
-            style={{
-              background: 'var(--bg-elevated)',
-              border: '1px solid var(--border-default)',
-              color: 'var(--text-primary)',
-            }}
-            className="w-full text-xs rounded-[var(--radius-xs)] pl-10 pr-4 py-2 placeholder-[var(--text-muted)] focus:border-[var(--border-strong)] focus:outline-none transition-colors"
+            className="w-full text-xs bg-bg-elevated border border-border-default text-text-primary rounded-xs pl-10 pr-4 py-2 placeholder-text-muted focus:border-border-strong focus:outline-none transition-colors"
           />
         </div>
       </div>
 
       {/* Sorting */}
       <div className="space-y-2">
-        <label htmlFor="filter-sort" style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="block uppercase">
+        <label htmlFor="filter-sort" className="block uppercase font-display font-medium text-[0.75rem] text-text-muted tracking-wider">
           Sort Results By
         </label>
         <div className="grid grid-cols-2 gap-2">
@@ -115,12 +105,7 @@ export function FilterSidebar({
             id="filter-sort"
             value={filters.sortBy}
             onChange={e => onChange({ ...filters, sortBy: e.target.value as any })}
-            style={{
-              background: 'var(--bg-elevated)',
-              border: '1px solid var(--border-default)',
-              color: 'var(--text-primary)',
-            }}
-            className="col-span-2 text-xs rounded-[var(--radius-xs)] px-3 py-2 focus:border-[var(--border-strong)] focus:outline-none transition-colors cursor-pointer"
+            className="col-span-2 text-xs bg-bg-elevated border border-border-default text-text-primary rounded-xs px-3 py-2 focus:border-border-strong focus:outline-none transition-colors cursor-pointer"
           >
             <option value="probability" className="bg-[#18181b]">Probability Estimate</option>
             <option value="closingRank" className="bg-[#18181b]">Closing Cutoff Rank</option>
@@ -128,25 +113,21 @@ export function FilterSidebar({
           </select>
           <button
             onClick={() => onChange({ ...filters, sortOrder: 'asc' })}
-            style={{
-              background: filters.sortOrder === 'asc' ? 'rgba(255,255,255,0.06)' : 'var(--bg-elevated)',
-              border: filters.sortOrder === 'asc' ? '1px solid var(--border-strong)' : '1px solid var(--border-default)',
-              color: filters.sortOrder === 'asc' ? 'var(--text-primary)' : 'var(--text-secondary)',
-              borderRadius: 'var(--radius-xs)',
-            }}
-            className="px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer hover:border-[var(--border-strong)]"
+            className={`px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer border rounded-xs hover:border-border-strong ${
+              filters.sortOrder === 'asc'
+                ? 'bg-white/5 border-border-strong text-text-primary'
+                : 'bg-bg-elevated border-border-default text-text-secondary'
+            }`}
           >
             Ascending
           </button>
           <button
             onClick={() => onChange({ ...filters, sortOrder: 'desc' })}
-            style={{
-              background: filters.sortOrder === 'desc' ? 'rgba(255,255,255,0.06)' : 'var(--bg-elevated)',
-              border: filters.sortOrder === 'desc' ? '1px solid var(--border-strong)' : '1px solid var(--border-default)',
-              color: filters.sortOrder === 'desc' ? 'var(--text-primary)' : 'var(--text-secondary)',
-              borderRadius: 'var(--radius-xs)',
-            }}
-            className="px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer hover:border-[var(--border-strong)]"
+            className={`px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer border rounded-xs hover:border-border-strong ${
+              filters.sortOrder === 'desc'
+                ? 'bg-white/5 border-border-strong text-text-primary'
+                : 'bg-bg-elevated border-border-default text-text-secondary'
+            }`}
           >
             Descending
           </button>

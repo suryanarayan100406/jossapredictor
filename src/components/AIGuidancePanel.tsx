@@ -84,7 +84,7 @@ export function AIGuidancePanel({ guidance }: AIGuidancePanelProps) {
                   key={i}
                   className="text-xs text-[var(--text-secondary)] flex items-start gap-2 leading-relaxed"
                 >
-                  <span className="font-mono text-[10px] font-bold text-[var(--brand)] bg-[var(--brand-dim)] border border-[var(--brand)/20] w-4 h-4 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="font-mono text-[10px] font-bold text-brand bg-brand-dim border border-white/20 w-4 h-4 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
                     {i + 1}
                   </span>
                   <span dangerouslySetInnerHTML={{

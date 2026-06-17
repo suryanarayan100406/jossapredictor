@@ -360,7 +360,7 @@ function ResultsContent() {
   const longshotsColleges = filteredResults.filter(r => r.chance === 'longshot');
 
   return (
-    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] relative pb-32">
+    <main className="min-h-screen bg-bg-base text-text-primary relative pb-32">
       <div className="premium-grid" />
       {/* Navbar Branding */}
       <Navbar />
@@ -369,73 +369,67 @@ function ResultsContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 relative pt-10">
         
         {/* Command-center style header */}
-        <header style={{
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-md)',
-          padding: '24px',
-          marginBottom: '24px',
-        }} className="w-full">
+        <header className="w-full bg-bg-elevated border border-border-default rounded-md p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between gap-6">
             {/* Left Block: Profile Details */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-[10px] font-mono text-[var(--text-muted)] tracking-wider">
+              <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted tracking-wider">
                 <span>PROFILE_READOUT</span>
               </div>
               
               <div className="flex flex-wrap items-baseline gap-x-4">
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2.2rem', fontWeight: 500, color: 'var(--data-highlight)', lineHeight: 1 }}>
+                <span className="font-mono text-3xl sm:text-4xl font-medium text-text-primary leading-none">
                   {rank.toLocaleString('en-IN')}
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                <span className="font-mono text-[11px] text-text-secondary">
                   {rankType === 'advanced' ? 'JEE Advanced' : 'JEE Main'} CRL
                 </span>
               </div>
               
-              <div className="flex flex-wrap gap-2 text-[10px] font-mono text-[var(--text-secondary)]">
-                <span style={{ background: 'var(--bg-base)', border: '1px solid var(--border-default)', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}>
+              <div className="flex flex-wrap gap-2 text-[10px] font-mono text-text-secondary">
+                <span className="bg-bg-base border border-border-default px-2 py-0.75 rounded-xs">
                   {category} {pwdStatus ? '(PwD)' : ''}
                 </span>
-                <span style={{ background: 'var(--bg-base)', border: '1px solid var(--border-default)', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}>
+                <span className="bg-bg-base border border-border-default px-2 py-0.75 rounded-xs">
                   {gender}
                 </span>
-                <span style={{ background: 'var(--bg-base)', border: '1px solid var(--border-default)', padding: '3px 8px', borderRadius: 'var(--radius-xs)' }}>
+                <span className="bg-bg-base border border-border-default px-2 py-0.75 rounded-xs">
                   {homeState} (HS)
                 </span>
               </div>
             </div>
             
             {/* Middle Block: Count & Tier Breakdown */}
-            <div className="flex flex-col justify-center space-y-4 border-t md:border-t-0 md:border-l border-[var(--border-default)] pt-6 md:pt-0 md:pl-8">
-              <div className="flex items-center gap-2 text-[10px] font-mono text-[var(--text-muted)] tracking-wider">
+            <div className="flex flex-col justify-center space-y-4 border-t md:border-t-0 md:border-l border-border-default pt-6 md:pt-0 md:pl-8">
+              <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted tracking-wider">
                 <span>ADMISSION_MATCHES</span>
               </div>
               
               <div className="flex items-baseline gap-2">
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2rem', fontWeight: 500, color: 'white', lineHeight: 1 }}>
+                <span className="font-mono text-3xl font-medium text-white leading-none">
                   {filteredResults.length}
                 </span>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>programs matched</span>
+                <span className="text-xs text-text-secondary">programs matched</span>
               </div>
               
               <div className="flex flex-wrap gap-3 text-[10px] font-mono">
                 <div className="flex items-center gap-1.5">
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--safe)' }} />
-                  <span className="text-[var(--text-secondary)]">Safe: {safeColleges.length}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-safe" />
+                  <span className="text-text-secondary">Safe: {safeColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--moderate)' }} />
-                  <span className="text-[var(--text-secondary)]">Moderate: {moderateColleges.length}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-moderate" />
+                  <span className="text-text-secondary">Moderate: {moderateColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ambitious)' }} />
-                  <span className="text-[var(--text-secondary)]">Ambitious: {ambitiousColleges.length}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-ambitious" />
+                  <span className="text-text-secondary">Ambitious: {ambitiousColleges.length}</span>
                 </div>
               </div>
             </div>
 
             {/* Right Block: Actions */}
-            <div className="flex flex-col sm:flex-row md:flex-col items-stretch justify-center gap-2 border-t md:border-t-0 md:border-l border-[var(--border-default)] pt-6 md:pt-0 md:pl-8">
+            <div className="flex flex-col sm:flex-row md:flex-col items-stretch justify-center gap-2 border-t md:border-t-0 md:border-l border-border-default pt-6 md:pt-0 md:pl-8">
               <button
                 onClick={handleShare}
                 className={`btn-ghost text-xs justify-center ${shareCopied ? 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5' : ''}`}
@@ -454,7 +448,6 @@ function ResultsContent() {
               <button
                 onClick={() => router.push('/predict')}
                 className="btn-brand text-xs justify-center"
-                style={{ padding: '8px 16px' }}
               >
                 <Edit2 className="w-3.5 h-3.5" />
                 <span>Modify Details</span>
@@ -529,14 +522,11 @@ function ResultsContent() {
                     <div className="flex justify-center pt-2">
                       <button
                         onClick={() => setShowClassic(!showClassic)}
-                        style={{
-                          background: showClassic ? 'var(--bg-active)' : 'var(--bg-elevated)',
-                          border: '1px solid var(--border-default)',
-                          color: 'var(--text-primary)',
-                          borderRadius: 'var(--radius-xs)',
-                          cursor: 'pointer',
-                        }}
-                        className="text-xs py-2.5 px-5 hover:border-[var(--border-strong)] transition-all font-semibold font-display"
+                        className={`text-xs py-2.5 px-5 rounded-xs border transition-all font-semibold font-display cursor-pointer hover:border-border-strong ${
+                          showClassic
+                            ? 'bg-bg-active border-border-strong text-text-primary'
+                            : 'bg-bg-elevated border-border-default text-text-primary'
+                        }`}
                       >
                         {showClassic ? 'Hide All Seat Options' : `Explore All ${results.length} Matching Seats`}
                       </button>
@@ -672,11 +662,11 @@ function ResultsContent() {
                       {/* Safe Colleges */}
                       {safeColleges.length > 0 && (
                         <div className="space-y-4">
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--safe)' }} />
-                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Safe Admits</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({safeColleges.length})</span>
-                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-safe" />
+                            <span className="font-display font-medium text-[0.85rem] text-text-primary">Safe Admits</span>
+                            <span className="font-mono text-[0.65rem] text-text-muted">({safeColleges.length})</span>
+                            <div className="flex-1 h-px bg-border-default" />
                           </div>
                           <div className="grid grid-cols-1 gap-4">
                             {safeColleges.map(item => (
@@ -694,11 +684,11 @@ function ResultsContent() {
                       {/* Moderate Colleges */}
                       {moderateColleges.length > 0 && (
                         <div className="space-y-4">
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--moderate)' }} />
-                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Moderate Chance</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({moderateColleges.length})</span>
-                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-moderate" />
+                            <span className="font-display font-medium text-[0.85rem] text-text-primary">Moderate Chance</span>
+                            <span className="font-mono text-[0.65rem] text-text-muted">({moderateColleges.length})</span>
+                            <div className="flex-1 h-px bg-border-default" />
                           </div>
                           <div className="grid grid-cols-1 gap-4">
                             {moderateColleges.map(item => (
@@ -716,11 +706,11 @@ function ResultsContent() {
                       {/* Ambitious Colleges */}
                       {ambitiousColleges.length > 0 && (
                         <div className="space-y-4">
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ambitious)' }} />
-                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Ambitious Targets</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({ambitiousColleges.length})</span>
-                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-ambitious" />
+                            <span className="font-display font-medium text-[0.85rem] text-text-primary">Ambitious Targets</span>
+                            <span className="font-mono text-[0.65rem] text-text-muted">({ambitiousColleges.length})</span>
+                            <div className="flex-1 h-px bg-border-default" />
                           </div>
                           <div className="grid grid-cols-1 gap-4">
                             {ambitiousColleges.map(item => (
@@ -738,11 +728,11 @@ function ResultsContent() {
                       {/* Longshot Colleges */}
                       {longshotsColleges.length > 0 && (
                         <div className="space-y-4">
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--longshot)' }} />
-                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Borderline / Longshots</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({longshotsColleges.length})</span>
-                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          <div className="flex items-center gap-2.5 mb-2.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-ambitious" />
+                            <span className="font-display font-medium text-[0.85rem] text-text-primary">Borderline / Longshots</span>
+                            <span className="font-mono text-[0.65rem] text-text-muted">({longshotsColleges.length})</span>
+                            <div className="flex-1 h-px bg-border-default" />
                           </div>
                           <div className="grid grid-cols-1 gap-4">
                             {longshotsColleges.map(item => (

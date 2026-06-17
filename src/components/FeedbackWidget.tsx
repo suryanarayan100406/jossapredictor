@@ -52,13 +52,7 @@ export function FeedbackWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            style={{
-              background: 'var(--bg-overlay)',
-              border: '1px solid var(--border-strong)',
-              borderRadius: 'var(--radius-md)',
-              boxShadow: 'var(--shadow-elevated)',
-            }}
-            className="mb-4 w-80 sm:w-96 p-5"
+            className="mb-4 w-80 sm:w-96 p-5 bg-bg-overlay border border-border-strong rounded-md shadow-elevated"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -91,13 +85,7 @@ export function FeedbackWidget() {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    style={{
-                      background: 'var(--bg-elevated)',
-                      border: '1px solid var(--border-default)',
-                      color: 'var(--text-primary)',
-                      borderRadius: 'var(--radius-xs)',
-                    }}
-                    className="w-full text-xs px-3 py-2 placeholder-[var(--text-muted)] focus:border-[var(--border-strong)] focus:outline-none transition-colors"
+                    className="w-full text-xs px-3 py-2 bg-bg-elevated border border-border-default text-text-primary rounded-xs placeholder-text-muted focus:border-border-strong focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -112,14 +100,7 @@ export function FeedbackWidget() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
-                    style={{
-                      background: 'var(--bg-elevated)',
-                      border: '1px solid var(--border-default)',
-                      color: 'var(--text-primary)',
-                      borderRadius: 'var(--radius-xs)',
-                      fontFamily: 'var(--font-mono)',
-                    }}
-                    className="w-full text-xs px-3 py-2 placeholder-[var(--text-muted)] focus:border-[var(--border-strong)] focus:outline-none transition-colors resize-none"
+                    className="w-full text-xs px-3 py-2 bg-bg-elevated border border-border-default text-text-primary rounded-xs font-mono placeholder-text-muted focus:border-border-strong focus:outline-none transition-colors resize-none"
                   />
                 </div>
 
@@ -147,13 +128,7 @@ export function FeedbackWidget() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-default)',
-          color: 'var(--text-primary)',
-          boxShadow: 'var(--shadow-card)',
-        }}
-        className="flex items-center justify-center w-10 h-10 rounded-full hover:border-[var(--border-strong)] hover:text-white transition-colors cursor-pointer"
+        className="flex items-center justify-center w-10 h-10 rounded-full bg-bg-elevated border border-border-default text-text-primary shadow-card hover:border-border-strong hover:text-white transition-colors cursor-pointer"
       >
         {isOpen ? <X className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
       </button>

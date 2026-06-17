@@ -242,23 +242,17 @@ export default function PredictPage() {
                             key={rt.value}
                             type="button"
                             onClick={() => updateData('rankType', rt.value)}
-                            style={{
-                              border: isSelected ? '1px solid var(--brand)' : '1px solid var(--border-default)',
-                              background: isSelected ? 'var(--brand-dim)' : 'var(--bg-base)',
-                              color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
-                              padding: '14px',
-                              borderRadius: 'var(--radius-sm)',
-                              textAlign: 'left',
-                              cursor: 'pointer',
-                              transition: 'all 0.15s',
-                            }}
-                            className="hover:border-[var(--border-strong)] text-left"
+                            className={`p-3.5 rounded-sm text-left transition-all duration-150 border cursor-pointer hover:border-border-strong text-left ${
+                              isSelected
+                                ? 'border-brand bg-brand-dim text-text-primary'
+                                : 'border-border-default bg-bg-base text-text-secondary'
+                            }`}
                           >
-                            <div style={{ color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)', marginBottom: 8 }}>
+                            <div className={`mb-2 ${isSelected ? 'text-text-primary' : 'text-text-muted'}`}>
                               {rt.icon}
                             </div>
                             <div className="font-semibold text-xs font-display text-white">{rt.label}</div>
-                            <div className="text-[10px] text-[var(--text-muted)] mt-1">{rt.desc}</div>
+                            <div className="text-[10px] text-text-muted mt-1">{rt.desc}</div>
                           </button>
                         );
                       })}
@@ -310,18 +304,11 @@ export default function PredictPage() {
                               key={c}
                               type="button"
                               onClick={() => updateData('category', c)}
-                              style={{
-                                border: isSelected ? '1px solid var(--brand)' : '1px solid var(--border-default)',
-                                background: isSelected ? 'var(--brand-dim)' : 'var(--bg-base)',
-                                color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                padding: '10px',
-                                borderRadius: 'var(--radius-xs)',
-                                fontSize: '0.8rem',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                transition: 'all 0.15s',
-                              }}
-                              className="text-center hover:border-[var(--border-strong)]"
+                              className={`p-2.5 rounded-xs text-center font-medium text-[0.8rem] transition-all duration-150 border cursor-pointer hover:border-border-strong ${
+                                isSelected
+                                  ? 'border-brand bg-brand-dim text-text-primary'
+                                  : 'border-border-default bg-bg-base text-text-secondary'
+                              }`}
                             >
                               {c}
                             </button>
@@ -335,12 +322,12 @@ export default function PredictPage() {
                       <button
                         type="button"
                         onClick={() => updateData('pwdStatus', !data.pwdStatus)}
-                        className={`w-10 h-5 rounded-full transition-all relative ${
-                          data.pwdStatus ? 'bg-[var(--text-primary)]' : 'bg-[var(--border-default)]'
+                        className={`w-10 h-5 rounded-full transition-all duration-150 relative cursor-pointer ${
+                          data.pwdStatus ? 'bg-text-primary' : 'bg-border-default'
                         }`}
                       >
-                        <div style={{ background: data.pwdStatus ? 'var(--bg-base)' : 'var(--text-secondary)' }} className={`w-4 h-4 rounded-full absolute top-0.5 transition-all ${
-                          data.pwdStatus ? 'left-5' : 'left-0.5'
+                        <div className={`w-4 h-4 rounded-full absolute top-0.5 transition-all duration-150 ${
+                          data.pwdStatus ? 'bg-bg-base left-5' : 'bg-text-secondary left-0.5'
                         }`} />
                       </button>
                       <span className="text-xs text-[var(--text-secondary)] font-mono">Person with Disability (PwD)</span>
@@ -360,18 +347,11 @@ export default function PredictPage() {
                               key={g.value}
                               type="button"
                               onClick={() => updateData('gender', g.value)}
-                              style={{
-                                border: isSelected ? '1px solid var(--brand)' : '1px solid var(--border-default)',
-                                background: isSelected ? 'var(--brand-dim)' : 'var(--bg-base)',
-                                color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                padding: '10px',
-                                borderRadius: 'var(--radius-xs)',
-                                fontSize: '0.8rem',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                transition: 'all 0.15s',
-                              }}
-                              className="text-center hover:border-[var(--border-strong)]"
+                              className={`p-2.5 rounded-xs text-center font-medium text-[0.8rem] transition-all duration-150 border cursor-pointer hover:border-border-strong ${
+                                isSelected
+                                  ? 'border-brand bg-brand-dim text-text-primary'
+                                  : 'border-border-default bg-bg-base text-text-secondary'
+                              }`}
                             >
                               {g.label}
                             </button>
@@ -395,20 +375,14 @@ export default function PredictPage() {
                       <select
                         value={data.homeState}
                         onChange={e => updateData('homeState', e.target.value)}
-                        style={{
-                          background: 'var(--bg-base)',
-                          border: '1px solid var(--border-default)',
-                          color: 'var(--text-primary)',
-                          borderRadius: 'var(--radius-xs)',
-                        }}
-                        className="w-full px-4 py-3 focus:outline-none focus:border-[var(--border-strong)] appearance-none cursor-pointer text-sm"
+                        className="w-full px-4 py-3 bg-bg-base border border-border-default text-text-primary rounded-xs focus:outline-none focus:border-border-strong appearance-none cursor-pointer text-sm"
                       >
                         <option value="" className="bg-[#09090b]">Select your state...</option>
                         {INDIAN_STATES.map(state => (
                           <option key={state} value={state} className="bg-[#09090b]">{state}</option>
                         ))}
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-secondary)] pointer-events-none" />
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary pointer-events-none" />
                     </div>
 
                     {data.homeState && (
@@ -502,13 +476,11 @@ export default function PredictPage() {
                                     : [...current, type]
                                 );
                               }}
-                              style={{
-                                background: isSelected ? 'var(--brand-dim)' : 'var(--bg-base)',
-                                border: isSelected ? '1px solid var(--brand)' : '1px solid var(--border-default)',
-                                color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                borderRadius: 'var(--radius-xs)',
-                              }}
-                              className="px-4 py-2 text-xs font-semibold transition-all hover:border-[var(--border-strong)] cursor-pointer"
+                              className={`px-4 py-2 text-xs font-semibold transition-all border rounded-xs hover:border-border-strong cursor-pointer ${
+                                isSelected
+                                  ? 'border-brand bg-brand-dim text-text-primary'
+                                  : 'border-border-default bg-bg-base text-text-secondary'
+                              }`}
                             >
                               {type}
                             </button>
@@ -527,12 +499,7 @@ export default function PredictPage() {
                         value={branchSearch}
                         onChange={e => setBranchSearch(e.target.value)}
                         placeholder="Search branches..."
-                        style={{
-                          background: 'var(--bg-base)',
-                          border: '1px solid var(--border-default)',
-                          color: 'var(--text-primary)',
-                        }}
-                        className="w-full px-4 py-2 rounded focus:outline-none focus:border-[var(--border-strong)] text-xs mb-2"
+                        className="w-full px-4 py-2 bg-bg-base border border-border-default text-text-primary rounded focus:outline-none focus:border-border-strong text-xs mb-2"
                       />
                       <div className="max-h-40 overflow-y-auto space-y-1 rounded border border-[var(--border-default)] p-2 bg-[var(--bg-base)]">
                         {filteredBranches.length === 0 && availableBranches.length === 0 && (
@@ -552,11 +519,11 @@ export default function PredictPage() {
                                     : [...current, branch]
                                 );
                               }}
-                              style={{
-                                background: isSelected ? 'rgba(255,255,255,0.04)' : 'transparent',
-                                color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
-                              }}
-                              className="w-full text-left px-3 py-1.5 rounded text-xs transition-all hover:bg-white/5 cursor-pointer"
+                              className={`w-full text-left px-3 py-1.5 rounded text-xs transition-all hover:bg-white/5 cursor-pointer ${
+                                isSelected
+                                  ? 'bg-white/5 text-text-primary'
+                                  : 'bg-transparent text-text-secondary'
+                              }`}
                             >
                               {isSelected && <Check className="w-3 h-3 inline mr-2 text-[var(--text-primary)]" />}
                               {branch}

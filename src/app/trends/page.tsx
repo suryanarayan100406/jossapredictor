@@ -102,9 +102,9 @@ function TrendsContent() {
           {branch}
         </p>
         <div className="flex flex-wrap gap-2 mt-4 text-xs font-medium text-[var(--text-secondary)] font-mono">
-          <span style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', padding: '4px 10px', borderRadius: 'var(--radius-xs)' }}>Quota: {quota}</span>
-          <span style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', padding: '4px 10px', borderRadius: 'var(--radius-xs)' }}>Category: {category}</span>
-          <span style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', padding: '4px 10px', borderRadius: 'var(--radius-xs)' }}>Gender: {gender}</span>
+          <span className="bg-bg-elevated border border-border-default px-2.5 py-1 rounded-xs">Quota: {quota}</span>
+          <span className="bg-bg-elevated border border-border-default px-2.5 py-1 rounded-xs">Category: {category}</span>
+          <span className="bg-bg-elevated border border-border-default px-2.5 py-1 rounded-xs">Gender: {gender}</span>
         </div>
       </header>
 
@@ -146,12 +146,7 @@ function TrendsContent() {
             
             {/* Chart Column */}
             <div className="lg:col-span-2 space-y-6">
-              <div style={{
-                background: 'var(--bg-elevated)',
-                border: '1px solid var(--border-default)',
-                borderRadius: 'var(--radius-md)',
-                padding: '24px',
-              }}>
+              <div className="bg-bg-elevated border border-border-default rounded-md p-6">
                 <h3 className="font-semibold text-white text-base mb-6 font-display">Closing Rank YoY Comparison</h3>
                 <LineChartComponent data={trends} />
               </div>
@@ -165,12 +160,7 @@ function TrendsContent() {
 
             {/* Stats Summary Column */}
             <div className="space-y-6">
-              <div style={{
-                background: 'var(--bg-elevated)',
-                border: '1px solid var(--border-default)',
-                borderRadius: 'var(--radius-md)',
-                padding: '24px',
-              }} className="space-y-6">
+              <div className="bg-bg-elevated border border-border-default rounded-md p-6 space-y-6">
                 <h3 className="font-semibold text-white text-base font-display">Trend Summary</h3>
                 
                 <div className="divide-y divide-[var(--border-default)] text-sm">
@@ -181,7 +171,7 @@ function TrendsContent() {
                         <span className="text-xs text-[var(--text-secondary)] block font-mono">Round {t.round}</span>
                       </div>
                       <div className="text-right">
-                        <span style={{ fontFamily: 'var(--font-mono)' }} className="font-medium text-white block">{t.closingRank.toLocaleString('en-IN')}</span>
+                        <span className="font-mono font-medium text-white block">{t.closingRank.toLocaleString('en-IN')}</span>
                         <span className="text-[10px] text-[var(--text-secondary)] block font-mono">Closing Rank</span>
                       </div>
                     </div>

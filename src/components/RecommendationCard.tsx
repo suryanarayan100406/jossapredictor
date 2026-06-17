@@ -136,8 +136,8 @@ export function RecommendationCard({
               onClick={() => onCompareToggle(recommendation)}
               className={`p-1.5 rounded border transition-all ${
                 isCompared
-                  ? 'border-[var(--brand)] bg-[var(--brand-dim)] text-[var(--brand)]'
-                  : 'border-[var(--border-default)] hover:border-[var(--border-strong)] text-[var(--text-secondary)]'
+                  ? 'border-brand bg-brand-dim text-brand'
+                  : 'border-border-default hover:border-border-strong text-text-secondary'
               }`}
               title="Compare College"
             >
@@ -164,7 +164,7 @@ export function RecommendationCard({
               <div className="space-y-2">
                 {[
                   { label: '🎫 Admission probability', value: scoreBreakdown.admission, max: 30, color: 'bg-green-500' },
-                  { label: '⚙️ Preference alignment', value: scoreBreakdown.preference, max: 50, color: 'bg-[var(--brand)]' },
+                  { label: '⚙️ Preference alignment', value: scoreBreakdown.preference, max: 50, color: 'bg-brand' },
                   { label: '🏛️ College Prestige', value: scoreBreakdown.prestige, max: 20, color: 'bg-blue-500' },
                 ].map(bar => (
                   <div key={bar.label} className="space-y-1">

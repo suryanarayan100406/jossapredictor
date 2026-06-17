@@ -138,29 +138,24 @@ function CompareContent() {
             </button>
           </div>
         ) : (
-          <div style={{
-            background: 'var(--bg-elevated)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-          }} className="overflow-x-auto">
-            <div className="min-w-[800px] divide-y divide-[var(--border-default)]">
+          <div className="overflow-x-auto bg-bg-elevated border border-border-default rounded-md">
+            <div className="min-w-[800px] divide-y divide-border-default">
               
               {/* Row 1: Cards with Delete option */}
-              <div style={{ background: 'rgba(255,255,255,0.015)' }} className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 flex items-center text-white border-r border-[var(--border-default)] text-xs uppercase tracking-wider">
+              <div className="grid grid-cols-5 bg-white/[0.015]">
+                <div className="p-5 flex items-center text-white border-r border-border-default text-xs uppercase tracking-wider font-display font-medium">
                   Colleges
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 relative border-r border-[var(--border-default)] space-y-2.5">
+                  <div key={record.id} className="p-5 relative border-r border-border-default space-y-2.5">
                     <button
                       onClick={() => handleRemove(record.id)}
-                      className="absolute top-4 right-4 text-gray-500 hover:text-white p-1 hover:bg-white/5 rounded-[var(--radius-xs)] transition-colors cursor-pointer"
+                      className="absolute top-4 right-4 text-gray-500 hover:text-white p-1 hover:bg-white/5 rounded-xs transition-colors cursor-pointer"
                       title="Remove from comparison"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', color: 'var(--text-secondary)' }} className="px-2 py-0.5 rounded-[var(--radius-xs)] uppercase">
+                    <span className="px-2 py-0.5 rounded-xs uppercase font-mono text-[10px] font-medium bg-white/[0.03] border border-border-default text-text-secondary">
                       {record.instituteType}
                     </span>
                     <h3 className="font-medium text-white text-xs leading-snug pr-6 font-display">
@@ -170,7 +165,7 @@ function CompareContent() {
                 ))}
                 {/* Empty columns if comparing less than 4 */}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-header-${idx}`} className="p-5 border-r border-[var(--border-default)] text-[var(--text-muted)] italic text-xs flex items-center justify-center font-mono">
+                  <div key={`empty-header-${idx}`} className="p-5 border-r border-border-default text-text-muted italic text-xs flex items-center justify-center font-mono">
                     Add another college
                   </div>
                 ))}
@@ -178,66 +173,66 @@ function CompareContent() {
 
               {/* Row 2: Branch */}
               <div className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 text-[var(--text-secondary)] text-xs uppercase tracking-wider border-r border-[var(--border-default)] bg-white/[0.01]">
+                <div className="p-5 text-text-secondary text-xs uppercase tracking-wider border-r border-border-default bg-white/[0.01] font-display font-medium">
                   Branch / Academic Program
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 text-xs font-medium text-white border-r border-[var(--border-default)] leading-relaxed">
+                  <div key={record.id} className="p-5 text-xs font-medium text-white border-r border-border-default leading-relaxed">
                     {record.branch}
                   </div>
                 ))}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-branch-${idx}`} className="p-5 border-r border-[var(--border-default)]" />
+                  <div key={`empty-branch-${idx}`} className="p-5 border-r border-border-default" />
                 ))}
               </div>
 
               {/* Row 3: Quota */}
               <div className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 text-[var(--text-secondary)] text-xs uppercase tracking-wider border-r border-[var(--border-default)] bg-white/[0.01]">
+                <div className="p-5 text-text-secondary text-xs uppercase tracking-wider border-r border-border-default bg-white/[0.01] font-display font-medium">
                   Counselling Quota
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 text-xs text-[var(--text-secondary)] font-medium border-r border-[var(--border-default)]">
+                  <div key={record.id} className="p-5 text-xs text-text-secondary font-medium border-r border-border-default">
                     {record.quota} Quota
                   </div>
                 ))}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-quota-${idx}`} className="p-5 border-r border-[var(--border-default)]" />
+                  <div key={`empty-quota-${idx}`} className="p-5 border-r border-border-default" />
                 ))}
               </div>
 
               {/* Row 4: Cutoffs */}
               <div className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 text-[var(--text-secondary)] text-xs uppercase tracking-wider border-r border-[var(--border-default)] bg-white/[0.01]">
+                <div className="p-5 text-text-secondary text-xs uppercase tracking-wider border-r border-border-default bg-white/[0.01] font-display font-medium">
                   Cutoffs (CRL)
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 border-r border-[var(--border-default)] space-y-2">
+                  <div key={record.id} className="p-5 border-r border-border-default space-y-2">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-[var(--text-secondary)] font-medium font-mono">Opening:</span>
-                      <span style={{ fontFamily: 'var(--font-mono)' }} className="font-medium text-gray-300">{record.openingRank.toLocaleString('en-IN')}</span>
+                      <span className="text-text-secondary font-medium font-mono">Opening:</span>
+                      <span className="font-mono font-medium text-gray-300">{record.openingRank.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-[var(--text-secondary)] font-medium font-mono">Closing:</span>
-                      <span style={{ fontFamily: 'var(--font-mono)' }} className="font-semibold text-white">{record.closingRank.toLocaleString('en-IN')}</span>
+                      <span className="text-text-secondary font-medium font-mono">Closing:</span>
+                      <span className="font-mono font-semibold text-white">{record.closingRank.toLocaleString('en-IN')}</span>
                     </div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem' }} className="text-[var(--text-secondary)] bg-white/5 px-2 py-0.5 rounded-[var(--radius-xs)] text-center font-medium">
+                    <div className="font-mono text-[10px] text-text-secondary bg-white/5 px-2 py-0.5 rounded-xs text-center font-medium">
                       Round {record.round} | {record.year}
                     </div>
                   </div>
                 ))}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-cutoffs-${idx}`} className="p-5 border-r border-[var(--border-default)]" />
+                  <div key={`empty-cutoffs-${idx}`} className="p-5 border-r border-border-default" />
                 ))}
               </div>
 
               {/* Row 5: Location */}
               <div className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 text-[var(--text-secondary)] text-xs uppercase tracking-wider border-r border-[var(--border-default)] bg-white/[0.01]">
+                <div className="p-5 text-text-secondary text-xs uppercase tracking-wider border-r border-border-default bg-white/[0.01] font-display font-medium">
                   Location
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 text-xs text-[var(--text-secondary)] border-r border-[var(--border-default)] flex items-center gap-1.5 font-medium">
+                  <div key={record.id} className="p-5 text-xs text-text-secondary border-r border-border-default flex items-center gap-1.5 font-medium">
                     <MapPin className="w-3.5 h-3.5 text-gray-500 shrink-0" />
                     <span>
                       {record.city ? `${record.city}, ` : ''}
@@ -246,37 +241,37 @@ function CompareContent() {
                   </div>
                 ))}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-loc-${idx}`} className="p-5 border-r border-[var(--border-default)]" />
+                  <div key={`empty-loc-${idx}`} className="p-5 border-r border-border-default" />
                 ))}
               </div>
 
               {/* Row 6: NIRF Rank */}
               <div className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 text-[var(--text-secondary)] text-xs uppercase tracking-wider border-r border-[var(--border-default)] bg-white/[0.01]">
+                <div className="p-5 text-text-secondary text-xs uppercase tracking-wider border-r border-border-default bg-white/[0.01] font-display font-medium">
                   NIRF Rank
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 text-xs border-r border-[var(--border-default)] flex items-center gap-1.5 font-medium">
-                    <Trophy className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
+                  <div key={record.id} className="p-5 text-xs border-r border-border-default flex items-center gap-1.5 font-medium">
+                    <Trophy className="w-3.5 h-3.5 text-text-secondary" />
                     {record.nirfRank ? (
                       <span className="text-white">#{record.nirfRank} in Engineering</span>
                     ) : (
-                      <span className="text-[var(--text-muted)] italic font-normal">Not seeded</span>
+                      <span className="text-text-muted italic font-normal">Not seeded</span>
                     )}
                   </div>
                 ))}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-nirf-${idx}`} className="p-5 border-r border-[var(--border-default)]" />
+                  <div key={`empty-nirf-${idx}`} className="p-5 border-r border-border-default" />
                 ))}
               </div>
 
               {/* Row 7: Website */}
               <div className="grid grid-cols-5">
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }} className="p-5 text-[var(--text-secondary)] text-xs uppercase tracking-wider border-r border-[var(--border-default)] bg-white/[0.01]">
+                <div className="p-5 text-text-secondary text-xs uppercase tracking-wider border-r border-border-default bg-white/[0.01] font-display font-medium">
                   Official Links
                 </div>
                 {records.map(record => (
-                  <div key={record.id} className="p-5 border-r border-[var(--border-default)]">
+                  <div key={record.id} className="p-5 border-r border-border-default">
                     {record.website ? (
                       <a
                         href={record.website.startsWith('http') ? record.website : `https://${record.website}`}
@@ -288,12 +283,12 @@ function CompareContent() {
                         <span>Visit Website</span>
                       </a>
                     ) : (
-                      <span className="text-xs text-[var(--text-muted)] italic">No website</span>
+                      <span className="text-xs text-text-muted italic">No website</span>
                     )}
                   </div>
                 ))}
                 {Array.from({ length: 4 - records.length }).map((_, idx) => (
-                  <div key={`empty-web-${idx}`} className="p-5 border-r border-[var(--border-default)]" />
+                  <div key={`empty-web-${idx}`} className="p-5 border-r border-border-default" />
                 ))}
               </div>
 
