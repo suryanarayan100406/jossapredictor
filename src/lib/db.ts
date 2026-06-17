@@ -17,6 +17,13 @@ if (isSqlite) {
     url: databaseUrl,
   });
   prismaClientOptions.adapter = adapter;
+} else {
+  const { Pool } = require('pg');
+  const { PrismaPg } = require('@prisma/adapter-pg');
+  const pool = new Pool({
+    connectionString: databaseUrl,
+  });
+  prismaClientOptions.adapter = new PrismaPg(pool);
 }
 
 export const prisma =
