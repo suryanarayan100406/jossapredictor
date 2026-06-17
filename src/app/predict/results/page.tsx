@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, Download, Share2, LayoutGrid, Table2,
-  Edit2, Info, AlertTriangle, Check, SlidersHorizontal, X, Loader2
+  Edit2, Info, AlertTriangle, Check, SlidersHorizontal, X, Loader2, Compass
 } from 'lucide-react';
 import { PredictionResult, FilterState } from '@/types';
 import { ChanceCard } from '@/components/ChanceCard';
@@ -14,6 +14,8 @@ import { FilterSidebar } from '@/components/FilterSidebar';
 import { FeedbackWidget } from '@/components/FeedbackWidget';
 import { Navbar } from '@/components/Navbar';
 import { jsPDF } from 'jspdf';
+import { RecommendationCard } from '@/components/RecommendationCard';
+import { AIGuidancePanel } from '@/components/AIGuidancePanel';
 
 function ResultsContent() {
   const router = useRouter();
@@ -42,9 +44,16 @@ function ResultsContent() {
   const [disclaimer, setDisclaimer] = useState('');
   const [error, setError] = useState('');
 
+  // Recommendation & Guidance State
+  const preferencesStr = searchParams.get('preferences') || '';
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [guidance, setGuidance] = useState<any | null>(null);
+  const [recLoading, setRecLoading] = useState(false);
+  const [showClassic, setShowClassic] = useState(!preferencesStr); // Default to hiding classic view if we have recommendations
+
   // UI state
   const [viewMode, setViewMode] = useState<'grouped' | 'table'>('grouped');
-  const [compareList, setCompareList] = useState<PredictionResult[]>([]);
+  const [compareList, setCompareList] = useState<any[]>([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
@@ -70,40 +79,107 @@ function ResultsContent() {
     setLoading(true);
     setError('');
 
-    fetch('/api/predict', {
+    // Define common request payload
+    const payload = {
+      rank,
+      rankType,
+      category,
+      pwdStatus,
+      gender,
+      homeState,
+      branches,
+      instituteTypes,
+      year,
+    };
+
+    const fetchClassic = fetch('/api/predict', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        rank,
-        rankType,
-        category,
-        pwdStatus,
-        gender,
-        homeState,
-        branches,
-        instituteTypes,
-        year,
-      }),
-    })
-      .then(async res => {
+      body: JSON.stringify(payload),
+    }).then(async res => {
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to predict colleges');
+      }
+      return res.json();
+    });
+
+    if (preferencesStr) {
+      setRecLoading(true);
+      let parsedPrefs;
+      try {
+        parsedPrefs = JSON.parse(preferencesStr);
+      } catch (e) {
+        setError('Invalid preferences format.');
+        setLoading(false);
+        return;
+      }
+      
+      const fetchRecs = fetch('/api/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...payload,
+          preferences: parsedPrefs,
+        }),
+      }).then(async res => {
         if (!res.ok) {
           const err = await res.json();
-          throw new Error(err.error || 'Failed to predict colleges');
+          throw new Error(err.error || 'Failed to generate recommendations');
         }
         return res.json();
-      })
-      .then(data => {
-        setResults(data.results || []);
-        setAlternatives(data.alternatives || []);
-        setDisclaimer(data.disclaimer || '');
-      })
-      .catch(err => {
-        setError(err.message || 'Something went wrong while fetching predictions.');
-      })
-      .finally(() => {
-        setLoading(false);
       });
-  }, [rank, rankType, category, pwdStatus, gender, homeState, branchesParam, instituteTypesParam, year]);
+
+      Promise.all([fetchRecs, fetchClassic])
+        .then(([recData, classicData]) => {
+          setRecommendations(recData.recommendations || []);
+          setResults(classicData.results || []);
+          setAlternatives(classicData.alternatives || []);
+          setDisclaimer(recData.disclaimer || classicData.disclaimer || '');
+
+          // Now fetch guidance
+          return fetch('/api/guidance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              rank,
+              rankType,
+              category,
+              homeState,
+              preferences: parsedPrefs,
+              recommendations: recData.recommendations || [],
+            }),
+          });
+        })
+        .then(async res => {
+          if (res && res.ok) {
+            const guidanceData = await res.json();
+            setGuidance(guidanceData);
+          }
+        })
+        .catch(err => {
+          setError(err.message || 'Something went wrong while fetching recommendations.');
+        })
+        .finally(() => {
+          setLoading(false);
+          setRecLoading(false);
+        });
+    } else {
+      // Classic mode only
+      fetchClassic
+        .then(data => {
+          setResults(data.results || []);
+          setAlternatives(data.alternatives || []);
+          setDisclaimer(data.disclaimer || '');
+        })
+        .catch(err => {
+          setError(err.message || 'Something went wrong while fetching predictions.');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [rank, rankType, category, pwdStatus, gender, homeState, branchesParam, instituteTypesParam, year, preferencesStr]);
 
   // Derived filter list options
   const allStates = Array.from(new Set(results.map(r => r.instituteState))).sort();
@@ -419,331 +495,373 @@ function ResultsContent() {
             </button>
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-            
-            {/* Desktop Filter Sidebar */}
-            <div className="hidden lg:block">
-              <FilterSidebar
-                filters={filters}
-                onChange={setFilters}
-                availableStates={allStates}
-                availableBranches={allBranches}
-                onReset={handleResetFilters}
-              />
-            </div>
+          <div className="space-y-8">
+            {/* Recommendations Section */}
+            {preferencesStr && (
+              <div className="space-y-6">
+                {recLoading ? (
+                  <div className="flex items-center gap-3 justify-center py-12 surface border border-[var(--border-default)]">
+                    <Loader2 className="w-4 h-4 animate-spin text-[var(--text-secondary)]" />
+                    <span className="font-mono text-xs text-[var(--text-secondary)]">GENERATING_RECOMMENDATIONS...</span>
+                  </div>
+                ) : (
+                  <>
+                    {guidance && <AIGuidancePanel guidance={guidance} />}
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 border-b border-[var(--border-default)] pb-2">
+                        <Compass className="w-4.5 h-4.5 text-[var(--brand)] animate-pulse" />
+                        <h3 className="text-sm font-bold text-white font-display">Personalized Top Matches</h3>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4">
+                        {recommendations.map((rec, idx) => (
+                          <RecommendationCard
+                            key={`rec-${rec.id}`}
+                            recommendation={rec}
+                            index={idx}
+                            onCompareToggle={handleCompareToggle}
+                            isCompared={!!compareList.find(c => c.id === rec.id)}
+                          />
+                        ))}
+                      </div>
+                    </div>
 
-            {/* Mobile filters toggler */}
-            <div className="lg:hidden w-full flex items-center justify-between gap-4 border-b border-[var(--border-default)] pb-4 mb-2">
-              <button
-                onClick={() => setShowMobileFilters(true)}
-                className="btn-ghost w-full justify-center"
-              >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                <span>Filter & Sort</span>
-              </button>
-            </div>
+                    <div className="flex justify-center pt-2">
+                      <button
+                        onClick={() => setShowClassic(!showClassic)}
+                        style={{
+                          background: showClassic ? 'var(--bg-active)' : 'var(--bg-elevated)',
+                          border: '1px solid var(--border-default)',
+                          color: 'var(--text-primary)',
+                          borderRadius: 'var(--radius-xs)',
+                          cursor: 'pointer',
+                        }}
+                        className="text-xs py-2.5 px-5 hover:border-[var(--border-strong)] transition-all font-semibold font-display"
+                      >
+                        {showClassic ? 'Hide All Seat Options' : `Explore All ${results.length} Matching Seats`}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
 
-            {/* Mobile Filters Drawer */}
-            <AnimatePresence>
-              {showMobileFilters && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden flex justify-end"
-                >
-                  <motion.div
-                    initial={{ x: 200 }}
-                    animate={{ x: 0 }}
-                    exit={{ x: 200 }}
-                    className="w-full max-w-sm bg-[var(--bg-elevated)] border-l border-[var(--border-default)] p-6 overflow-y-auto h-full flex flex-col justify-between"
+            {/* Classic View Container */}
+            {showClassic && (
+              <div className="flex flex-col lg:flex-row gap-8 items-start pt-6 border-t border-[var(--border-default)] border-dashed">
+                {/* Desktop Filter Sidebar */}
+                <div className="hidden lg:block">
+                  <FilterSidebar
+                    filters={filters}
+                    onChange={setFilters}
+                    availableStates={allStates}
+                    availableBranches={allBranches}
+                    onReset={handleResetFilters}
+                  />
+                </div>
+
+                {/* Mobile filters toggler */}
+                <div className="lg:hidden w-full flex items-center justify-between gap-4 border-b border-[var(--border-default)] pb-4 mb-2">
+                  <button
+                    onClick={() => setShowMobileFilters(true)}
+                    className="btn-ghost w-full justify-center"
                   >
-                    <div>
-                      <div className="flex justify-between items-center mb-6">
-                        <h2 className="font-semibold text-white text-base font-display">Filters & Sort</h2>
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    <span>Filter & Sort</span>
+                  </button>
+                </div>
+
+                {/* Mobile Filters Drawer */}
+                <AnimatePresence>
+                  {showMobileFilters && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden flex justify-end"
+                    >
+                      <motion.div
+                        initial={{ x: 200 }}
+                        animate={{ x: 0 }}
+                        exit={{ x: 200 }}
+                        className="w-full max-w-sm bg-[var(--bg-elevated)] border-l border-[var(--border-default)] p-6 overflow-y-auto h-full flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex justify-between items-center mb-6">
+                            <h2 className="font-semibold text-white text-base font-display">Filters & Sort</h2>
+                            <button
+                              onClick={() => setShowMobileFilters(false)}
+                              className="text-gray-400 hover:text-white p-1 cursor-pointer"
+                            >
+                              <X className="w-5 h-5" />
+                            </button>
+                          </div>
+                          <FilterSidebar
+                            filters={filters}
+                            onChange={setFilters}
+                            availableStates={allStates}
+                            availableBranches={allBranches}
+                            onReset={handleResetFilters}
+                          />
+                        </div>
                         <button
                           onClick={() => setShowMobileFilters(false)}
-                          className="text-gray-400 hover:text-white p-1 cursor-pointer"
+                          className="w-full mt-6 btn-brand justify-center"
                         >
-                          <X className="w-5 h-5" />
+                          Apply Filters
                         </button>
-                      </div>
-                      <FilterSidebar
-                        filters={filters}
-                        onChange={setFilters}
-                        availableStates={allStates}
-                        availableBranches={allBranches}
-                        onReset={handleResetFilters}
-                      />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Results Grid / Table */}
+                <div className="flex-1 w-full space-y-6">
+                  {/* Disclaimer */}
+                  {disclaimer && (
+                    <div className="flex items-start gap-3 rounded bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 text-xs text-[var(--text-secondary)]">
+                      <Info className="w-4 h-4 text-[var(--text-secondary)] shrink-0 mt-0.5" />
+                      <p>{disclaimer}</p>
                     </div>
-                    <button
-                      onClick={() => setShowMobileFilters(false)}
-                      className="w-full mt-6 btn-brand justify-center"
-                    >
-                      Apply Filters
-                    </button>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  )}
 
-            {/* Results Grid / Table */}
-            <div className="flex-1 w-full space-y-6">
-              
-              {/* Disclaimer */}
-              {disclaimer && (
-                <div className="flex items-start gap-3 rounded bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 text-xs text-[var(--text-secondary)]">
-                  <Info className="w-4 h-4 text-[var(--text-secondary)] shrink-0 mt-0.5" />
-                  <p>{disclaimer}</p>
-                </div>
-              )}
+                  {/* View toggle & match count */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-[var(--text-secondary)] font-mono">
+                      MATCHES: <span className="text-white font-bold">{filteredResults.length}</span>
+                    </p>
+                    <div className="flex items-center gap-1 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded p-1">
+                      <button
+                        onClick={() => setViewMode('grouped')}
+                        className={`p-1.5 rounded transition-colors cursor-pointer ${
+                          viewMode === 'grouped' ? 'bg-[var(--bg-active)] text-white' : 'text-gray-400 hover:text-white'
+                        }`}
+                        title="Grouped Cards"
+                      >
+                        <LayoutGrid className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setViewMode('table')}
+                        className={`p-1.5 rounded transition-colors cursor-pointer ${
+                          viewMode === 'table' ? 'bg-[var(--bg-active)] text-white' : 'text-gray-400 hover:text-white'
+                        }`}
+                        title="Data Table"
+                      >
+                        <Table2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
 
-              {/* View toggle & match count */}
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-[var(--text-secondary)] font-mono">
-                  MATCHES: <span className="text-white font-bold">{filteredResults.length}</span>
-                </p>
-                <div className="flex items-center gap-1 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded p-1">
-                  <button
-                    onClick={() => setViewMode('grouped')}
-                    className={`p-1.5 rounded transition-colors cursor-pointer ${
-                      viewMode === 'grouped' ? 'bg-[var(--bg-active)] text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                    title="Grouped Cards"
-                  >
-                    <LayoutGrid className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => setViewMode('table')}
-                    className={`p-1.5 rounded transition-colors cursor-pointer ${
-                      viewMode === 'table' ? 'bg-[var(--bg-active)] text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                    title="Data Table"
-                  >
-                    <Table2 className="w-3.5 h-3.5" />
-                  </button>
+                  {filteredResults.length === 0 ? (
+                    <div className="text-center py-20 surface p-8 space-y-4">
+                      <AlertTriangle className="w-8 h-8 text-amber-500 mx-auto" />
+                      <h3 className="font-semibold text-white text-base font-display">No matches found</h3>
+                      <p className="text-xs text-[var(--text-secondary)] max-w-sm mx-auto">
+                        Try checking other institute types or adding more branches in the filters. Alternatively, try modifying your rank search parameters.
+                      </p>
+                      <button
+                        onClick={handleResetFilters}
+                        className="btn-ghost"
+                      >
+                        Clear All Filters
+                      </button>
+                    </div>
+                  ) : viewMode === 'grouped' ? (
+                    /* Grouped Card View */
+                    <div className="space-y-8">
+                      {/* Safe Colleges */}
+                      {safeColleges.length > 0 && (
+                        <div className="space-y-4">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--safe)' }} />
+                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Safe Admits</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({safeColleges.length})</span>
+                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4">
+                            {safeColleges.map(item => (
+                              <ChanceCard
+                                key={item.id}
+                                result={item}
+                                isCompared={!!compareList.find(c => c.id === item.id)}
+                                onCompareToggle={() => handleCompareToggle(item)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Moderate Colleges */}
+                      {moderateColleges.length > 0 && (
+                        <div className="space-y-4">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--moderate)' }} />
+                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Moderate Chance</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({moderateColleges.length})</span>
+                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4">
+                            {moderateColleges.map(item => (
+                              <ChanceCard
+                                key={item.id}
+                                result={item}
+                                isCompared={!!compareList.find(c => c.id === item.id)}
+                                onCompareToggle={() => handleCompareToggle(item)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Ambitious Colleges */}
+                      {ambitiousColleges.length > 0 && (
+                        <div className="space-y-4">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ambitious)' }} />
+                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Ambitious Targets</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({ambitiousColleges.length})</span>
+                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4">
+                            {ambitiousColleges.map(item => (
+                              <ChanceCard
+                                key={item.id}
+                                result={item}
+                                isCompared={!!compareList.find(c => c.id === item.id)}
+                                onCompareToggle={() => handleCompareToggle(item)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Longshot Colleges */}
+                      {longshotsColleges.length > 0 && (
+                        <div className="space-y-4">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--longshot)' }} />
+                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Borderline / Longshots</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({longshotsColleges.length})</span>
+                            <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4">
+                            {longshotsColleges.map(item => (
+                              <ChanceCard
+                                key={item.id}
+                                result={item}
+                                isCompared={!!compareList.find(c => c.id === item.id)}
+                                onCompareToggle={() => handleCompareToggle(item)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    /* Table View */
+                    <div className="surface overflow-x-auto border border-[var(--border-default)]">
+                      <table className="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr className="border-b border-[var(--border-default)] bg-[rgba(255,255,255,0.01)] text-[10px] font-mono text-[var(--text-secondary)] uppercase tracking-wider">
+                            <th className="px-5 py-3.5">College & Branch</th>
+                            <th className="px-4 py-3.5 text-center">Type</th>
+                            <th className="px-4 py-3.5 text-center">Quota</th>
+                            <th className="px-4 py-3.5 text-right">Closing Rank</th>
+                            <th className="px-4 py-3.5 text-center">Chance</th>
+                            <th className="px-4 py-3.5 text-center">Probability</th>
+                            <th className="px-5 py-3.5 text-center">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[var(--border-default)]">
+                          {filteredResults.map(item => {
+                            const isCompared = !!compareList.find(c => c.id === item.id);
+                            return (
+                              <tr key={item.id} className="hover:bg-white/[0.01] transition-colors">
+                                <td className="px-5 py-4">
+                                  <span className="font-semibold text-white block">{item.instituteName}</span>
+                                  <span className="text-[10px] text-[var(--text-secondary)] block mt-0.5">{item.branch}</span>
+                                  <span className="text-[9px] text-[var(--text-muted)] block mt-0.5">{item.instituteCity ? `${item.instituteCity}, ` : ''}{item.instituteState}</span>
+                                </td>
+                                <td className="px-4 py-4 text-center">
+                                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', padding: '2px 5px', borderRadius: '2px' }}>
+                                    {item.instituteType}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-4 text-center">
+                                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', padding: '2px 5px', borderRadius: '2px' }}>
+                                    {item.quota}
+                                  </span>
+                                </td>
+                                <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-right font-medium text-white">
+                                  {item.closingRank.toLocaleString('en-IN')}
+                                </td>
+                                <td className="px-4 py-4 text-center">
+                                  <span className={`text-[10px] font-semibold uppercase ${
+                                    item.chance === 'safe'
+                                      ? 'text-[var(--safe-text)]'
+                                      : item.chance === 'moderate'
+                                      ? 'text-[var(--moderate-text)]'
+                                      : 'text-[var(--ambitious-text)]'
+                                  }`}>
+                                    {item.chance}
+                                  </span>
+                                </td>
+                                <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-center font-medium text-white">
+                                  {item.probability}%
+                                </td>
+                                <td className="px-5 py-4 text-center">
+                                  <button
+                                    onClick={() => handleCompareToggle(item)}
+                                    style={{
+                                      padding: '3px 8px',
+                                      borderRadius: 'var(--radius-xs)',
+                                      fontSize: '0.65rem',
+                                      fontFamily: 'var(--font-mono)',
+                                      fontWeight: 500,
+                                      border: '1px solid var(--border-default)',
+                                      background: isCompared ? 'rgba(255,255,255,0.06)' : 'transparent',
+                                      color: isCompared ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                      cursor: 'pointer',
+                                      transition: 'all 0.1s',
+                                    }}
+                                    className="hover:border-[var(--border-strong)] hover:text-white"
+                                  >
+                                    {isCompared ? 'Added' : 'Compare'}
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {/* Alternatives Section (if user didn't get many safe options) */}
+                  {alternatives.length > 0 && (
+                    <div className="mt-12 space-y-4 pt-8 border-t border-[var(--border-default)]">
+                      <h3 className="font-semibold text-white text-base flex items-center gap-2 font-display">
+                        <span>💡 Alternative Options Nearby (Outside Preference Filters)</span>
+                      </h3>
+                      <p className="text-[10px] text-[var(--text-secondary)]">
+                        These are colleges just outside your rank filters or branches that might interest you with nearby cutoffs.
+                      </p>
+                      <div className="grid grid-cols-1 gap-4">
+                        {alternatives.map(item => (
+                          <ChanceCard
+                            key={`alt-${item.id}`}
+                            result={item}
+                            isCompared={!!compareList.find(c => c.id === item.id)}
+                            onCompareToggle={() => handleCompareToggle(item)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </div>
-
-              {filteredResults.length === 0 ? (
-                <div className="text-center py-20 surface p-8 space-y-4">
-                  <AlertTriangle className="w-8 h-8 text-amber-500 mx-auto" />
-                  <h3 className="font-semibold text-white text-base font-display">No matches found</h3>
-                  <p className="text-xs text-[var(--text-secondary)] max-w-sm mx-auto">
-                    Try checking other institute types or adding more branches in the filters. Alternatively, try modifying your rank search parameters.
-                  </p>
-                  <button
-                    onClick={handleResetFilters}
-                    className="btn-ghost"
-                  >
-                    Clear All Filters
-                  </button>
-                </div>
-              ) : viewMode === 'grouped' ? (
-                /* Grouped Card View */
-                <div className="space-y-8">
-                  {/* Safe Colleges */}
-                  {safeColleges.length > 0 && (
-                    <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--safe)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Safe Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({safeColleges.length})</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
-                      </div>
-                      <div className="grid grid-cols-1 gap-4">
-                        {safeColleges.map(item => (
-                          <ChanceCard
-                            key={item.id}
-                            result={item}
-                            isCompared={!!compareList.find(c => c.id === item.id)}
-                            onCompareToggle={() => handleCompareToggle(item)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Moderate Colleges */}
-                  {moderateColleges.length > 0 && (
-                    <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--moderate)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Moderate Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({moderateColleges.length})</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
-                      </div>
-                      <div className="grid grid-cols-1 gap-4">
-                        {moderateColleges.map(item => (
-                          <ChanceCard
-                            key={item.id}
-                            result={item}
-                            isCompared={!!compareList.find(c => c.id === item.id)}
-                            onCompareToggle={() => handleCompareToggle(item)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Ambitious Colleges */}
-                  {ambitiousColleges.length > 0 && (
-                    <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ambitious)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Ambitious Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({ambitiousColleges.length})</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
-                      </div>
-                      <div className="grid grid-cols-1 gap-4">
-                        {ambitiousColleges.map(item => (
-                          <ChanceCard
-                            key={item.id}
-                            result={item}
-                            isCompared={!!compareList.find(c => c.id === item.id)}
-                            onCompareToggle={() => handleCompareToggle(item)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Long Shot Colleges */}
-                  {longshotsColleges.length > 0 && (
-                    <div className="space-y-4">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--text-muted)' }} />
-                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-primary)' }}>Long Shot Admits</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>({longshotsColleges.length})</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--border-default)' }} />
-                      </div>
-                      <div className="grid grid-cols-1 gap-4">
-                        {longshotsColleges.map(item => (
-                          <ChanceCard
-                            key={item.id}
-                            result={item}
-                            isCompared={!!compareList.find(c => c.id === item.id)}
-                            onCompareToggle={() => handleCompareToggle(item)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                /* Table View */
-                <div style={{
-                  background: 'var(--bg-elevated)',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: 'var(--radius-md)',
-                  overflow: 'hidden',
-                }} className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-xs text-[var(--text-secondary)]">
-                    <thead style={{
-                      background: 'rgba(255,255,255,0.015)',
-                      borderBottom: '1px solid var(--border-default)',
-                      fontFamily: 'var(--font-display)',
-                      fontWeight: 500,
-                      color: 'var(--text-primary)',
-                    }} className="uppercase tracking-wider">
-                      <tr>
-                        <th className="px-5 py-3.5">College Details</th>
-                        <th className="px-4 py-3.5 text-center">Type</th>
-                        <th className="px-4 py-3.5 text-center">Quota</th>
-                        <th className="px-4 py-3.5 text-right">Closing Cutoff</th>
-                        <th className="px-4 py-3.5 text-center">Chance</th>
-                        <th className="px-4 py-3.5 text-center">Probability</th>
-                        <th className="px-5 py-3.5 text-center">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[var(--border-default)]">
-                      {filteredResults.map(item => {
-                        const isCompared = !!compareList.find(c => c.id === item.id);
-                        return (
-                          <tr key={item.id} className="hover:bg-white/[0.01] transition-colors">
-                            <td className="px-5 py-4">
-                              <span className="font-semibold text-white block">{item.instituteName}</span>
-                              <span className="text-[10px] text-[var(--text-secondary)] block mt-0.5">{item.branch}</span>
-                              <span className="text-[9px] text-[var(--text-muted)] block mt-0.5">{item.instituteCity ? `${item.instituteCity}, ` : ''}{item.instituteState}</span>
-                            </td>
-                            <td className="px-4 py-4 text-center">
-                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', padding: '2px 5px', borderRadius: '2px' }}>
-                                {item.instituteType}
-                              </span>
-                            </td>
-                            <td className="px-4 py-4 text-center">
-                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', padding: '2px 5px', borderRadius: '2px' }}>
-                                {item.quota}
-                              </span>
-                            </td>
-                            <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-right font-medium text-white">
-                              {item.closingRank.toLocaleString('en-IN')}
-                            </td>
-                            <td className="px-4 py-4 text-center">
-                              <span className={`text-[10px] font-semibold uppercase ${
-                                item.chance === 'safe'
-                                  ? 'text-[var(--safe-text)]'
-                                  : item.chance === 'moderate'
-                                  ? 'text-[var(--moderate-text)]'
-                                  : 'text-[var(--ambitious-text)]'
-                              }`}>
-                                {item.chance}
-                              </span>
-                            </td>
-                            <td style={{ fontFamily: 'var(--font-mono)' }} className="px-4 py-4 text-center font-medium text-white">
-                              {item.probability}%
-                            </td>
-                            <td className="px-5 py-4 text-center">
-                              <button
-                                onClick={() => handleCompareToggle(item)}
-                                style={{
-                                  padding: '3px 8px',
-                                  borderRadius: 'var(--radius-xs)',
-                                  fontSize: '0.65rem',
-                                  fontFamily: 'var(--font-mono)',
-                                  fontWeight: 500,
-                                  border: '1px solid var(--border-default)',
-                                  background: isCompared ? 'rgba(255,255,255,0.06)' : 'transparent',
-                                  color: isCompared ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                  cursor: 'pointer',
-                                  transition: 'all 0.1s',
-                                }}
-                                className="hover:border-[var(--border-strong)] hover:text-white"
-                              >
-                                {isCompared ? 'Added' : 'Compare'}
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {/* Alternatives Section (if user didn't get many safe options) */}
-              {alternatives.length > 0 && (
-                <div className="mt-12 space-y-4 pt-8 border-t border-[var(--border-default)]">
-                  <h3 className="font-semibold text-white text-base flex items-center gap-2 font-display">
-                    <span>💡 Alternative Options Nearby (Outside Preference Filters)</span>
-                  </h3>
-                  <p className="text-[10px] text-[var(--text-secondary)]">
-                    These are colleges just outside your rank filters or branches that might interest you with nearby cutoffs.
-                  </p>
-                  <div className="grid grid-cols-1 gap-4">
-                    {alternatives.map(item => (
-                      <ChanceCard
-                        key={`alt-${item.id}`}
-                        result={item}
-                        isCompared={!!compareList.find(c => c.id === item.id)}
-                        onCompareToggle={() => handleCompareToggle(item)}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            </div>
+            )}
           </div>
         )}
       </div>

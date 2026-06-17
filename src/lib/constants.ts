@@ -83,7 +83,68 @@ export const CSV_COLUMN_MAPPING = {
 /** Wizard step labels */
 export const WIZARD_STEPS = [
   { id: 1, label: 'Rank', description: 'Enter your exam rank', icon: '📊' },
-  { id: 2, label: 'Category', description: 'Select your category', icon: '🏷️' },
+  { id: 2, label: 'Demographics', description: 'Select category & gender', icon: '👤' },
   { id: 3, label: 'State', description: 'Choose your home state', icon: '📍' },
-  { id: 4, label: 'Preferences', description: 'Pick your branches', icon: '🎯' },
+  { id: 4, label: 'Personalization', description: 'Configure preferences', icon: '⚙️' },
+  { id: 5, label: 'Branches', description: 'Pick branches & types', icon: '🎯' },
 ] as const;
+
+export const PREFERENCE_PRESETS = [
+  {
+    name: 'Placement Focused',
+    description: 'Prioritizes average package, placement rate, and coding culture.',
+    weights: {
+      placementWeight: 10,
+      codingCultureWeight: 9,
+      campusLifeWeight: 5,
+      hostelWeight: 6,
+      researchWeight: 4,
+      startupWeight: 7,
+      sportsWeight: 5,
+      technicalClubsWeight: 8,
+    }
+  },
+  {
+    name: 'Research & Higher Studies',
+    description: 'Prioritizes academic depth, research focus, and prestige.',
+    weights: {
+      placementWeight: 6,
+      codingCultureWeight: 7,
+      campusLifeWeight: 6,
+      hostelWeight: 7,
+      researchWeight: 10,
+      startupWeight: 6,
+      sportsWeight: 5,
+      technicalClubsWeight: 8,
+    }
+  },
+  {
+    name: 'Startup Dream',
+    description: 'Prioritizes startup ecosystem, coding, and networking.',
+    weights: {
+      placementWeight: 7,
+      codingCultureWeight: 10,
+      campusLifeWeight: 7,
+      hostelWeight: 6,
+      researchWeight: 6,
+      startupWeight: 10,
+      sportsWeight: 6,
+      technicalClubsWeight: 9,
+    }
+  },
+  {
+    name: 'All-Rounder Campus Life',
+    description: 'Balances hostel, sports, campus life, and placement.',
+    weights: {
+      placementWeight: 8,
+      codingCultureWeight: 7,
+      campusLifeWeight: 10,
+      hostelWeight: 9,
+      researchWeight: 5,
+      startupWeight: 6,
+      sportsWeight: 9,
+      technicalClubsWeight: 8,
+    }
+  }
+] as const;
+

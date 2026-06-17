@@ -65,7 +65,7 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-20 px-6 lg:px-8 max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full flex-grow z-10">
+      <section className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full flex-grow z-10">
         {/* Left Column: Text + CTA */}
         <div className="flex-1 text-left space-y-6 z-10">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '3px 8px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-xs)' }}>
@@ -217,7 +217,7 @@ export default function HomePage() {
 
       {/* Stats Strip */}
       <section style={{ borderTop: '1px solid var(--border-default)', borderBottom: '1px solid var(--border-default)', background: 'var(--bg-surface)', padding: '14px 0' }} className="z-10 relative">
-        <div className="max-w-5xl mx-auto px-6 flex justify-between gap-6 flex-wrap">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between gap-6 flex-wrap">
           {[
             { value: '12,274+', label: 'Cutoff Records' },
             { value: '120+', label: 'Institutes' },
@@ -234,7 +234,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 px-6 lg:px-8 max-w-5xl mx-auto w-full z-10">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
         <div className="text-left mb-16 space-y-2">
           <h2 style={{ fontWeight: 500 }} className="text-3xl font-display text-white">
             Built for serious aspirants.
@@ -293,7 +293,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 lg:px-8 max-w-5xl mx-auto w-full z-10">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
         <div style={{
           background: 'var(--bg-elevated)',
           border: '1px solid var(--border-default)',
@@ -345,8 +345,8 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ borderTop: '1px solid var(--border-default)', background: 'var(--bg-surface)', padding: '24px' }} className="w-full z-10">
-        <div style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+      <footer style={{ borderTop: '1px solid var(--border-default)', background: 'var(--bg-surface)', padding: '24px 0' }} className="w-full z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem' }}>
               RankScope

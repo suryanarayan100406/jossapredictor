@@ -81,3 +81,39 @@ model Feedback {
   email     String   @default("")
   createdAt DateTime @default(now())
 }
+
+model CollegeProfile {
+  id                  Int      @id @default(autoincrement())
+  instituteName       String   @unique
+  instituteType       String   // IIT, NIT, IIIT, GFTI
+  state               String
+  city                String   @default("")
+  
+  // Placement details (from API/scraped/NIRF)
+  avgPackage          Float?   // Average package in LPA
+  highestPackage      Float?   // Highest package in LPA
+  placementRate       Float?   // Placement rate percentage (e.g. 92.5)
+  logoUrl             String   @default("")
+  imageUrl            String   @default("")
+  
+  // Academic & Culture (Ratings 1-10)
+  codingCulture       Int      @default(5)
+  technicalClubs      Int      @default(5)
+  hackathonCulture    Int      @default(5)
+  campusLife          Int      @default(5)
+  hostelQuality       Int      @default(5)
+  sportsFacilities    Int      @default(5)
+  researchFocus       Int      @default(5)
+  startupEcosystem    Int      @default(5)
+  
+  // Rankings
+  nirfRank            Int?
+  nirfYear            Int      @default(2024)
+  established         Int?
+  website             String   @default("")
+  description         String   @default("")
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+

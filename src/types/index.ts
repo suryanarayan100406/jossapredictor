@@ -133,3 +133,71 @@ export enum ChanceBand {
   Ambitious = 'ambitious',
   Longshot = 'longshot',
 }
+
+export interface CollegeProfile {
+  id: number;
+  instituteName: string;
+  instituteType: string;
+  state: string;
+  city: string;
+  avgPackage: number | null;
+  highestPackage: number | null;
+  placementRate: number | null;
+  logoUrl: string;
+  imageUrl: string;
+  codingCulture: number;
+  technicalClubs: number;
+  hackathonCulture: number;
+  campusLife: number;
+  hostelQuality: number;
+  sportsFacilities: number;
+  researchFocus: number;
+  startupEcosystem: number;
+  nirfRank: number | null;
+  nirfYear: number;
+  established: number | null;
+  website: string;
+  description: string;
+}
+
+export interface PreferenceWeights {
+  placementWeight: number;
+  codingCultureWeight: number;
+  campusLifeWeight: number;
+  hostelWeight: number;
+  researchWeight: number;
+  startupWeight: number;
+  sportsWeight: number;
+  technicalClubsWeight: number;
+}
+
+export interface RecommendationInput {
+  rank: number;
+  rankType: 'advanced' | 'main';
+  category: string;
+  pwdStatus: boolean;
+  gender: string;
+  homeState: string;
+  branches: string[];
+  instituteTypes: string[];
+  year: number;
+  preferences: PreferenceWeights;
+}
+
+export interface RecommendationResult extends PredictionResult {
+  score: number;
+  scoreBreakdown: {
+    admission: number;
+    preference: number;
+    prestige: number;
+  };
+  profile: CollegeProfile | null;
+}
+
+export interface AlgorithmicAdvisorGuidance {
+  overview: string;
+  branchVsCollege: string;
+  highlights: string[];
+  tips: string[];
+}
+

@@ -7,8 +7,9 @@ import {
   ArrowLeft, ArrowRight, Check, Search,
   Loader2, ChevronDown, GraduationCap, Target
 } from 'lucide-react';
-import { INDIAN_STATES, CATEGORIES, WIZARD_STEPS, INSTITUTE_TYPES } from '@/lib/constants';
+import { INDIAN_STATES, CATEGORIES, WIZARD_STEPS, INSTITUTE_TYPES, PREFERENCE_PRESETS } from '@/lib/constants';
 import { Navbar } from '@/components/Navbar';
+
 
 interface WizardData {
   rank: string;
@@ -20,6 +21,16 @@ interface WizardData {
   branches: string[];
   instituteTypes: string[];
   year: number;
+  preferences: {
+    placementWeight: number;
+    codingCultureWeight: number;
+    campusLifeWeight: number;
+    hostelWeight: number;
+    researchWeight: number;
+    startupWeight: number;
+    sportsWeight: number;
+    technicalClubsWeight: number;
+  };
 }
 
 const slideVariants = {
@@ -51,7 +62,32 @@ export default function PredictPage() {
     branches: [],
     instituteTypes: [],
     year: 2025,
+    preferences: {
+      placementWeight: 5,
+      codingCultureWeight: 5,
+      campusLifeWeight: 5,
+      hostelWeight: 5,
+      researchWeight: 5,
+      startupWeight: 5,
+      sportsWeight: 5,
+      technicalClubsWeight: 5,
+    },
   });
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('rankscope_wizard_data');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setData(prev => ({
+          ...prev,
+          ...parsed,
+          preferences: parsed.preferences || prev.preferences
+        }));
+      }
+    } catch (e) {}
+  }, []);
 
   // Fetch available branches from API
   useEffect(() => {
@@ -64,7 +100,42 @@ export default function PredictPage() {
   }, []);
 
   const updateData = (field: keyof WizardData, value: unknown) => {
-    setData(prev => ({ ...prev, [field]: value }));
+    setData(prev => {
+      const updated = { ...prev, [field]: value };
+      try {
+        localStorage.setItem('rankscope_wizard_data', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  const updatePreference = (key: keyof WizardData['preferences'], val: number) => {
+    setData(prev => {
+      const updated = {
+        ...prev,
+        preferences: {
+          ...prev.preferences,
+          [key]: val
+        }
+      };
+      try {
+        localStorage.setItem('rankscope_wizard_data', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  const applyPreset = (preset: typeof PREFERENCE_PRESETS[number]) => {
+    setData(prev => {
+      const updated = {
+        ...prev,
+        preferences: { ...preset.weights }
+      };
+      try {
+        localStorage.setItem('rankscope_wizard_data', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
   };
 
   const canProceed = () => {
@@ -73,12 +144,13 @@ export default function PredictPage() {
       case 2: return data.category && data.gender;
       case 3: return data.homeState;
       case 4: return true;
+      case 5: return true;
       default: return false;
     }
   };
 
   const nextStep = () => {
-    if (step < 4) { setDirection(1); setStep(s => s + 1); }
+    if (step < 5) { setDirection(1); setStep(s => s + 1); }
   };
 
   const prevStep = () => {
@@ -96,6 +168,7 @@ export default function PredictPage() {
       gender: data.gender,
       homeState: data.homeState,
       year: data.year.toString(),
+      preferences: JSON.stringify(data.preferences),
     });
     if (data.branches.length > 0) params.set('branches', data.branches.join(','));
     if (data.instituteTypes.length > 0) params.set('instituteTypes', data.instituteTypes.join(','));
@@ -116,7 +189,7 @@ export default function PredictPage() {
       <div className="flex-grow flex flex-col items-center pt-10 pb-16 px-4 z-10">
         <div className="w-full max-w-xl">
           {/* Progress indicator */}
-          <div className="flex items-center justify-between w-full max-w-md mx-auto mb-10 gap-2">
+          <div className="flex items-center justify-between w-full max-w-xl mx-auto mb-10 gap-2">
             {WIZARD_STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
                 <div className={`step-node ${step > s.id ? 'done' : step === s.id ? 'active' : 'idle'}`}>
@@ -132,13 +205,13 @@ export default function PredictPage() {
           {/* Step label */}
           <div className="text-center mb-8">
             <p className="text-xs font-semibold mb-1 uppercase tracking-wider font-mono text-[var(--text-secondary)]">
-              Step {step} of 4 — {WIZARD_STEPS[step - 1].label}
+              Step {step} of 5 — {WIZARD_STEPS[step - 1].label}
             </p>
             <p className="text-xs text-[var(--text-muted)]">{WIZARD_STEPS[step - 1].description}</p>
           </div>
 
           {/* Step content */}
-          <div className="surface p-6 sm:p-8 min-h-[320px] relative overflow-hidden">
+          <div className="surface p-6 sm:p-8 min-h-[360px] relative overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={step}
@@ -179,7 +252,7 @@ export default function PredictPage() {
                               cursor: 'pointer',
                               transition: 'all 0.15s',
                             }}
-                            className="hover:border-[var(--border-strong)]"
+                            className="hover:border-[var(--border-strong)] text-left"
                           >
                             <div style={{ color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)', marginBottom: 8 }}>
                               {rt.icon}
@@ -218,10 +291,10 @@ export default function PredictPage() {
                   </div>
                 )}
 
-                {/* Step 2: Category */}
+                {/* Step 2: Demographics */}
                 {step === 2 && (
                   <div className="space-y-6">
-                    <h2 className="text-lg font-medium font-display text-white">Select Your Category</h2>
+                    <h2 className="text-lg font-medium font-display text-white">Select Category & Gender</h2>
                     <p className="text-[var(--text-secondary)] text-xs leading-relaxed">
                       Choose your seat category and gender pool for accurate predictions.
                     </p>
@@ -346,12 +419,69 @@ export default function PredictPage() {
                   </div>
                 )}
 
-                {/* Step 4: Preferences */}
+                {/* Step 4: Personalization Slider Preferences */}
                 {step === 4 && (
                   <div className="space-y-6">
-                    <h2 className="text-lg font-medium font-display text-white">Your Preferences</h2>
+                    <h2 className="text-lg font-medium font-display text-white">Configure Your Preferences</h2>
                     <p className="text-[var(--text-secondary)] text-xs leading-relaxed">
-                      Select branches and institute types. Leave empty to see everything.
+                      We use these weights to customize and sort your top recommendations.
+                    </p>
+
+                    {/* Presets */}
+                    <div className="space-y-2">
+                      <label className="block text-xs font-medium text-[var(--text-secondary)] font-mono uppercase tracking-wider">Presets</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {PREFERENCE_PRESETS.map(preset => (
+                          <button
+                            key={preset.name}
+                            type="button"
+                            onClick={() => applyPreset(preset)}
+                            className="p-2 border border-[var(--border-default)] hover:border-[var(--border-strong)] rounded text-left transition-all bg-[var(--bg-base)] text-[10px]"
+                          >
+                            <span className="font-semibold block text-[11px] text-white">{preset.name}</span>
+                            <span className="text-[var(--text-muted)] line-clamp-1 mt-0.5">{preset.description}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Sliders grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-2 max-h-56 overflow-y-auto pr-1">
+                      {[
+                        { key: 'placementWeight' as const, label: '💼 Placements & Packages' },
+                        { key: 'codingCultureWeight' as const, label: '💻 Coding & Hackathons' },
+                        { key: 'campusLifeWeight' as const, label: '🌴 Campus Life & Culture' },
+                        { key: 'hostelWeight' as const, label: '🏠 Hostel & Food Quality' },
+                        { key: 'researchWeight' as const, label: '🔬 Research Opportunities' },
+                        { key: 'startupWeight' as const, label: '🚀 Startup Ecosystem' },
+                        { key: 'sportsWeight' as const, label: '⚽ Sports Infrastructure' },
+                        { key: 'technicalClubsWeight' as const, label: '⚙️ Technical Societies' },
+                      ].map(slider => (
+                        <div key={slider.key} className="space-y-1.5">
+                          <div className="flex justify-between items-center text-[11px] font-medium text-[var(--text-secondary)]">
+                            <span>{slider.label}</span>
+                            <span className="font-mono text-white font-semibold">{data.preferences[slider.key]}/10</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="1"
+                            max="10"
+                            value={data.preferences[slider.key]}
+                            onChange={e => updatePreference(slider.key, parseInt(e.target.value))}
+                            className="w-full accent-[var(--brand)] bg-[var(--border-default)] h-1.5 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 5: Branches & Types Filter */}
+                {step === 5 && (
+                  <div className="space-y-6">
+                    <h2 className="text-lg font-medium font-display text-white">Filter Branches & Institutes</h2>
+                    <p className="text-[var(--text-secondary)] text-xs leading-relaxed">
+                      Optionally narrow down choices by program branch and college type. Leave blank to see all matches.
                     </p>
 
                     {/* Institute types */}
@@ -452,7 +582,7 @@ export default function PredictPage() {
               Back
             </button>
 
-            {step < 4 ? (
+            {step < 5 ? (
               <button
                 onClick={nextStep}
                 disabled={!canProceed()}
