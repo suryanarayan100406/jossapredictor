@@ -45,37 +45,37 @@ export function RecommendationCard({
   const rankStyle = rankColors[index] || { text: 'text-[var(--text-secondary)]', bg: 'rgba(255,255,255,0.03)', border: 'border-[var(--border-default)]', label: `#${index + 1} Recommendation` };
 
   return (
-    <div className="surface transition-all duration-300 hover:shadow-lg hover:shadow-brand/5 border border-[var(--border-default)] overflow-hidden">
+    <div className="surface transition-all duration-300 hover:shadow-lg hover:shadow-brand/5 border border-border-default overflow-hidden rounded-md bg-bg-elevated">
       {/* Top Highlight strip */}
-      <div className="flex justify-between items-center px-4 py-2 border-b border-[var(--border-default)] bg-[rgba(255,255,255,0.01)] text-[10px] font-mono">
-        <span className={`flex items-center gap-1 font-semibold ${rankStyle.text}`}>
-          <span className={`w-1.5 h-1.5 rounded-full bg-current mr-0.5`} />
+      <div className="flex justify-between items-center px-5 py-2.5 border-b border-border-default bg-white/[0.01] text-[10px] font-mono">
+        <span className={`flex items-center gap-1.5 font-semibold ${rankStyle.text}`}>
+          <span className="w-1.5 h-1.5 rounded-full bg-current mr-0.5" />
           {rankStyle.label}
         </span>
-        <span className="text-[var(--text-muted)]">Score: {score}/100</span>
+        <span className="text-text-muted">Score: {score}/100</span>
       </div>
 
-      <div className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
         {/* College logo & Name details */}
         <div className="flex items-start gap-4 flex-grow">
           {profile?.logoUrl ? (
             <img
               src={profile.logoUrl}
               alt={recommendation.instituteName}
-              className="w-12 h-12 rounded object-contain p-1 border border-[var(--border-default)] bg-white flex-shrink-0"
+              className="w-12 h-12 rounded object-contain p-1 border border-border-default bg-white flex-shrink-0"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = ''; // Fallback if image fails
               }}
             />
           ) : (
-            <div className="w-12 h-12 rounded bg-[var(--brand-dim)] text-[var(--brand)] font-bold text-xs flex items-center justify-center flex-shrink-0 border border-[var(--border-default)]">
+            <div className="w-12 h-12 rounded bg-brand-dim text-brand font-bold text-xs flex items-center justify-center flex-shrink-0 border border-border-default">
               {recommendation.instituteType}
             </div>
           )}
 
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded border border-[var(--border-default)] bg-[var(--bg-base)] text-white">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded border border-border-default bg-bg-base text-white">
                 {recommendation.instituteType}
               </span>
               {profile?.nirfRank && (
@@ -84,36 +84,36 @@ export function RecommendationCard({
                   NIRF #{profile.nirfRank}
                 </span>
               )}
-              <span className="text-[10px] text-[var(--text-secondary)] font-mono flex items-center gap-0.5">
+              <span className="text-[10px] text-text-secondary font-mono flex items-center gap-1">
                 <MapPin className="w-3 h-3" />
                 {recommendation.instituteCity ? `${recommendation.instituteCity}, ` : ''}{recommendation.instituteState}
               </span>
             </div>
-            <h3 className="text-sm font-semibold font-display text-white mt-1 leading-tight">
+            <h3 className="text-base font-bold font-display text-white mt-1 leading-tight">
               {recommendation.instituteName}
             </h3>
-            <p className="text-xs text-[var(--text-secondary)] font-medium">
+            <p className="text-xs text-text-secondary font-medium">
               {recommendation.branch}
             </p>
           </div>
         </div>
 
         {/* Stats and Placement Info */}
-        <div className="flex items-center gap-4 justify-between md:justify-end flex-wrap w-full md:w-auto border-t md:border-t-0 border-[var(--border-default)] pt-4 md:pt-0">
+        <div className="flex items-center gap-6 justify-between md:justify-end flex-wrap w-full md:w-auto border-t md:border-t-0 border-border-default pt-4 md:pt-0">
           {profile?.avgPackage && (
             <div className="text-right">
-              <span className="text-[10px] text-[var(--text-muted)] font-mono uppercase tracking-wider block">Avg Package</span>
-              <span className="text-xs font-bold font-mono text-white flex items-center gap-1 justify-end">
-                <Briefcase className="w-3 h-3 text-[var(--brand)]" />
+              <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mb-0.5">Avg Package</span>
+              <span className="text-sm font-bold font-mono text-text-primary flex items-center gap-1 justify-end">
+                <Briefcase className="w-3.5 h-3.5 text-brand" />
                 {avgPkg}
               </span>
             </div>
           )}
 
           <div className="text-right">
-            <span className="text-[10px] text-[var(--text-muted)] font-mono uppercase tracking-wider block">Cutoff (CR)</span>
-            <span className="text-xs font-bold font-mono text-white">
-              {closingRank}
+            <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mb-0.5">Cutoff (CR)</span>
+            <span className="text-sm font-bold font-mono text-text-primary">
+              {closingRank.toLocaleString('en-IN')}
             </span>
           </div>
 
@@ -124,31 +124,31 @@ export function RecommendationCard({
               color: currentChanceStyle.text,
               border: `1px solid ${currentChanceStyle.border}`,
             }}
-            className="px-2.5 py-1 rounded text-xs font-semibold capitalize font-mono text-center min-w-[75px]"
+            className="px-3 py-1.5 rounded text-xs font-semibold capitalize font-mono text-center min-w-[85px] leading-tight"
           >
             {chance}
-            <span className="block text-[8px] opacity-75 font-mono">{Math.round(probability * 100)}% Match</span>
+            <span className="block text-[9px] opacity-80 font-mono mt-0.5">{Math.round(probability)}% Match</span>
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => onCompareToggle(recommendation)}
-              className={`p-1.5 rounded border transition-all ${
+              className={`p-2 rounded border transition-all cursor-pointer ${
                 isCompared
                   ? 'border-brand bg-brand-dim text-brand'
                   : 'border-border-default hover:border-border-strong text-text-secondary'
               }`}
               title="Compare College"
             >
-              {isCompared ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+              {isCompared ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </button>
 
             <button
               onClick={() => setExpanded(!expanded)}
-              className="p-1.5 rounded border border-[var(--border-default)] hover:border-[var(--border-strong)] text-[var(--text-secondary)] flex items-center justify-center"
+              className="p-2 rounded border border-border-default hover:border-border-strong text-text-secondary flex items-center justify-center cursor-pointer"
             >
-              {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
           </div>
         </div>

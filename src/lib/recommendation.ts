@@ -102,7 +102,7 @@ export async function getRecommendations(input: RecommendationInput): Promise<{
 
     // SCORING ALGORITHM
     // 1. Admission Score (30%) - safer options get higher scores
-    const admissionScore = probability * 30;
+    const admissionScore = (probability / 100) * 30;
 
     // 2. Preference Score (50%) - weighted average of slider ratings
     let preferenceScore = 0;

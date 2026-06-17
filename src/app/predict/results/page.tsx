@@ -370,43 +370,43 @@ function ResultsContent() {
         
         {/* Command-center style header */}
         <header className="w-full bg-bg-elevated border border-border-default rounded-md p-6 mb-6">
-          <div className="flex flex-col md:flex-row justify-between gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-border-default">
             {/* Left Block: Profile Details */}
-            <div className="space-y-4">
+            <div className="space-y-4 pb-6 md:pb-0 md:pr-6">
               <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted tracking-wider">
                 <span>PROFILE_READOUT</span>
               </div>
               
-              <div className="flex flex-wrap items-baseline gap-x-4">
-                <span className="font-mono text-3xl sm:text-4xl font-medium text-text-primary leading-none">
+              <div className="flex flex-wrap items-baseline gap-x-2">
+                <span className="font-mono text-3xl sm:text-4xl font-semibold text-text-primary leading-none">
                   {rank.toLocaleString('en-IN')}
                 </span>
-                <span className="font-mono text-[11px] text-text-secondary">
-                  {rankType === 'advanced' ? 'JEE Advanced' : 'JEE Main'} CRL
+                <span className="font-mono text-[10px] text-text-secondary uppercase">
+                  {rankType === 'advanced' ? 'Advanced' : 'Main'} CRL
                 </span>
               </div>
               
-              <div className="flex flex-wrap gap-2 text-[10px] font-mono text-text-secondary">
-                <span className="bg-bg-base border border-border-default px-2 py-0.75 rounded-xs">
+              <div className="flex flex-wrap gap-1.5 text-[10px] font-mono text-text-secondary">
+                <span className="bg-bg-base border border-border-default px-2 py-0.5 rounded-xs">
                   {category} {pwdStatus ? '(PwD)' : ''}
                 </span>
-                <span className="bg-bg-base border border-border-default px-2 py-0.75 rounded-xs">
+                <span className="bg-bg-base border border-border-default px-2 py-0.5 rounded-xs">
                   {gender}
                 </span>
-                <span className="bg-bg-base border border-border-default px-2 py-0.75 rounded-xs">
+                <span className="bg-bg-base border border-border-default px-2 py-0.5 rounded-xs">
                   {homeState} (HS)
                 </span>
               </div>
             </div>
             
             {/* Middle Block: Count & Tier Breakdown */}
-            <div className="flex flex-col justify-center space-y-4 border-t md:border-t-0 md:border-l border-border-default pt-6 md:pt-0 md:pl-8">
+            <div className="flex flex-col justify-center space-y-4 pt-6 md:pt-0 md:px-6">
               <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted tracking-wider">
                 <span>ADMISSION_MATCHES</span>
               </div>
               
               <div className="flex items-baseline gap-2">
-                <span className="font-mono text-3xl font-medium text-white leading-none">
+                <span className="font-mono text-3xl font-semibold text-white leading-none">
                   {filteredResults.length}
                 </span>
                 <span className="text-xs text-text-secondary">programs matched</span>
@@ -419,20 +419,20 @@ function ResultsContent() {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-moderate" />
-                  <span className="text-text-secondary">Moderate: {moderateColleges.length}</span>
+                  <span className="text-text-secondary">Mod: {moderateColleges.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-ambitious" />
-                  <span className="text-text-secondary">Ambitious: {ambitiousColleges.length}</span>
+                  <span className="text-text-secondary">Amb: {ambitiousColleges.length}</span>
                 </div>
               </div>
             </div>
 
             {/* Right Block: Actions */}
-            <div className="flex flex-col sm:flex-row md:flex-col items-stretch justify-center gap-2 border-t md:border-t-0 md:border-l border-border-default pt-6 md:pt-0 md:pl-8">
+            <div className="flex flex-col justify-center gap-2 pt-6 md:pt-0 md:pl-6">
               <button
                 onClick={handleShare}
-                className={`btn-ghost text-xs justify-center ${shareCopied ? 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5' : ''}`}
+                className={`btn-ghost text-xs justify-center w-full ${shareCopied ? 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5' : ''}`}
               >
                 <Check className={`w-3.5 h-3.5 transition-transform ${shareCopied ? 'scale-100' : 'scale-0'}`} />
                 <span>{shareCopied ? 'Link Copied!' : 'Share Results'}</span>
@@ -440,14 +440,14 @@ function ResultsContent() {
               </button>
               <button
                 onClick={handleDownloadPDF}
-                className="btn-ghost text-xs justify-center"
+                className="btn-ghost text-xs justify-center w-full"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download PDF</span>
               </button>
               <button
                 onClick={() => router.push('/predict')}
-                className="btn-brand text-xs justify-center"
+                className="btn-brand text-xs justify-center w-full"
               >
                 <Edit2 className="w-3.5 h-3.5" />
                 <span>Modify Details</span>

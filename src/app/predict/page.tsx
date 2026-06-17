@@ -187,9 +187,9 @@ export default function PredictPage() {
       <Navbar />
 
       <div className="flex-grow flex flex-col items-center pt-10 pb-16 px-4 z-10">
-        <div className="w-full max-w-xl">
+        <div className="w-full max-w-3xl">
           {/* Progress indicator */}
-          <div className="flex items-center justify-between w-full max-w-xl mx-auto mb-10 gap-2">
+          <div className="flex items-center justify-between w-full max-w-3xl mx-auto mb-10 gap-4">
             {WIZARD_STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
                 <div className={`step-node ${step > s.id ? 'done' : step === s.id ? 'active' : 'idle'}`}>
