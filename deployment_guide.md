@@ -42,7 +42,7 @@ Deploying the entire Next.js application (Frontend + Backend APIs) to a single R
    - **Root Directory**: *(Leave blank)*
    - **Build Command**: 
      ```bash
-     sed -i 's/provider = "sqlite"/provider = "postgresql"/g' prisma/schema.prisma && npm run build
+     npm install && sed -i 's/provider = "sqlite"/provider = "postgresql"/g' prisma/schema.prisma && npx prisma generate && npm run build
      ```
    - **Start Command**: `npm run start`
 4. Add the following **Environment Variables**:
