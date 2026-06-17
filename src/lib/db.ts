@@ -22,6 +22,7 @@ if (isSqlite) {
   const { PrismaPg } = require('@prisma/adapter-pg');
   const pool = new Pool({
     connectionString: databaseUrl,
+    ssl: databaseUrl.includes('render.com') ? { rejectUnauthorized: false } : undefined,
   });
   prismaClientOptions.adapter = new PrismaPg(pool);
 }
