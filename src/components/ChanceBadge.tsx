@@ -2,16 +2,16 @@ import React from 'react';
 
 export function ChanceBadge({ chance }: { chance: string }) {
   const map = {
-    safe:      { label: 'Safe',      dotClass: 'bg-safe',      className: 'badge-safe' },
-    moderate:  { label: 'Moderate',  dotClass: 'bg-moderate',  className: 'badge-moderate' },
-    ambitious: { label: 'Ambitious', dotClass: 'bg-ambitious', className: 'badge-ambitious' },
-    longshot:  { label: 'Longshot',  dotClass: 'bg-ambitious', className: 'badge-ambitious' },
+    safe:      { label: 'Safe bet',   emoji: '✅', className: 'badge-safe' },
+    moderate:  { label: 'Worth a go', emoji: '⚡', className: 'badge-moderate' },
+    ambitious: { label: 'A stretch',  emoji: '🔥', className: 'badge-ambitious' },
+    longshot:  { label: 'Long shot',  emoji: '🎯', className: 'badge-ambitious' },
   };
-  const config = map[chance as keyof typeof map] ?? { label: chance, dotClass: 'bg-text-muted', className: '' };
-  
+  const config = map[chance as keyof typeof map] ?? { label: chance, emoji: '✨', className: 'badge-moderate' };
+
   return (
-    <span className={`${config.className} px-2 py-0.5 rounded-xs font-mono text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1.25`}>
-      <span className={`w-1.25 h-1.25 rounded-full ${config.dotClass}`} />
+    <span className={`${config.className} px-2.5 py-1 font-display text-[11px] font-bold inline-flex items-center gap-1.5`}>
+      <span aria-hidden>{config.emoji}</span>
       {config.label}
     </span>
   );

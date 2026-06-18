@@ -1,74 +1,133 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Target, ArrowRight } from 'lucide-react';
+import { GraduationCap, ArrowRight, Menu, X, Sparkles } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const NAV_ITEMS = [
+  { href: '/predict', label: 'Predict' },
+  { href: '/trends', label: 'Trends' },
+  { href: '/compare', label: 'Compare' },
+];
+
+const navSpring = { type: 'spring', stiffness: 380, damping: 30 } as const;
+const mobileMenuMotion = {
+  initial: { opacity: 0, height: 0 },
+  animate: { opacity: 1, height: 'auto' },
+  exit: { opacity: 0, height: 0 },
+  transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+};
 
 export function Navbar() {
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const navClass =
+    'sticky top-0 left-0 right-0 z-50 w-full transition-all duration-300 ' +
+    (scrolled
+      ? 'bg-bg-base/80 backdrop-blur-xl border-b border-border-default shadow-[0_6px_24px_-18px_rgba(24,33,58,0.5)]'
+      : 'bg-transparent border-b border-transparent');
+
+  const isActiveHref = (href: string) =>
+    pathname === href || (href !== '/' && pathname.startsWith(href));
 
   return (
-    <nav style={{
-      background: 'rgba(9, 9, 11, 0.8)',
-      backdropFilter: 'blur(12px)',
-      borderBottom: '1px solid var(--border-default)',
-    }} className="sticky top-0 left-0 right-0 z-50 w-full">
-      {/* Telemetry Status Bar */}
-      <div className="border-b border-white/5 bg-black/40 py-1 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-[9px] font-mono text-text-secondary tracking-widest uppercase">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-              SYSTEM_ONLINE: v2.26
-            </span>
-            <span className="hidden sm:inline text-text-muted">|</span>
-            <span className="hidden sm:inline">DATABASE: 65,086_RECORDS</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span>UPTIME: 99.99%</span>
-            <span className="hidden sm:inline text-text-muted">|</span>
-            <span className="hidden sm:inline text-brand">MODE: ANALYTICAL_DECK</span>
-          </div>
-        </div>
-      </div>
+    <nav className={navClass}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Logo — Space Grotesk, NOT GraduationCap icon */}
-        <Link href="/" className="flex items-center gap-2">
-          {/* Brand mark: a small clean monochrome mark */}
-          <div style={{ width: 26, height: 26, borderRadius: 4, background: 'var(--brand)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Target className="w-3.5 h-3.5 text-black" />
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand to-accent-cyan flex items-center justify-center shadow-[0_8px_18px_-8px_var(--brand-glow)] transition-transform duration-200 group-hover:scale-105 group-hover:rotate-3">
+            <GraduationCap className="w-5 h-5 text-white" />
           </div>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-            RankScope
+          <span className="font-display font-extrabold text-[1.15rem] tracking-tight text-text-primary">
+            Rank<span className="text-brand">Scope</span>
           </span>
         </Link>
-        
-        {/* Center: nav links */}
-        <div className="hidden md:flex items-center gap-2 font-mono text-[11px] font-bold">
-          {[
-            { href: '/predict', label: '01_PREDICT' },
-            { href: '/trends', label: '02_TRENDS' },
-            { href: '/compare', label: '03_COMPARE' },
-          ].map(item => {
-            const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+
+        {/* Center nav links */}
+        <div className="hidden md:flex items-center gap-1">
+          {NAV_ITEMS.map((item) => {
+            const active = isActiveHref(item.href);
+            const linkClass =
+              'relative px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ' +
+              (active ? 'text-brand' : 'text-text-secondary hover:text-text-primary');
             return (
-              <Link key={item.href} href={item.href}
-                className={`px-3 py-1 border transition-all duration-150 ${
-                  isActive 
-                    ? 'text-brand border-brand/35 bg-brand-dim' 
-                    : 'text-text-secondary border-transparent hover:text-white hover:bg-white/5'
-                }`}>
-                [{item.label}]
+              <Link key={item.href} href={item.href} className={linkClass}>
+                {active ? (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 rounded-full bg-brand-dim"
+                    transition={navSpring}
+                  />
+                ) : null}
+                <span className="relative z-10">{item.label}</span>
               </Link>
             );
           })}
         </div>
-        
-        {/* CTA */}
-        <Link href="/predict" className="btn-brand" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>
-          Predict My Colleges <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
+
+        {/* CTA + mobile toggle */}
+        <div className="flex items-center gap-2">
+          <Link href="/predict" className="btn-brand hidden sm:inline-flex">
+            <Sparkles className="w-4 h-4" /> Find my colleges
+          </Link>
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            onClick={() => setMobileOpen((o) => !o)}
+            className="md:hidden p-2 rounded-full border border-border-default text-text-secondary hover:text-brand hover:border-border-strong transition-colors"
+          >
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen ? (
+          <motion.div
+            {...mobileMenuMotion}
+            className="md:hidden overflow-hidden border-b border-border-default bg-bg-elevated/95 backdrop-blur-xl"
+          >
+            <div className="px-4 py-4 flex flex-col gap-1">
+              {NAV_ITEMS.map((item) => {
+                const active = isActiveHref(item.href);
+                const mClass =
+                  'px-4 py-2.5 rounded-2xl text-sm font-semibold transition-colors ' +
+                  (active
+                    ? 'bg-brand-dim text-brand'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-base');
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={mClass}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+              <Link
+                href="/predict"
+                onClick={() => setMobileOpen(false)}
+                className="btn-brand justify-center mt-2"
+              >
+                <Sparkles className="w-4 h-4" /> Find my colleges
+              </Link>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </nav>
   );
 }

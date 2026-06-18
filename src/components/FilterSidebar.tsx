@@ -10,6 +10,13 @@ interface FilterSidebarProps {
   onReset: () => void;
 }
 
+const sectionLabel =
+  'text-xs font-bold uppercase tracking-wide text-text-primary';
+const checkboxClass =
+  'w-4 h-4 rounded-md border border-border-strong bg-bg-elevated accent-brand shrink-0 cursor-pointer m-0';
+const rowClass =
+  'flex items-center gap-2.5 text-sm font-medium text-text-secondary hover:text-text-primary cursor-pointer select-none transition-colors';
+
 export function FilterSidebar({
   filters,
   onChange,
@@ -25,7 +32,7 @@ export function FilterSidebar({
   });
 
   const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,99 +41,97 @@ export function FilterSidebar({
 
   const handleTypeToggle = (type: string) => {
     const nextTypes = filters.instituteTypes.includes(type)
-      ? filters.instituteTypes.filter(t => t !== type)
+      ? filters.instituteTypes.filter((t) => t !== type)
       : [...filters.instituteTypes, type];
     onChange({ ...filters, instituteTypes: nextTypes });
   };
 
   const handleChanceToggle = (chance: 'safe' | 'moderate' | 'ambitious' | 'longshot') => {
     const nextChances = filters.chances.includes(chance)
-      ? filters.chances.filter(c => c !== chance)
+      ? filters.chances.filter((c) => c !== chance)
       : [...filters.chances, chance];
     onChange({ ...filters, chances: nextChances });
   };
 
   const handleStateToggle = (state: string) => {
     const nextStates = filters.states.includes(state)
-      ? filters.states.filter(s => s !== state)
+      ? filters.states.filter((s) => s !== state)
       : [...filters.states, state];
     onChange({ ...filters, states: nextStates });
   };
 
   const handleBranchToggle = (branch: string) => {
     const nextBranches = filters.branches.includes(branch)
-      ? filters.branches.filter(b => b !== branch)
+      ? filters.branches.filter((b) => b !== branch)
       : [...filters.branches, branch];
     onChange({ ...filters, branches: nextBranches });
   };
 
   return (
-    <aside className="w-full lg:w-80 shrink-0 space-y-6 bg-bg-surface border border-border-default rounded-md p-5">
+    <aside className="w-full lg:w-80 shrink-0 space-y-6 bg-bg-elevated border border-border-default rounded-3xl p-5 shadow-card">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-4">
-        <div className="flex items-center gap-2 text-white">
-          <SlidersHorizontal className="w-4 h-4 text-[var(--text-secondary)]" />
-          <span className="font-display font-medium text-sm">Filters</span>
+      <div className="flex items-center justify-between border-b border-border-default pb-4">
+        <div className="flex items-center gap-2 text-text-primary">
+          <span className="w-8 h-8 rounded-full bg-brand-dim flex items-center justify-center">
+            <SlidersHorizontal className="w-4 h-4 text-brand" />
+          </span>
+          <span className="font-display font-bold text-sm">Filters</span>
         </div>
         <button
           onClick={onReset}
-          className="flex items-center gap-1 text-xs font-medium text-[var(--text-muted)] hover:text-white transition-colors cursor-pointer"
+          className="flex items-center gap-1 text-xs font-semibold text-text-muted hover:text-brand transition-colors cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>Reset All</span>
+          <span>Reset</span>
         </button>
       </div>
 
-      {/* Smart Search */}
+      {/* Search */}
       <div className="space-y-2">
-        <label htmlFor="filter-search" className="block uppercase font-display font-medium text-[0.75rem] text-text-muted tracking-wider">
-          Search College
-        </label>
+        <label htmlFor="filter-search" className={sectionLabel}>Search college</label>
         <div className="relative">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
             id="filter-search"
             type="text"
-            placeholder="Type college name..."
+            placeholder="Type a college name..."
             value={filters.search}
             onChange={handleSearchChange}
-            className="w-full text-xs bg-bg-elevated border border-border-default text-text-primary rounded-xs pl-10 pr-4 py-2 placeholder-text-muted focus:border-border-strong focus:outline-none transition-colors"
+            className="w-full text-sm bg-bg-base border border-border-default text-text-primary rounded-xl pl-10 pr-4 py-2.5 placeholder-text-muted focus:border-brand focus:ring-4 focus:ring-brand-dim focus:outline-none transition-all"
           />
         </div>
       </div>
 
-      {/* Sorting */}
+      {/* Sort */}
       <div className="space-y-2">
-        <label htmlFor="filter-sort" className="block uppercase font-display font-medium text-[0.75rem] text-text-muted tracking-wider">
-          Sort Results By
-        </label>
+        <label htmlFor="filter-sort" className={sectionLabel}>Sort by</label>
+        <select
+          id="filter-sort"
+          value={filters.sortBy}
+          onChange={(e) => onChange({ ...filters, sortBy: e.target.value as any })}
+          className="w-full text-sm bg-bg-base border border-border-default text-text-primary rounded-xl px-3 py-2.5 focus:border-brand focus:ring-4 focus:ring-brand-dim focus:outline-none transition-all cursor-pointer"
+        >
+          <option value="probability">Best chances first</option>
+          <option value="closingRank">Closing cutoff rank</option>
+          <option value="instituteName">College name</option>
+        </select>
         <div className="grid grid-cols-2 gap-2">
-          <select
-            id="filter-sort"
-            value={filters.sortBy}
-            onChange={e => onChange({ ...filters, sortBy: e.target.value as any })}
-            className="col-span-2 text-xs bg-bg-elevated border border-border-default text-text-primary rounded-xs px-3 py-2 focus:border-border-strong focus:outline-none transition-colors cursor-pointer"
-          >
-            <option value="probability" className="bg-[#18181b]">Probability Estimate</option>
-            <option value="closingRank" className="bg-[#18181b]">Closing Cutoff Rank</option>
-            <option value="instituteName" className="bg-[#18181b]">College Name</option>
-          </select>
           <button
             onClick={() => onChange({ ...filters, sortOrder: 'asc' })}
-            className={`px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer border rounded-xs hover:border-border-strong ${
+            className={`px-3 py-2 text-xs font-semibold transition-all cursor-pointer border rounded-xl ${
               filters.sortOrder === 'asc'
-                ? 'bg-white/5 border-border-strong text-text-primary'
-                : 'bg-bg-elevated border-border-default text-text-secondary'
+                ? 'bg-brand-dim border-brand text-brand'
+                : 'bg-bg-elevated border-border-default text-text-secondary hover:border-border-strong'
             }`}
           >
             Ascending
           </button>
           <button
             onClick={() => onChange({ ...filters, sortOrder: 'desc' })}
-            className={`px-3 py-1.5 text-[10px] font-medium transition-all cursor-pointer border rounded-xs hover:border-border-strong ${
+            className={`px-3 py-2 text-xs font-semibold transition-all cursor-pointer border rounded-xl ${
               filters.sortOrder === 'desc'
-                ? 'bg-white/5 border-border-strong text-text-primary'
-                : 'bg-bg-elevated border-border-default text-text-secondary'
+                ? 'bg-brand-dim border-brand text-brand'
+                : 'bg-bg-elevated border-border-default text-text-secondary hover:border-border-strong'
             }`}
           >
             Descending
@@ -134,29 +139,21 @@ export function FilterSidebar({
         </div>
       </div>
 
-      <div className="border-t border-[var(--border-default)] my-4" />
+      <div className="border-t border-border-default" />
 
-      {/* Collapsible Sections */}
+      {/* Sections */}
       <div className="space-y-5">
-        {/* Institute Type */}
+        {/* Type */}
         <div className="space-y-2.5">
-          <button
-            onClick={() => toggleSection('type')}
-            className="flex items-center justify-between w-full text-left cursor-pointer"
-          >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">Institute Type</span>
-            {openSections.type ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
+          <button onClick={() => toggleSection('type')} className="flex items-center justify-between w-full text-left cursor-pointer">
+            <span className={sectionLabel}>Institute type</span>
+            {openSections.type ? <ChevronUp className="w-4 h-4 text-text-muted" /> : <ChevronDown className="w-4 h-4 text-text-muted" />}
           </button>
           {openSections.type && (
-            <div className="space-y-2 pl-1">
-              {['IIT', 'NIT', 'IIIT', 'GFTI'].map(type => (
-                <label key={type} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={filters.instituteTypes.includes(type)}
-                    onChange={() => handleTypeToggle(type)}
-                    className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
-                  />
+            <div className="space-y-2.5 pl-1">
+              {['IIT', 'NIT', 'IIIT', 'GFTI'].map((type) => (
+                <label key={type} className={rowClass}>
+                  <input type="checkbox" checked={filters.instituteTypes.includes(type)} onChange={() => handleTypeToggle(type)} className={checkboxClass} />
                   <span>{type}s</span>
                 </label>
               ))}
@@ -164,30 +161,22 @@ export function FilterSidebar({
           )}
         </div>
 
-        {/* Chances */}
+        {/* Chance */}
         <div className="space-y-2.5">
-          <button
-            onClick={() => toggleSection('chance')}
-            className="flex items-center justify-between w-full text-left cursor-pointer"
-          >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">Chance Level</span>
-            {openSections.chance ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
+          <button onClick={() => toggleSection('chance')} className="flex items-center justify-between w-full text-left cursor-pointer">
+            <span className={sectionLabel}>How likely</span>
+            {openSections.chance ? <ChevronUp className="w-4 h-4 text-text-muted" /> : <ChevronDown className="w-4 h-4 text-text-muted" />}
           </button>
           {openSections.chance && (
-            <div className="space-y-2 pl-1">
+            <div className="space-y-2.5 pl-1">
               {[
-                { val: 'safe', label: 'Safe' },
-                { val: 'moderate', label: 'Moderate' },
-                { val: 'ambitious', label: 'Ambitious' },
-                { val: 'longshot', label: 'Long Shots' },
+                { val: 'safe', label: 'Safe bets' },
+                { val: 'moderate', label: 'Worth a go' },
+                { val: 'ambitious', label: 'A stretch' },
+                { val: 'longshot', label: 'Long shots' },
               ].map(({ val, label }) => (
-                <label key={val} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={filters.chances.includes(val as any)}
-                    onChange={() => handleChanceToggle(val as any)}
-                    className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
-                  />
+                <label key={val} className={rowClass}>
+                  <input type="checkbox" checked={filters.chances.includes(val as any)} onChange={() => handleChanceToggle(val as any)} className={checkboxClass} />
                   <span>{label}</span>
                 </label>
               ))}
@@ -197,26 +186,18 @@ export function FilterSidebar({
 
         {/* States */}
         <div className="space-y-2.5">
-          <button
-            onClick={() => toggleSection('state')}
-            className="flex items-center justify-between w-full text-left cursor-pointer"
-          >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">State Preference</span>
-            {openSections.state ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
+          <button onClick={() => toggleSection('state')} className="flex items-center justify-between w-full text-left cursor-pointer">
+            <span className={sectionLabel}>State</span>
+            {openSections.state ? <ChevronUp className="w-4 h-4 text-text-muted" /> : <ChevronDown className="w-4 h-4 text-text-muted" />}
           </button>
           {openSections.state && (
-            <div className="space-y-2 pl-1 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-2.5 pl-1 max-h-48 overflow-y-auto pr-1">
               {availableStates.length === 0 ? (
-                <p className="text-xs text-[var(--text-muted)] italic">No states available</p>
+                <p className="text-xs text-text-muted italic">No states available</p>
               ) : (
-                availableStates.map(state => (
-                  <label key={state} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={filters.states.includes(state)}
-                      onChange={() => handleStateToggle(state)}
-                      className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
-                    />
+                availableStates.map((state) => (
+                  <label key={state} className={rowClass}>
+                    <input type="checkbox" checked={filters.states.includes(state)} onChange={() => handleStateToggle(state)} className={checkboxClass} />
                     <span>{state}</span>
                   </label>
                 ))
@@ -227,26 +208,18 @@ export function FilterSidebar({
 
         {/* Branches */}
         <div className="space-y-2.5">
-          <button
-            onClick={() => toggleSection('branch')}
-            className="flex items-center justify-between w-full text-left cursor-pointer"
-          >
-            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }} className="uppercase">Branch Filter</span>
-            {openSections.branch ? <ChevronUp className="w-3.5 h-3.5 text-gray-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-500" />}
+          <button onClick={() => toggleSection('branch')} className="flex items-center justify-between w-full text-left cursor-pointer">
+            <span className={sectionLabel}>Branch</span>
+            {openSections.branch ? <ChevronUp className="w-4 h-4 text-text-muted" /> : <ChevronDown className="w-4 h-4 text-text-muted" />}
           </button>
           {openSections.branch && (
-            <div className="space-y-2 pl-1 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-2.5 pl-1 max-h-48 overflow-y-auto pr-1">
               {availableBranches.length === 0 ? (
-                <p className="text-xs text-[var(--text-muted)] italic">No branches available</p>
+                <p className="text-xs text-text-muted italic">No branches available</p>
               ) : (
-                availableBranches.map(branch => (
-                  <label key={branch} className="flex items-center gap-2.5 text-xs font-medium text-[var(--text-secondary)] cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={filters.branches.includes(branch)}
-                      onChange={() => handleBranchToggle(branch)}
-                      className="w-4 h-4 rounded border border-zinc-700 bg-zinc-900 checked:bg-white checked:border-white text-zinc-950 accent-white shrink-0 cursor-pointer m-0"
-                    />
+                availableBranches.map((branch) => (
+                  <label key={branch} className={rowClass}>
+                    <input type="checkbox" checked={filters.branches.includes(branch)} onChange={() => handleBranchToggle(branch)} className={checkboxClass} />
                     <span className="truncate" title={branch}>{branch}</span>
                   </label>
                 ))

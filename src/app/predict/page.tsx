@@ -189,7 +189,7 @@ export default function PredictPage() {
         <div className="w-full max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-6">
           
           {/* Left Side: Technical Info & Telemetry indicators */}
-          <div className="lg:col-span-4 space-y-6 text-left">
+          <div className="lg:col-span-4 min-w-0 space-y-6 text-left">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/[0.03] border border-white/10 rounded-xs">
               <span className="font-mono text-[9px] font-bold text-slate-300 tracking-wider">CONFIG_WIZARD</span>
             </div>
@@ -223,7 +223,7 @@ export default function PredictPage() {
           </div>
 
           {/* Right Side: The Main Wizard Console Card */}
-          <div className="lg:col-span-8 w-full space-y-6">
+          <div className="lg:col-span-8 min-w-0 w-full space-y-6">
             {/* Progress indicator */}
             <div className="flex items-center justify-between w-full mb-2 gap-2">
               {WIZARD_STEPS.map((s, i) => (
@@ -374,7 +374,7 @@ export default function PredictPage() {
                               }`}
                             >
                               <div className={`w-4 h-4 rounded-full absolute top-0.5 transition-all duration-150 ${
-                                data.pwdStatus ? 'bg-black left-5' : 'bg-text-secondary left-0.5'
+                                data.pwdStatus ? 'bg-bg-base left-5' : 'bg-text-secondary left-0.5'
                               }`} />
                             </button>
                             <span className="text-xs text-[var(--text-secondary)] font-mono">Person with Disability (PwD) Status</span>

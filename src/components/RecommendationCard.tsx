@@ -11,6 +11,19 @@ interface RecommendationCardProps {
   isCompared: boolean;
 }
 
+const chanceMeta: Record<string, { cls: string; label: string }> = {
+  safe: { cls: 'bg-safe-bg text-safe-text border-safe-border', label: 'Safe bet' },
+  moderate: { cls: 'bg-moderate-bg text-moderate-text border-moderate-border', label: 'Worth a go' },
+  ambitious: { cls: 'bg-ambitious-bg text-ambitious-text border-ambitious-border', label: 'A stretch' },
+  longshot: { cls: 'bg-bg-base text-text-muted border-border-default', label: 'Long shot' },
+};
+
+const rankRibbons = [
+  { cls: 'bg-[rgba(245,158,11,0.16)] text-amber-300', label: '🥇 Top pick for you' },
+  { cls: 'bg-white/10 text-slate-300', label: '🥈 Highly recommended' },
+  { cls: 'bg-[rgba(234,88,12,0.16)] text-orange-300', label: '🥉 Strong match' },
+];
+
 export function RecommendationCard({
   recommendation,
   index,
@@ -18,92 +31,90 @@ export function RecommendationCard({
   isCompared,
 }: RecommendationCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const { score, scoreBreakdown, profile, chance, probability, closingRank, openingRank } = recommendation;
+  const { score, scoreBreakdown, profile, chance, probability, closingRank } = recommendation;
 
-  // Formatting values
   const avgPkg = profile?.avgPackage ? `${profile.avgPackage.toFixed(1)} LPA` : 'N/A';
   const highestPkg = profile?.highestPackage ? `${profile.highestPackage.toFixed(1)} LPA` : 'N/A';
   const placementRate = profile?.placementRate ? `${profile.placementRate.toFixed(1)}%` : 'N/A';
 
-  // Badge styling for chances
-  const chanceStyles = {
-    safe: { bg: 'rgba(34, 197, 94, 0.1)', text: '#22c55e', border: 'rgba(34, 197, 94, 0.2)' },
-    moderate: { bg: 'rgba(234, 179, 8, 0.1)', text: '#eab308', border: 'rgba(234, 179, 8, 0.2)' },
-    ambitious: { bg: 'rgba(239, 68, 68, 0.1)', text: '#ef4444', border: 'rgba(239, 68, 68, 0.2)' },
-    longshot: { bg: 'rgba(156, 163, 175, 0.1)', text: '#9ca3af', border: 'rgba(156, 163, 175, 0.2)' },
-  };
+  const cm = chanceMeta[chance] || chanceMeta.moderate;
+  const ribbon = rankRibbons[index] || { cls: 'bg-brand-dim text-brand', label: `#${index + 1} recommendation` };
 
-  const currentChanceStyle = chanceStyles[chance] || chanceStyles.moderate;
-
-  // Custom rank indicators (Gold, Silver, Bronze for top 3)
-  const rankColors = [
-    { text: 'text-yellow-400', bg: 'rgba(250, 204, 21, 0.1)', border: 'border-yellow-400/30', label: '🥇 Top Pick' },
-    { text: 'text-slate-300', bg: 'rgba(203, 213, 225, 0.1)', border: 'border-slate-300/30', label: '🥈 Highly Recommended' },
-    { text: 'text-amber-600', bg: 'rgba(217, 119, 6, 0.1)', border: 'border-amber-600/30', label: '🥉 Strong Match' },
+  const bars = [
+    { label: '🎟️ Admission chance', value: scoreBreakdown.admission, max: 30, color: 'bg-safe' },
+    { label: '⚙️ Fits your preferences', value: scoreBreakdown.preference, max: 50, color: 'bg-brand' },
+    { label: '🏛️ College prestige', value: scoreBreakdown.prestige, max: 20, color: 'bg-accent-cyan' },
   ];
 
-  const rankStyle = rankColors[index] || { text: 'text-[var(--text-secondary)]', bg: 'rgba(255,255,255,0.03)', border: 'border-[var(--border-default)]', label: `#${index + 1} Recommendation` };
+  const ratings = [
+    { label: '💻 Coding culture', val: profile?.codingCulture ?? 5 },
+    { label: '🚀 Startup scene', val: profile?.startupEcosystem ?? 5 },
+    { label: '🔬 Research focus', val: profile?.researchFocus ?? 5 },
+    { label: '🌴 Campus life', val: profile?.campusLife ?? 5 },
+    { label: '🏠 Hostel quality', val: profile?.hostelQuality ?? 5 },
+    { label: '⚽ Sports', val: profile?.sportsFacilities ?? 5 },
+  ];
 
   return (
-    <div className="console-card">
-      {/* Top Highlight strip */}
-      <div className="console-header text-[9px]">
-        <span className={`flex items-center gap-1.5 font-semibold ${rankStyle.text}`}>
-          <span className="w-1.5 h-1.5 rounded-full bg-current mr-0.5" />
-          {rankStyle.label.toUpperCase()}
+    <div className="console-card hover-lift">
+      {/* Ribbon header */}
+      <div className="flex items-center justify-between px-5 py-2.5 border-b border-border-subtle bg-gradient-to-r from-[#fbfcff] to-[#f5f7fd]">
+        <span className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${ribbon.cls}`}>
+          {ribbon.label}
         </span>
-        <span className="text-text-muted">COMPATIBILITY_SCORE: {score}/100</span>
+        <span className="text-xs font-bold text-text-secondary">
+          Match score <span className="text-brand">{score}/100</span>
+        </span>
       </div>
 
       <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        {/* College logo & Name details */}
+        {/* College info */}
         <div className="flex items-start gap-4 flex-grow">
           {profile?.logoUrl ? (
             <img
               src={profile.logoUrl}
               alt={recommendation.instituteName}
-              className="w-12 h-12 rounded object-contain p-1 border border-border-default bg-white flex-shrink-0"
+              className="w-14 h-14 rounded-2xl object-contain p-1.5 border border-border-default bg-bg-elevated flex-shrink-0"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = ''; // Fallback if image fails
+                (e.target as HTMLImageElement).style.display = 'none';
               }}
             />
           ) : (
-            <div className="w-12 h-12 rounded bg-brand-dim text-brand font-bold text-xs flex items-center justify-center flex-shrink-0 border border-border-default">
+            <div className="w-14 h-14 rounded-2xl bg-brand-dim text-brand font-extrabold text-xs flex items-center justify-center flex-shrink-0">
               {recommendation.instituteType}
             </div>
           )}
 
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded border border-border-default bg-bg-base text-white">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-dim text-brand">
                 {recommendation.instituteType}
               </span>
               {profile?.nirfRank && (
-                <span className="text-[10px] font-semibold flex items-center gap-1 text-yellow-400 font-mono">
-                  <Award className="w-3 h-3" />
+                <span className="text-[11px] font-bold flex items-center gap-1 text-amber-600">
+                  <Award className="w-3.5 h-3.5" />
                   NIRF #{profile.nirfRank}
                 </span>
               )}
-              <span className="text-[10px] text-text-secondary font-mono flex items-center gap-1">
-                <MapPin className="w-3 h-3" />
-                {recommendation.instituteCity ? `${recommendation.instituteCity}, ` : ''}{recommendation.instituteState}
+              <span className="text-[11px] text-text-secondary flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5" />
+                {recommendation.instituteCity ? `${recommendation.instituteCity}, ` : ''}
+                {recommendation.instituteState}
               </span>
             </div>
-            <h3 className="text-base font-bold font-display text-white mt-1 leading-tight">
+            <h3 className="text-base font-bold font-display text-text-primary leading-tight">
               {recommendation.instituteName}
             </h3>
-            <p className="text-xs text-text-secondary font-medium">
-              {recommendation.branch}
-            </p>
+            <p className="text-sm text-text-secondary font-medium">{recommendation.branch}</p>
           </div>
         </div>
 
-        {/* Stats and Placement Info */}
-        <div className="flex items-center gap-6 justify-between md:justify-end flex-wrap w-full md:w-auto border-t md:border-t-0 border-border-default pt-4 md:pt-0">
+        {/* Stats */}
+        <div className="flex items-center gap-5 justify-between md:justify-end flex-wrap w-full md:w-auto border-t md:border-t-0 border-border-default pt-4 md:pt-0">
           {profile?.avgPackage && (
             <div className="text-right">
-              <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mb-0.5">Avg Package</span>
-              <span className="text-sm font-bold font-mono text-text-primary flex items-center gap-1 justify-end">
+              <span className="text-[10px] text-text-muted uppercase tracking-wide block mb-0.5 font-semibold">Avg package</span>
+              <span className="text-sm font-bold text-text-primary flex items-center gap-1 justify-end">
                 <Briefcase className="w-3.5 h-3.5 text-brand" />
                 {avgPkg}
               </span>
@@ -111,42 +122,31 @@ export function RecommendationCard({
           )}
 
           <div className="text-right">
-            <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mb-0.5">Cutoff (CR)</span>
-            <span className="text-sm font-bold font-mono text-text-primary">
-              {closingRank.toLocaleString('en-IN')}
-            </span>
+            <span className="text-[10px] text-text-muted uppercase tracking-wide block mb-0.5 font-semibold">Cutoff</span>
+            <span className="text-sm font-bold text-text-primary">{closingRank.toLocaleString('en-IN')}</span>
           </div>
 
-          {/* Admission probability badge */}
-          <div
-            style={{
-              backgroundColor: currentChanceStyle.bg,
-              color: currentChanceStyle.text,
-              border: `1px solid ${currentChanceStyle.border}`,
-            }}
-            className="px-3 py-1.5 rounded text-xs font-semibold capitalize font-mono text-center min-w-[85px] leading-tight"
-          >
-            {chance}
-            <span className="block text-[9px] opacity-80 font-mono mt-0.5">{Math.round(probability)}% Match</span>
+          <div className={`px-3 py-1.5 rounded-2xl text-xs font-bold border text-center min-w-[88px] leading-tight ${cm.cls}`}>
+            {cm.label}
+            <span className="block text-[10px] opacity-80 mt-0.5">{Math.round(probability)}% match</span>
           </div>
 
-          {/* Action buttons */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => onCompareToggle(recommendation)}
-              className={`p-2 rounded border transition-all cursor-pointer ${
+              className={`p-2.5 rounded-full border transition-all cursor-pointer ${
                 isCompared
                   ? 'border-brand bg-brand-dim text-brand'
                   : 'border-border-default hover:border-border-strong text-text-secondary'
               }`}
-              title="Compare College"
+              title="Compare college"
             >
               {isCompared ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </button>
 
             <button
               onClick={() => setExpanded(!expanded)}
-              className="p-2 rounded border border-border-default hover:border-border-strong text-text-secondary flex items-center justify-center cursor-pointer"
+              className="p-2.5 rounded-full border border-border-default hover:border-border-strong text-text-secondary flex items-center justify-center cursor-pointer"
             >
               {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
@@ -154,67 +154,58 @@ export function RecommendationCard({
         </div>
       </div>
 
-      {/* Expanded ratings and details section */}
       {expanded && (
-        <div className="px-5 pb-5 pt-1 border-t border-[var(--border-default)] bg-[rgba(255,255,255,0.01)] space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-3">
-            {/* Score Breakdown Gauge List */}
+        <div className="px-6 pb-6 pt-1 border-t border-border-default bg-bg-base space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
+            {/* Score breakdown */}
             <div className="space-y-3">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-white font-mono">Compatibility breakdown</h4>
-              <div className="space-y-2">
-                {[
-                  { label: '🎫 Admission probability', value: scoreBreakdown.admission, max: 30, color: 'bg-green-500' },
-                  { label: '⚙️ Preference alignment', value: scoreBreakdown.preference, max: 50, color: 'bg-brand' },
-                  { label: '🏛️ College Prestige', value: scoreBreakdown.prestige, max: 20, color: 'bg-blue-500' },
-                ].map(bar => (
-                  <div key={bar.label} className="space-y-1">
-                    <div className="flex justify-between text-[10px] text-[var(--text-secondary)]">
-                      <span>{bar.label}</span>
-                      <span className="font-mono text-white font-semibold">{bar.value}/{bar.max}</span>
+              <h4 className="text-xs font-bold uppercase tracking-wide text-text-primary">Why it&apos;s a match</h4>
+              <div className="space-y-2.5">
+                {bars.map((bar) => {
+                  const barStyle = { width: `${(bar.value / bar.max) * 100}%` };
+                  return (
+                    <div key={bar.label} className="space-y-1">
+                      <div className="flex justify-between text-[11px] text-text-secondary">
+                        <span>{bar.label}</span>
+                        <span className="text-text-primary font-bold">{bar.value}/{bar.max}</span>
+                      </div>
+                      <div className="w-full bg-border-default h-2 rounded-full overflow-hidden">
+                        <div className={`h-full rounded-full ${bar.color}`} style={barStyle} />
+                      </div>
                     </div>
-                    <div className="w-full bg-[var(--border-default)] h-1.5 rounded-full overflow-hidden">
-                      <div className={`h-full ${bar.color}`} style={{ width: `${(bar.value / bar.max) * 100}%` }} />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            {/* Placement Info detail */}
-            <div className="space-y-3 border-t sm:border-t-0 sm:border-x border-[var(--border-default)] px-0 sm:px-6">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-white font-mono">Placement Metrics</h4>
+            {/* Placement */}
+            <div className="space-y-3 border-t sm:border-t-0 sm:border-x border-border-default px-0 sm:px-6">
+              <h4 className="text-xs font-bold uppercase tracking-wide text-text-primary">Placements</h4>
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-2.5 rounded border border-[var(--border-default)] bg-[var(--bg-base)]">
-                  <span className="text-[10px] text-[var(--text-muted)] font-mono block">Average Package</span>
-                  <span className="font-bold text-white font-mono mt-0.5 block">{avgPkg}</span>
+                <div className="p-3 rounded-2xl border border-border-default bg-bg-elevated">
+                  <span className="text-[10px] text-text-muted block font-semibold">Average</span>
+                  <span className="font-bold text-text-primary mt-0.5 block">{avgPkg}</span>
                 </div>
-                <div className="p-2.5 rounded border border-[var(--border-default)] bg-[var(--bg-base)]">
-                  <span className="text-[10px] text-[var(--text-muted)] font-mono block">Highest Package</span>
-                  <span className="font-bold text-white font-mono mt-0.5 block">{highestPkg}</span>
+                <div className="p-3 rounded-2xl border border-border-default bg-bg-elevated">
+                  <span className="text-[10px] text-text-muted block font-semibold">Highest</span>
+                  <span className="font-bold text-text-primary mt-0.5 block">{highestPkg}</span>
                 </div>
-                <div className="p-2.5 rounded border border-[var(--border-default)] bg-[var(--bg-base)] col-span-2">
-                  <span className="text-[10px] text-[var(--text-muted)] font-mono block">Placement Rate</span>
-                  <span className="font-bold text-white font-mono mt-0.5 block">{placementRate}</span>
+                <div className="p-3 rounded-2xl border border-border-default bg-bg-elevated col-span-2">
+                  <span className="text-[10px] text-text-muted block font-semibold">Placement rate</span>
+                  <span className="font-bold text-text-primary mt-0.5 block">{placementRate}</span>
                 </div>
               </div>
             </div>
 
-            {/* Campus Quality Ratings */}
+            {/* Ratings */}
             <div className="space-y-3">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-white font-mono">Campus Ratings (1-10)</h4>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] text-[var(--text-secondary)]">
-                {[
-                  { label: '💻 Coding Culture', val: profile?.codingCulture ?? 5 },
-                  { label: '🚀 Startup Ecosystem', val: profile?.startupEcosystem ?? 5 },
-                  { label: '🔬 Research Focus', val: profile?.researchFocus ?? 5 },
-                  { label: '🌴 Campus Life', val: profile?.campusLife ?? 5 },
-                  { label: '🏠 Hostel Quality', val: profile?.hostelQuality ?? 5 },
-                  { label: '⚽ Sports Facilities', val: profile?.sportsFacilities ?? 5 },
-                ].map(rating => (
+              <h4 className="text-xs font-bold uppercase tracking-wide text-text-primary">Campus vibe (1–10)</h4>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px] text-text-secondary">
+                {ratings.map((rating) => (
                   <div key={rating.label} className="flex justify-between items-center">
                     <span>{rating.label}</span>
-                    <span className="font-semibold text-white flex items-center gap-0.5">
-                      <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                    <span className="font-bold text-text-primary flex items-center gap-0.5">
+                      <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
                       {rating.val}
                     </span>
                   </div>
@@ -223,18 +214,17 @@ export function RecommendationCard({
             </div>
           </div>
 
-          {/* Description & Website */}
           {profile?.description && (
-            <div className="pt-2 border-t border-[var(--border-default)] text-xs text-[var(--text-secondary)] leading-relaxed">
+            <div className="pt-3 border-t border-border-default text-sm text-text-secondary leading-relaxed">
               <p className="line-clamp-2">{profile.description}</p>
               {profile.website && (
                 <a
                   href={profile.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--brand)] hover:underline mt-1 inline-block font-mono text-[10px]"
+                  className="text-brand hover:underline mt-1.5 inline-block font-semibold text-xs"
                 >
-                  Visit Official Website →
+                  Visit official website →
                 </a>
               )}
             </div>

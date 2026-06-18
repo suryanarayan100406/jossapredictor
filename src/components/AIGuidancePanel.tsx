@@ -8,103 +8,77 @@ interface AIGuidancePanelProps {
   guidance: AlgorithmicAdvisorGuidance;
 }
 
+const makeHtml = (s: string) => ({ __html: s });
+
 export function AIGuidancePanel({ guidance }: AIGuidancePanelProps) {
   const { overview, branchVsCollege, highlights, tips } = guidance;
 
   return (
-    <div className="console-card shadow-[0_0_50px_rgba(139,92,246,0.06)]">
-      <div className="console-header">
-        <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">GUIDANCE_SYSTEM_REPORTS</span>
-        <span className="font-mono text-[9px] text-brand font-bold uppercase tracking-wider flex items-center gap-1.5">
-          <span className="w-1 h-1 rounded-full bg-emerald-500 inline-block animate-pulse" />
-          ADVISOR_ENGINE_RUNNING
+    <div className="console-card">
+      <div className="flex items-center gap-3 px-6 py-4 border-b border-border-subtle bg-gradient-to-r from-brand-dim to-transparent">
+        <span className="w-10 h-10 rounded-2xl bg-brand text-white flex items-center justify-center shadow-[0_8px_18px_-8px_var(--brand-glow)]">
+          <Compass className="w-5 h-5 animate-spin-slow" />
         </span>
-      </div>
-      
-      <div className="p-6 space-y-6">
-        {/* Visual background element */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--brand)] rounded-full filter blur-[80px] opacity-[0.05] pointer-events-none" />
-
-        {/* Header */}
-        <div className="flex items-center gap-2 pb-4 border-b border-white/10">
-          <Compass className="w-5 h-5 text-[var(--brand)] animate-spin-slow" />
-          <div>
-            <h3 className="text-sm font-bold text-white font-display">RankScope Counselling Advisor</h3>
-            <p className="text-[10px] text-[var(--text-muted)] font-mono uppercase tracking-wider">Algorithmic Seat Guidance</p>
-          </div>
+        <div>
+          <h3 className="text-sm font-bold text-text-primary font-display">Your counselling guide</h3>
+          <p className="text-xs text-text-secondary">Friendly, personalised advice for your choices</p>
         </div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left column: Overview & Branch vs College */}
+      <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left */}
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <span className="text-[10px] font-bold text-white font-mono uppercase tracking-widest flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-[var(--brand)]" />
-              Counselling Overview
+            <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
+              <Info className="w-4 h-4 text-brand" />
+              The big picture
             </span>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-sans" dangerouslySetInnerHTML={{
-              __html: overview.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-            }} />
+            <p className="text-sm text-text-secondary leading-relaxed" dangerouslySetInnerHTML={makeHtml(overview)} />
           </div>
 
-          <div className="p-4 rounded border border-[var(--border-default)] bg-[rgba(255,255,255,0.02)] space-y-2">
-            <span className="text-[10px] font-bold text-white font-mono uppercase tracking-widest flex items-center gap-1">
-              <GitCompare className="w-3.5 h-3.5 text-yellow-400" />
-              Branch vs College Trade-off
+          <div className="p-4 rounded-2xl border border-border-default bg-bg-base space-y-2">
+            <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
+              <GitCompare className="w-4 h-4 text-amber-500" />
+              Branch vs college
             </span>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed" dangerouslySetInnerHTML={{
-              __html: branchVsCollege.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-            }} />
+            <p className="text-sm text-text-secondary leading-relaxed" dangerouslySetInnerHTML={makeHtml(branchVsCollege)} />
           </div>
         </div>
 
-        {/* Right column: Highlights & Actionable Tips */}
+        {/* Right */}
         <div className="space-y-4">
-          {/* Highlights */}
           <div className="space-y-2">
-            <span className="text-[10px] font-bold text-white font-mono uppercase tracking-widest flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-green-400" />
-              Key Match Highlights
+            <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
+              <Award className="w-4 h-4 text-safe" />
+              What stands out
             </span>
             <ul className="space-y-1.5 pl-1">
               {highlights.map((h, i) => (
-                <li
-                  key={i}
-                  className="text-xs text-[var(--text-secondary)] flex items-start gap-2 leading-relaxed"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand)] mt-1.5 flex-shrink-0" />
-                  <span dangerouslySetInnerHTML={{
-                    __html: h.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-                  }} />
+                <li key={i} className="text-sm text-text-secondary flex items-start gap-2 leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand mt-2 flex-shrink-0" />
+                  <span dangerouslySetInnerHTML={makeHtml(h)} />
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Actionable Tips */}
           <div className="space-y-2 pt-2">
-            <span className="text-[10px] font-bold text-white font-mono uppercase tracking-widest flex items-center gap-1">
-              <Lightbulb className="w-3.5 h-3.5 text-orange-400" />
-              Counselling Tips
+            <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
+              <Lightbulb className="w-4 h-4 text-orange-500" />
+              Tips to remember
             </span>
             <ul className="space-y-2 pl-1">
               {tips.map((tip, i) => (
-                <li
-                  key={i}
-                  className="text-xs text-[var(--text-secondary)] flex items-start gap-2 leading-relaxed"
-                >
-                  <span className="font-mono text-[10px] font-bold text-brand bg-brand-dim border border-white/20 w-4 h-4 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                <li key={i} className="text-sm text-text-secondary flex items-start gap-2 leading-relaxed">
+                  <span className="text-[11px] font-bold text-brand bg-brand-dim w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     {i + 1}
                   </span>
-                  <span dangerouslySetInnerHTML={{
-                    __html: tip.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-                  }} />
+                  <span dangerouslySetInnerHTML={makeHtml(tip)} />
                 </li>
               ))}
             </ul>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
