@@ -169,6 +169,31 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-card);
 }
 
+.console-card {
+  background: rgba(14, 14, 25, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.console-card-active {
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.06);
+}
+
+.console-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .text-gradient {
   background: linear-gradient(135deg, #f1f5f9 20%, #a78bfa 70%, #00f5ff 100%);
   -webkit-background-clip: text;

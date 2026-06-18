@@ -13,6 +13,24 @@ export function Navbar() {
       backdropFilter: 'blur(12px)',
       borderBottom: '1px solid var(--border-default)',
     }} className="sticky top-0 left-0 right-0 z-50 w-full">
+      {/* Telemetry Status Bar */}
+      <div className="border-b border-white/5 bg-black/40 py-1 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex justify-between items-center text-[9px] font-mono text-text-secondary tracking-widest uppercase">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+              SYSTEM_ONLINE: v2.26
+            </span>
+            <span className="hidden sm:inline text-text-muted">|</span>
+            <span className="hidden sm:inline">DATABASE: 65,086_RECORDS</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span>UPTIME: 99.99%</span>
+            <span className="hidden sm:inline text-text-muted">|</span>
+            <span className="hidden sm:inline text-brand">MODE: ANALYTICAL_DECK</span>
+          </div>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo — Space Grotesk, NOT GraduationCap icon */}
         <Link href="/" className="flex items-center gap-2">

@@ -146,9 +146,15 @@ function TrendsContent() {
             
             {/* Chart Column */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="glass-panel border border-white/10 rounded-lg p-6 shadow-card">
-                <h3 className="font-semibold text-white text-base mb-6 font-display">Closing Rank YoY Comparison</h3>
-                <LineChartComponent data={trends} />
+              <div className="console-card">
+                <div className="console-header">
+                  <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">CHART_ANALYTICS_YOY</span>
+                  <span className="font-mono text-[9px] text-brand font-bold">MODE: INTERACTIVE</span>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-semibold text-white text-base mb-6 font-display">Closing Rank YoY Comparison</h3>
+                  <LineChartComponent data={trends} />
+                </div>
               </div>
               <div className="flex items-start gap-3 rounded-lg bg-white/[0.02] border border-white/10 p-4 text-xs text-text-secondary">
                 <Info className="w-4 h-4 text-text-secondary shrink-0 mt-0.5" />
@@ -160,8 +166,13 @@ function TrendsContent() {
 
             {/* Stats Summary Column */}
             <div className="space-y-6">
-              <div className="glass-panel border border-white/10 rounded-lg p-6 space-y-6 shadow-card">
-                <h3 className="font-semibold text-white text-base font-display">Trend Summary</h3>
+              <div className="console-card">
+                <div className="console-header">
+                  <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">TRENDS_DATATABLE</span>
+                  <span className="font-mono text-[9px] text-brand font-bold">R6_FINAL</span>
+                </div>
+                <div className="p-6 space-y-6">
+                  <h3 className="font-semibold text-white text-base font-display">Trend Summary</h3>
                 
                 <div className="divide-y divide-white/10 text-sm">
                   {trends.map((t, idx) => (
@@ -176,6 +187,7 @@ function TrendsContent() {
                       </div>
                     </div>
                   ))}
+                </div>
                 </div>
               </div>
             </div>

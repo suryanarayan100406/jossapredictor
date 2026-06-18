@@ -138,7 +138,11 @@ function CompareContent() {
             </button>
           </div>
         ) : (
-          <div className="overflow-x-auto glass-panel border border-white/10 rounded-lg shadow-card">
+          <div className="overflow-x-auto console-card">
+            <div className="console-header">
+              <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">COLL_COMPARE_MATRIX</span>
+              <span className="font-mono text-[9px] text-brand font-bold">MODE: MULTI_VIEW</span>
+            </div>
             <div className="min-w-[800px] divide-y divide-white/10">
               
               {/* Row 1: Cards with Delete option */}

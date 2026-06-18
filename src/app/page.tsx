@@ -140,7 +140,7 @@ export default function HomePage() {
           </p>
 
           {/* Compact Predictor Widget */}
-          <form onSubmit={handleQuickPredict} className="bg-bg-elevated/70 backdrop-blur-xl border border-white/10 rounded-md p-4 sm:p-5 w-full max-w-xl space-y-4 shadow-lg hover:border-brand/30 transition-all duration-300">
+          <form onSubmit={handleQuickPredict} className="console-card p-4 sm:p-5 w-full max-w-xl space-y-4 shadow-lg">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {/* Rank Input */}
               <div className="flex flex-col gap-1">
@@ -220,118 +220,123 @@ export default function HomePage() {
 
         {/* Right Column: Terminal Visualization Card */}
         <div className="lg:col-span-5 w-full flex justify-center lg:justify-end items-center z-10 relative">
-          <div className="bg-bg-elevated/70 backdrop-blur-xl border border-white/10 rounded-md p-6 shadow-[0_0_50px_rgba(139,92,246,0.12)] hover:border-brand/40 transition-all duration-300 max-w-[330px] w-full">
+          <div className="console-card max-w-[330px] w-full">
             {/* Header row */}
-            <div className="flex justify-between items-center mb-5 pb-3.5 border-b border-white/10">
-              <span className="font-mono text-[10px] text-slate-300 font-semibold tracking-wider">SYSTEM_READOUT</span>
-              <span className="font-mono text-[10px] text-brand font-bold tracking-wider">LIVE PREVIEW</span>
+            <div className="console-header">
+              <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">SYSTEM_READOUT</span>
+              <span className="font-mono text-[9px] text-brand font-bold tracking-wider flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block animate-pulse" />
+                LIVE PREVIEW
+              </span>
             </div>
             
-            {/* Rank + Type row */}
-            <div className="flex gap-3 mb-4">
-              <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-white/10">
-                <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">CRL RANK</div>
+            <div className="p-5 space-y-4">
+              {/* Rank + Type row */}
+              <div className="flex gap-3">
+                <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-white/10">
+                  <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">CRL RANK</div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentPreview.rank}
+                      initial={{ opacity: 0, y: -2 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 2 }}
+                      transition={{ duration: 0.15 }}
+                      className="font-mono text-xl font-medium text-text-primary"
+                    >
+                      {currentPreview.rank}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+                <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-white/10">
+                  <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">EXAM</div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentPreview.type}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="font-mono text-[13px] font-medium text-text-primary mt-1"
+                    >
+                      JEE {currentPreview.type}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+              
+              {/* Institute block */}
+              <div className="bg-bg-base rounded-xs p-3.5 border border-white/10">
+                <div className="flex justify-between items-start mb-2">
+                  <span className="font-mono text-[9px] text-text-muted tracking-wider">MATCH</span>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentPreview.chance}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <ChanceBadge chance={currentPreview.chance} />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+                <div className="min-h-[60px]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentPreview.college}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="font-medium text-[13px] text-text-primary mb-0.5 leading-snug">
+                        {currentPreview.college}
+                      </div>
+                      <div className="text-[11px] text-text-secondary font-medium">
+                        {currentPreview.branch}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+              
+              {/* Arc probability gauge */}
+              <div className="flex justify-center my-1">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={currentPreview.rank}
-                    initial={{ opacity: 0, y: -2 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 2 }}
-                    transition={{ duration: 0.15 }}
-                    className="font-mono text-xl font-medium text-text-primary"
+                    key={currentPreview.probability}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.25 }}
                   >
-                    {currentPreview.rank}
+                    <ProbabilityMeter probability={currentPreview.probability} size={80} />
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-white/10">
-                <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">EXAM</div>
+              
+              {/* Footer */}
+              <div className="flex justify-between pt-3 border-t border-white/10">
+                <span className="font-mono text-[9px] text-text-muted">CLOSING_THRESHOLD</span>
                 <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentPreview.type}
+                  <motion.span
+                    key={currentPreview.closing}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15 }}
-                    className="font-mono text-[13px] font-medium text-text-primary mt-1"
+                    className="font-mono text-xs font-medium text-text-primary"
                   >
-                    JEE {currentPreview.type}
-                  </motion.div>
+                    {currentPreview.closing}
+                  </motion.span>
                 </AnimatePresence>
               </div>
-            </div>
-            
-            {/* Institute block */}
-            <div className="bg-bg-base rounded-xs p-3.5 border border-white/10 mb-3.5">
-              <div className="flex justify-between items-start mb-2">
-                <span className="font-mono text-[9px] text-text-muted tracking-wider">MATCH</span>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentPreview.chance}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <ChanceBadge chance={currentPreview.chance} />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-              <div className="min-h-[60px]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentPreview.college}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="font-medium text-[13px] text-text-primary mb-0.5 leading-snug">
-                      {currentPreview.college}
-                    </div>
-                    <div className="text-[11px] text-text-secondary font-medium">
-                      {currentPreview.branch}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-            
-            {/* Arc probability gauge */}
-            <div className="flex justify-center my-2">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentPreview.probability}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <ProbabilityMeter probability={currentPreview.probability} size={80} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            
-            {/* Footer */}
-            <div className="flex justify-between mt-3.5 pt-3 border-t border-white/10">
-              <span className="font-mono text-[9px] text-text-muted">CLOSING_THRESHOLD</span>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={currentPreview.closing}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="font-mono text-xs font-medium text-text-primary"
-                >
-                  {currentPreview.closing}
-                </motion.span>
-              </AnimatePresence>
-            </div>
 
-            {/* Explanatory description below preview card */}
-            <div className="text-[10px] text-text-secondary leading-normal border-t border-white/10 pt-2.5 mt-3.5 text-center">
-              Admission probability estimated from historical JoSAA closing ranks and recent cutoff trends.
+              {/* Explanatory description below preview card */}
+              <div className="text-[10px] text-text-secondary leading-normal border-t border-white/10 pt-2.5 text-center">
+                Admission probability estimated from historical JoSAA closing ranks and recent cutoff trends.
+              </div>
             </div>
           </div>
         </div>
@@ -413,15 +418,22 @@ export default function HomePage() {
           ].map((feature, i) => (
             <div
               key={i}
-              className="p-6 bg-bg-elevated/70 border border-white/10 rounded-md hover:border-brand/40 hover:bg-white/[0.02] hover:shadow-[0_0_20px_rgba(139,92,246,0.05)] flex flex-col justify-between h-full transition-all duration-300"
+              className="console-card flex flex-col justify-between h-full"
             >
-              <div>
-                <div className="w-9 h-9 rounded-sm bg-white/[0.03] border border-white/10 flex items-center justify-center mb-4 text-brand">
-                  {feature.icon}
-                </div>
-                <h3 className="text-sm font-semibold text-white mb-2 font-display">{feature.title}</h3>
+              <div className="console-header">
+                <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">MODULE_0{i + 1}</span>
+                <span className="font-mono text-[9px] text-text-muted font-bold">READY</span>
               </div>
-              <p className="text-xs text-text-secondary leading-relaxed mt-2">{feature.desc}</p>
+              
+              <div className="p-6 flex-grow flex flex-col justify-between">
+                <div>
+                  <div className="w-9 h-9 rounded-sm bg-white/[0.03] border border-white/10 flex items-center justify-center mb-4 text-brand">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-sm font-semibold text-white mb-2 font-display">{feature.title}</h3>
+                </div>
+                <p className="text-xs text-text-secondary leading-relaxed mt-2">{feature.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -429,7 +441,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-bg-elevated/70 border border-white/10 rounded-md p-8 sm:p-12 shadow-lg">
+        <div className="console-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 sm:p-12">
           
           {/* Left Column: Heading + button */}
           <div className="lg:col-span-7 space-y-4 text-left">

@@ -211,17 +211,23 @@ export default function PredictPage() {
           </div>
 
           {/* Step content */}
-          <div className="glass-panel p-6 sm:p-8 min-h-[360px] relative overflow-hidden shadow-[0_0_50px_rgba(139,92,246,0.06)] border border-white/10">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={step}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-              >
+          <div className="console-card min-h-[360px]">
+            <div className="console-header">
+              <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">WIZD_STEP_0{step}</span>
+              <span className="font-mono text-[9px] text-brand font-bold uppercase tracking-wider">{WIZARD_STEPS[step - 1].label}</span>
+            </div>
+            
+            <div className="p-6 sm:p-8">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={step}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                >
                 {/* Step 1: Rank */}
                 {step === 1 && (
                   <div className="space-y-6">
@@ -534,8 +540,9 @@ export default function PredictPage() {
                     </div>
                   </div>
                 )}
-              </motion.div>
-            </AnimatePresence>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Navigation buttons */}

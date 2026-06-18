@@ -369,7 +369,12 @@ function ResultsContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 relative pt-10">
         
         {/* Command-center style header */}
-        <header className="w-full glass-panel border border-white/10 rounded-lg p-6 mb-6 shadow-[0_0_50px_rgba(139,92,246,0.05)]">
+        <header className="w-full console-card mb-6">
+          <div className="console-header">
+            <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">COMMAND_CONSOLE_READOUT</span>
+            <span className="font-mono text-[9px] text-brand font-bold">STATUS: RUNNING</span>
+          </div>
+          <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
             {/* Left Block: Profile Details */}
             <div className="space-y-4 pb-6 md:pb-0 md:pr-6">
@@ -453,6 +458,7 @@ function ResultsContent() {
                 <span>Modify Details</span>
               </button>
             </div>
+          </div>
           </div>
         </header>
 
