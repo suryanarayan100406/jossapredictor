@@ -44,21 +44,21 @@ export function Navbar() {
         </Link>
         
         {/* Center: nav links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-2 font-mono text-[11px] font-bold">
           {[
-            { href: '/predict', label: 'Predict' },
-            { href: '/trends', label: 'Trends' },
-            { href: '/compare', label: 'Compare' },
+            { href: '/predict', label: '01_PREDICT' },
+            { href: '/trends', label: '02_TRENDS' },
+            { href: '/compare', label: '03_COMPARE' },
           ].map(item => {
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
             return (
               <Link key={item.href} href={item.href}
-                className={`px-3.5 py-1.5 rounded-sm text-[0.85rem] font-medium transition-all duration-150 ${
+                className={`px-3 py-1 border transition-all duration-150 ${
                   isActive 
-                    ? 'text-text-primary bg-bg-active' 
-                    : 'text-text-secondary hover:text-white hover:bg-white/5'
+                    ? 'text-brand border-brand/35 bg-brand-dim' 
+                    : 'text-text-secondary border-transparent hover:text-white hover:bg-white/5'
                 }`}>
-                {item.label}
+                [{item.label}]
               </Link>
             );
           })}

@@ -12,18 +12,27 @@ export function AIGuidancePanel({ guidance }: AIGuidancePanelProps) {
   const { overview, branchVsCollege, highlights, tips } = guidance;
 
   return (
-    <div className="surface border border-[var(--border-default)] p-6 space-y-6 bg-[rgba(255,255,255,0.01)] backdrop-blur-md relative overflow-hidden">
-      {/* Visual background element */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--brand)] rounded-full filter blur-[80px] opacity-[0.05] pointer-events-none" />
-
-      {/* Header */}
-      <div className="flex items-center gap-2 pb-4 border-b border-[var(--border-default)]">
-        <Compass className="w-5 h-5 text-[var(--brand)]" />
-        <div>
-          <h3 className="text-sm font-bold text-white font-display">RankScope Counselling Advisor</h3>
-          <p className="text-[10px] text-[var(--text-muted)] font-mono uppercase tracking-wider">Algorithmic Seat Guidance</p>
-        </div>
+    <div className="console-card shadow-[0_0_50px_rgba(139,92,246,0.06)]">
+      <div className="console-header">
+        <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">GUIDANCE_SYSTEM_REPORTS</span>
+        <span className="font-mono text-[9px] text-brand font-bold uppercase tracking-wider flex items-center gap-1.5">
+          <span className="w-1 h-1 rounded-full bg-emerald-500 inline-block animate-pulse" />
+          ADVISOR_ENGINE_RUNNING
+        </span>
       </div>
+      
+      <div className="p-6 space-y-6">
+        {/* Visual background element */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--brand)] rounded-full filter blur-[80px] opacity-[0.05] pointer-events-none" />
+
+        {/* Header */}
+        <div className="flex items-center gap-2 pb-4 border-b border-white/10">
+          <Compass className="w-5 h-5 text-[var(--brand)] animate-spin-slow" />
+          <div>
+            <h3 className="text-sm font-bold text-white font-display">RankScope Counselling Advisor</h3>
+            <p className="text-[10px] text-[var(--text-muted)] font-mono uppercase tracking-wider">Algorithmic Seat Guidance</p>
+          </div>
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left column: Overview & Branch vs College */}
@@ -95,6 +104,7 @@ export function AIGuidancePanel({ guidance }: AIGuidancePanelProps) {
             </ul>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

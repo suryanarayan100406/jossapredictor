@@ -301,7 +301,7 @@ input[type="number"] {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.875rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   border: none; cursor: pointer;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
@@ -323,7 +323,7 @@ input[type="number"] {
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 0.875rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   border: 1px solid var(--border-default);
   cursor: pointer;
   transition: all 0.2s ease-in-out;

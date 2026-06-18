@@ -615,7 +615,7 @@ function ResultsContent() {
                 <div className="flex-1 w-full space-y-6">
                   {/* Disclaimer */}
                   {disclaimer && (
-                    <div className="flex items-start gap-3 rounded bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 text-xs text-[var(--text-secondary)]">
+                    <div className="flex items-start gap-3 rounded-xs bg-bg-surface border border-white/10 p-4 text-xs text-[var(--text-secondary)]">
                       <Info className="w-4 h-4 text-[var(--text-secondary)] shrink-0 mt-0.5" />
                       <p>{disclaimer}</p>
                     </div>
@@ -755,8 +755,13 @@ function ResultsContent() {
                     </div>
                   ) : (
                     /* Table View */
-                    <div className="surface overflow-x-auto border border-[var(--border-default)]">
-                      <table className="w-full text-left border-collapse text-xs">
+                    <div className="console-card overflow-x-auto">
+                      <div className="console-header text-[9px]">
+                        <span className="font-mono text-slate-300 font-semibold tracking-wider">ALL_ALLOCATED_SEATS_MATRIX</span>
+                        <span className="font-mono text-brand font-bold">R6_FINAL</span>
+                      </div>
+                      <div className="p-2 sm:p-4">
+                        <table className="w-full text-left border-collapse text-xs">
                         <thead>
                           <tr className="border-b border-[var(--border-default)] bg-[rgba(255,255,255,0.01)] text-[10px] font-mono text-[var(--text-secondary)] uppercase tracking-wider">
                             <th className="px-5 py-3.5">College & Branch</th>
@@ -830,6 +835,7 @@ function ResultsContent() {
                           })}
                         </tbody>
                       </table>
+                    </div>
                     </div>
                   )}
 

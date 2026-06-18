@@ -159,8 +159,8 @@ function CompareContent() {
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
-                    <span className="px-2 py-0.5 rounded-xs uppercase font-mono text-[10px] font-medium bg-white/[0.03] border border-border-default text-text-secondary">
-                      {record.instituteType}
+                    <span className="px-2 py-0.5 uppercase font-mono text-[9px] font-bold bg-brand-dim border border-brand/35 text-brand">
+                      [{record.instituteType}]
                     </span>
                     <h3 className="font-medium text-white text-xs leading-snug pr-6 font-display">
                       {record.instituteName}

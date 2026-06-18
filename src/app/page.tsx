@@ -118,99 +118,107 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-10 pb-12 sm:pt-14 sm:pb-16 lg:pt-16 lg:pb-18 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 w-full z-10 items-center">
+      <section className="relative pt-12 pb-14 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 w-full z-10 items-center">
         {/* Ambient background blur auroras */}
         <div className="ambient-glow top-[10%] left-[-5%] opacity-60" />
         <div className="ambient-glow bottom-[20%] right-[5%] opacity-40 bg-[radial-gradient(circle,rgba(6,182,212,0.06)_0%,transparent_70%)]" />
 
         {/* Left Column: Text + Predictor Widget */}
-        <div className="lg:col-span-7 text-left space-y-6 z-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/10 rounded-sm">
+        <div className="lg:col-span-7 text-left space-y-8 z-10">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/10 rounded-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block animate-pulse" />
             <span className="font-mono text-[10px] font-bold text-slate-300 tracking-wider">JOSAA INTELLIGENCE</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-medium font-display text-white leading-[1.15] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-medium font-display text-white leading-[1.1] tracking-tight">
             Know your exact<br />
             <span className="text-gradient-primary">admission chances.</span>
           </h1>
 
-          <p className="text-sm text-slate-300 max-w-lg leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
             Parsed from 65,086+ historical cutoff records across 6 rounds. Evaluate your chances for IITs, NITs, IIITs, and GFTIs with zero friction.
           </p>
 
-          {/* Compact Predictor Widget */}
-          <form onSubmit={handleQuickPredict} className="console-card p-4 sm:p-5 w-full max-w-xl space-y-4 shadow-lg">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {/* Rank Input */}
-              <div className="flex flex-col gap-1">
-                <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">CRL Rank</label>
-                <input
-                  type="number"
-                  placeholder="e.g. 15000"
-                  required
-                  min="1"
-                  className="bg-bg-base border border-white/10 rounded-xs px-2.5 py-1.5 text-xs text-white font-mono focus:border-brand focus:outline-none w-full"
-                  value={quickRank}
-                  onChange={e => setQuickRank(e.target.value)}
-                />
+          {/* Interactive Predictor Widget with precision brackets */}
+          <div className="relative w-full max-w-xl">
+            {/* Precision corner brackets */}
+            <div className="absolute -top-1.5 -left-1.5 w-3.5 h-3.5 border-t-2 border-l-2 border-brand" />
+            <div className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 border-t-2 border-r-2 border-brand" />
+            <div className="absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 border-b-2 border-l-2 border-brand" />
+            <div className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 border-b-2 border-r-2 border-brand" />
+            
+            <form onSubmit={handleQuickPredict} className="console-card p-5 space-y-4 shadow-2xl">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {/* Rank Input */}
+                <div className="flex flex-col gap-1">
+                  <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">CRL Rank</label>
+                  <input
+                    type="number"
+                    placeholder="e.g. 15000"
+                    required
+                    min="1"
+                    className="bg-bg-base border border-white/10 rounded-xs px-2.5 py-1.5 text-xs text-white font-mono focus:border-brand focus:outline-none w-full"
+                    value={quickRank}
+                    onChange={e => setQuickRank(e.target.value)}
+                  />
+                </div>
+
+                {/* Exam Select */}
+                <div className="flex flex-col gap-1">
+                  <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">Exam</label>
+                  <select
+                    className="bg-bg-base border border-white/10 rounded-xs px-2 py-1.5 text-xs text-white focus:border-brand focus:outline-none w-full cursor-pointer"
+                    value={quickExam}
+                    onChange={e => setQuickExam(e.target.value as 'main' | 'advanced')}
+                  >
+                    <option value="main">JEE Main</option>
+                    <option value="advanced">JEE Advanced</option>
+                  </select>
+                </div>
+
+                {/* Category Select */}
+                <div className="flex flex-col gap-1">
+                  <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">Category</label>
+                  <select
+                    className="bg-bg-base border border-white/10 rounded-xs px-2 py-1.5 text-xs text-white focus:border-brand focus:outline-none w-full cursor-pointer"
+                    value={quickCategory}
+                    onChange={e => setQuickCategory(e.target.value)}
+                  >
+                    <option value="OPEN">OPEN</option>
+                    <option value="OBC-NCL">OBC-NCL</option>
+                    <option value="SC">SC</option>
+                    <option value="ST">ST</option>
+                    <option value="EWS">EWS</option>
+                  </select>
+                </div>
+
+                {/* Gender Select */}
+                <div className="flex flex-col gap-1">
+                  <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">Gender</label>
+                  <select
+                    className="bg-bg-base border border-white/10 rounded-xs px-2 py-1.5 text-xs text-white focus:border-brand focus:outline-none w-full cursor-pointer"
+                    value={quickGender}
+                    onChange={e => setQuickGender(e.target.value)}
+                  >
+                    <option value="Gender-Neutral">Gender-Neutral</option>
+                    <option value="Female-only (including Supernumerary)">Female-only</option>
+                  </select>
+                </div>
               </div>
 
-              {/* Exam Select */}
-              <div className="flex flex-col gap-1">
-                <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">Exam</label>
-                <select
-                  className="bg-bg-base border border-white/10 rounded-xs px-2 py-1.5 text-xs text-white focus:border-brand focus:outline-none w-full cursor-pointer"
-                  value={quickExam}
-                  onChange={e => setQuickExam(e.target.value as 'main' | 'advanced')}
+              <div className="flex flex-col sm:flex-row items-center gap-3 pt-1">
+                <button
+                  type="submit"
+                  className="btn-brand w-full sm:w-auto text-xs font-semibold py-2.5 px-6 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <option value="main">JEE Main</option>
-                  <option value="advanced">JEE Advanced</option>
-                </select>
+                  Predict My Colleges <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <Link href="/trends" className="btn-ghost w-full sm:w-auto text-xs font-medium py-2.5 px-5 text-center">
+                  Explore Cutoff Trends
+                </Link>
               </div>
-
-              {/* Category Select */}
-              <div className="flex flex-col gap-1">
-                <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">Category</label>
-                <select
-                  className="bg-bg-base border border-white/10 rounded-xs px-2 py-1.5 text-xs text-white focus:border-brand focus:outline-none w-full cursor-pointer"
-                  value={quickCategory}
-                  onChange={e => setQuickCategory(e.target.value)}
-                >
-                  <option value="OPEN">OPEN</option>
-                  <option value="OBC-NCL">OBC-NCL</option>
-                  <option value="SC">SC</option>
-                  <option value="ST">ST</option>
-                  <option value="EWS">EWS</option>
-                </select>
-              </div>
-
-              {/* Gender Select */}
-              <div className="flex flex-col gap-1">
-                <label className="font-mono text-[9px] text-slate-300 font-bold uppercase tracking-wider">Gender</label>
-                <select
-                  className="bg-bg-base border border-white/10 rounded-xs px-2 py-1.5 text-xs text-white focus:border-brand focus:outline-none w-full cursor-pointer"
-                  value={quickGender}
-                  onChange={e => setQuickGender(e.target.value)}
-                >
-                  <option value="Gender-Neutral">Gender-Neutral</option>
-                  <option value="Female-only (including Supernumerary)">Female-only</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3 pt-1">
-              <button
-                type="submit"
-                className="btn-brand w-full sm:w-auto text-xs font-semibold py-2.5 px-6 flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                Predict My Colleges <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-              <Link href="/trends" className="btn-ghost w-full sm:w-auto text-xs font-medium py-2.5 px-5 text-center">
-                Explore Cutoff Trends
-              </Link>
-            </div>
-          </form>
+            </form>
+          </div>
 
           {/* Explanation of prediction logic */}
           <p className="text-[10px] text-text-secondary leading-normal font-mono max-w-xl">
@@ -218,12 +226,12 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Right Column: Terminal Visualization Card */}
+        {/* Right Column: Telemetry Preview Card */}
         <div className="lg:col-span-5 w-full flex justify-center lg:justify-end items-center z-10 relative">
-          <div className="console-card max-w-[330px] w-full">
+          <div className="console-card max-w-[340px] w-full">
             {/* Header row */}
             <div className="console-header">
-              <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">SYSTEM_READOUT</span>
+              <span className="font-mono text-[9px] text-slate-300 font-bold tracking-wider">SYSTEM_READOUT</span>
               <span className="font-mono text-[9px] text-brand font-bold tracking-wider flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block animate-pulse" />
                 LIVE PREVIEW
@@ -232,8 +240,8 @@ export default function HomePage() {
             
             <div className="p-5 space-y-4">
               {/* Rank + Type row */}
-              <div className="flex gap-3">
-                <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-white/10">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-bg-base/70 rounded-xs p-2.5 border border-white/10">
                   <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">CRL RANK</div>
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -248,7 +256,7 @@ export default function HomePage() {
                     </motion.div>
                   </AnimatePresence>
                 </div>
-                <div className="flex-1 bg-bg-base rounded-xs p-2.5 border border-white/10">
+                <div className="bg-bg-base/70 rounded-xs p-2.5 border border-white/10">
                   <div className="font-mono text-[9px] text-text-muted mb-1 tracking-wider">EXAM</div>
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -266,8 +274,8 @@ export default function HomePage() {
               </div>
               
               {/* Institute block */}
-              <div className="bg-bg-base rounded-xs p-3.5 border border-white/10">
-                <div className="flex justify-between items-start mb-2">
+              <div className="bg-bg-base/70 rounded-xs p-3.5 border border-white/10">
+                <div className="flex justify-between items-start mb-2.5">
                   <span className="font-mono text-[9px] text-text-muted tracking-wider">MATCH</span>
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -290,10 +298,10 @@ export default function HomePage() {
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <div className="font-medium text-[13px] text-text-primary mb-0.5 leading-snug">
+                      <div className="font-medium text-[13px] text-text-primary mb-1 leading-snug font-display">
                         {currentPreview.college}
                       </div>
-                      <div className="text-[11px] text-text-secondary font-medium">
+                      <div className="text-[11px] text-text-secondary leading-normal">
                         {currentPreview.branch}
                       </div>
                     </motion.div>
@@ -317,7 +325,7 @@ export default function HomePage() {
               </div>
               
               {/* Footer */}
-              <div className="flex justify-between pt-3 border-t border-white/10">
+              <div className="flex justify-between pt-3.5 border-t border-white/10">
                 <span className="font-mono text-[9px] text-text-muted">CLOSING_THRESHOLD</span>
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -342,17 +350,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Strip */}
-      <section className="z-10 relative border-t border-b border-white/10 bg-bg-surface/60 backdrop-blur-md py-8">
+      {/* Stats Strip - Re-styled as Telemetry Monitor with vertical dividers */}
+      <section className="z-10 relative border-t border-b border-white/10 bg-bg-surface/80 backdrop-blur-md py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-start">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-stretch">
             {[
               { value: '65,086+', label: 'Cutoff Records' },
               { value: '127+', label: 'Institutes' },
               { value: '6', label: 'JoSAA Rounds' },
               { value: '2024–2025', label: 'Data Coverage' },
             ].map((stat, i) => (
-              <div key={i} className="text-left space-y-1 w-full">
+              <div key={i} className="text-left space-y-1.5 md:border-r border-white/5 last:border-0 md:pr-4">
                 <div className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">{stat.value}</div>
                 <div className="text-xs text-text-secondary font-medium tracking-wide">{stat.label}</div>
               </div>
@@ -372,8 +380,11 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
         <div className="text-left mb-16 space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/[0.03] border border-white/10 rounded-xs">
+            <span className="font-mono text-[9px] font-bold text-slate-300 tracking-wider">SYSTEM_CAPABILITIES</span>
+          </div>
           <h2 className="text-3xl font-display text-white font-medium">
             Built for serious aspirants.
           </h2>
@@ -418,16 +429,16 @@ export default function HomePage() {
           ].map((feature, i) => (
             <div
               key={i}
-              className="console-card flex flex-col justify-between h-full"
+              className="console-card flex flex-col justify-between h-full hover:border-brand/40 transition-all duration-300"
             >
               <div className="console-header">
                 <span className="font-mono text-[9px] text-slate-300 font-semibold tracking-wider">MODULE_0{i + 1}</span>
-                <span className="font-mono text-[9px] text-text-muted font-bold">READY</span>
+                <span className="font-mono text-[9px] text-text-muted font-bold">ACTIVE</span>
               </div>
               
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
-                  <div className="w-9 h-9 rounded-sm bg-white/[0.03] border border-white/10 flex items-center justify-center mb-4 text-brand">
+                  <div className="w-9 h-9 rounded-xs bg-white/[0.03] border border-white/10 flex items-center justify-center mb-4 text-brand">
                     {feature.icon}
                   </div>
                   <h3 className="text-sm font-semibold text-white mb-2 font-display">{feature.title}</h3>
@@ -440,48 +451,58 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
-        <div className="console-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 sm:p-12">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
+        <div className="relative w-full">
+          {/* Brackets */}
+          <div className="absolute -top-1.5 -left-1.5 w-3.5 h-3.5 border-t-2 border-l-2 border-brand" />
+          <div className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 border-t-2 border-r-2 border-brand" />
+          <div className="absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 border-b-2 border-l-2 border-brand" />
+          <div className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 border-b-2 border-r-2 border-brand" />
           
-          {/* Left Column: Heading + button */}
-          <div className="lg:col-span-7 space-y-4 text-left">
-            <h2 className="text-2xl font-display text-white font-medium">
-              Your list is 60 seconds away.
-            </h2>
-            <p className="text-text-secondary text-xs leading-relaxed">
-              Stop guessing. Get your customized college list based on verified historical cutoff trends and your specific categories.
-            </p>
-            <div className="pt-2">
-              <Link href="/predict" className="btn-brand">
-                Predict My Colleges <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Column: Flat Result Card rows */}
-          <div className="lg:col-span-5 w-full space-y-3">
-            {[
-              { college: 'IIT Bombay', branch: 'Computer Science', chance: 'ambitious' },
-              { college: 'IIT Madras', branch: 'Electrical Engineering', chance: 'moderate' },
-              { college: 'NIT Trichy', branch: 'Computer Science', chance: 'safe' },
-            ].map((row, i) => (
-              <div key={i} className="flex items-center justify-between gap-3 bg-bg-base border border-white/10 rounded-xs px-3.5 py-2.5">
-                <div className="flex-1 min-w-0">
-                  <div className="text-[13px] font-medium text-text-primary">{row.college}</div>
-                  <div className="text-[11px] text-text-secondary font-medium">{row.branch}</div>
-                </div>
-                <ChanceBadge chance={row.chance} />
+          <div className="console-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 sm:p-12 shadow-2xl">
+            {/* Left Column: Heading + button */}
+            <div className="lg:col-span-7 space-y-4 text-left">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/[0.03] border border-white/10 rounded-xs">
+                <span className="font-mono text-[9px] font-bold text-slate-300 tracking-wider">READY_FOR_DEPLOYMENT</span>
               </div>
-            ))}
+              <h2 className="text-2xl font-display text-white font-medium leading-tight">
+                Your list is 60 seconds away.
+              </h2>
+              <p className="text-text-secondary text-xs sm:text-sm leading-relaxed">
+                Stop guessing. Get your customized college list based on verified historical cutoff trends and your specific categories.
+              </p>
+              <div className="pt-2">
+                <Link href="/predict" className="btn-brand">
+                  Predict My Colleges <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: Flat Result Card rows */}
+            <div className="lg:col-span-5 w-full space-y-3">
+              {[
+                { college: 'IIT Bombay', branch: 'Computer Science', chance: 'ambitious' },
+                { college: 'IIT Madras', branch: 'Electrical Engineering', chance: 'moderate' },
+                { college: 'NIT Trichy', branch: 'Computer Science', chance: 'safe' },
+              ].map((row, i) => (
+                <div key={i} className="flex items-center justify-between gap-3 bg-bg-base/70 border border-white/10 rounded-xs px-3.5 py-2.5">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[13px] font-medium text-text-primary font-display">{row.college}</div>
+                    <div className="text-[11px] text-text-secondary mt-0.5">{row.branch}</div>
+                  </div>
+                  <ChanceBadge chance={row.chance} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="w-full z-10 border-t border-white/10 bg-bg-surface py-6">
+      <footer className="w-full z-10 border-t border-white/10 bg-bg-surface py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center flex-wrap gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-display font-semibold text-[0.85rem]">
+            <span className="font-display font-semibold text-[0.95rem]">
               RankScope
             </span>
             <span className="font-mono text-[10px] text-text-muted">v2026</span>

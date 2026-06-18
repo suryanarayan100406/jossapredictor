@@ -24,10 +24,15 @@ export function ChanceCard({ result, isCompared, onCompareToggle }: ChanceCardPr
   });
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-5 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-[var(--radius-md)] hover:border-[var(--border-strong)] transition-colors cursor-default">
+    <div className="console-card cursor-default">
+      <div className="console-header text-[9px]">
+        <span className="font-mono text-text-secondary font-semibold">ALLOTMENT_RECORD: #{result.id}</span>
+        <span className="font-mono text-text-muted">STATUS: VERIFIED</span>
+      </div>
       
-      {/* Left: All text info */}
-      <div className="flex-1 min-w-0">
+      <div className="p-5 flex flex-col sm:flex-row gap-4 sm:gap-6">
+        {/* Left: All text info */}
+        <div className="flex-grow min-w-0">
         
         {/* Badges row */}
         <div className="flex flex-wrap gap-1.5 items-center mb-2.5">
@@ -94,6 +99,7 @@ export function ChanceCard({ result, isCompared, onCompareToggle }: ChanceCardPr
             {isCompared ? '✓ Added' : '+ Compare'}
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

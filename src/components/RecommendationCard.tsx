@@ -45,14 +45,14 @@ export function RecommendationCard({
   const rankStyle = rankColors[index] || { text: 'text-[var(--text-secondary)]', bg: 'rgba(255,255,255,0.03)', border: 'border-[var(--border-default)]', label: `#${index + 1} Recommendation` };
 
   return (
-    <div className="surface transition-all duration-300 hover:shadow-lg hover:shadow-brand/5 border border-border-default overflow-hidden rounded-md bg-bg-elevated">
+    <div className="console-card">
       {/* Top Highlight strip */}
-      <div className="flex justify-between items-center px-5 py-2.5 border-b border-border-default bg-white/[0.01] text-[10px] font-mono">
+      <div className="console-header text-[9px]">
         <span className={`flex items-center gap-1.5 font-semibold ${rankStyle.text}`}>
           <span className="w-1.5 h-1.5 rounded-full bg-current mr-0.5" />
-          {rankStyle.label}
+          {rankStyle.label.toUpperCase()}
         </span>
-        <span className="text-text-muted">Score: {score}/100</span>
+        <span className="text-text-muted">COMPATIBILITY_SCORE: {score}/100</span>
       </div>
 
       <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">

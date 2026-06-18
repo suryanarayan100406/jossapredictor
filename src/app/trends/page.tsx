@@ -101,10 +101,10 @@ function TrendsContent() {
         <p className="text-xs font-medium text-[var(--text-secondary)] mt-1">
           {branch}
         </p>
-        <div className="flex flex-wrap gap-2 mt-4 text-xs font-medium text-[var(--text-secondary)] font-mono">
-          <span className="bg-bg-elevated border border-border-default px-2.5 py-1 rounded-xs">Quota: {quota}</span>
-          <span className="bg-bg-elevated border border-border-default px-2.5 py-1 rounded-xs">Category: {category}</span>
-          <span className="bg-bg-elevated border border-border-default px-2.5 py-1 rounded-xs">Gender: {gender}</span>
+        <div className="flex flex-wrap gap-2 mt-4 text-[10px] font-bold text-[var(--text-secondary)] font-mono uppercase tracking-wide">
+          <span className="bg-brand-dim border border-brand/35 text-brand px-2.5 py-1">[QUOTA: {quota}]</span>
+          <span className="bg-brand-dim border border-brand/35 text-brand px-2.5 py-1">[CATEGORY: {category}]</span>
+          <span className="bg-brand-dim border border-brand/35 text-brand px-2.5 py-1">[GENDER: {gender}]</span>
         </div>
       </header>
 
