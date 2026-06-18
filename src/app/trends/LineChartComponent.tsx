@@ -39,7 +39,7 @@ export function LineChartComponent({ data }: { data: TrendRecord[] }) {
   return (
     <div className="w-full h-[360px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+        <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 10 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
           <XAxis
             dataKey="name"
@@ -54,6 +54,7 @@ export function LineChartComponent({ data }: { data: TrendRecord[] }) {
             fontSize={11}
             tickLine={false}
             axisLine={false}
+            width={65}
             domain={['dataMin - 1000', 'dataMax + 1000']}
             tickFormatter={(value) => value.toLocaleString('en-IN')}
             style={{ fontFamily: 'var(--font-mono)' }}

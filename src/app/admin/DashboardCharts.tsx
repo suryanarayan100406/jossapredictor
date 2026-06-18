@@ -136,8 +136,8 @@ export function DashboardCharts({ recordsByType, recordsByYear, topBranches }: D
                 stroke="#64748b"
                 fontSize={10}
                 tickLine={false}
-                width={140}
-                tickFormatter={(value) => value.length > 22 ? value.substring(0, 20) + '...' : value}
+                width={90}
+                tickFormatter={(value) => value.length > 15 ? value.substring(0, 12) + '...' : value}
                 style={{ fontFamily: 'var(--font-mono)' }}
               />
               <Tooltip

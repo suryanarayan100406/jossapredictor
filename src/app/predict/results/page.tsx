@@ -400,7 +400,7 @@ function ResultsContent() {
             </div>
             
             {/* Middle Block: Count & Tier Breakdown */}
-            <div className="flex flex-col justify-center space-y-4 pt-6 md:pt-0 md:px-6">
+            <div className="flex flex-col justify-center space-y-4 py-6 md:py-0 md:px-6">
               <div className="flex items-center gap-2 text-[10px] font-mono text-brand tracking-wider">
                 <span>ADMISSION_MATCHES</span>
               </div>

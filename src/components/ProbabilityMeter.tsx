@@ -32,7 +32,7 @@ export function ProbabilityMeter({ probability, size = 80 }: ProbabilityMeterPro
   const label = probability >= 75 ? 'HIGH' : probability >= 40 ? 'MED' : 'LOW';
 
   return (
-    <svg width={size} height={size * 0.72} viewBox={`0 0 ${size} ${size * 0.72}`}>
+    <svg width={size} height={size * 0.88} viewBox={`0 0 ${size} ${size * 0.88}`}>
       {/* Background track */}
       <path d={bgPath} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth={strokeWidth} strokeLinecap="round" />
       

@@ -212,7 +212,7 @@ export default function HomePage() {
 
       {/* Stats Strip */}
       <section className="z-10 relative border-t border-b border-border-default bg-bg-surface/60 backdrop-blur-md py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap gap-x-10 gap-y-6 items-center justify-between">
           {[
             { value: '65,086+', label: 'Cutoff Records' },
             { value: '127+', label: 'Institutes' },
@@ -220,7 +220,7 @@ export default function HomePage() {
             { value: '2024–2025', label: 'Data Coverage' },
             { value: 'IITs · NITs · IIITs · GFTIs', label: 'Institute Types' },
           ].map((stat, i) => (
-            <div key={i} className="text-left">
+            <div key={i} className="text-left min-w-[140px] flex-grow sm:flex-grow-0">
               <div className="font-display font-bold text-sm sm:text-base text-white">{stat.value}</div>
               <div className="font-mono text-[10px] text-text-secondary tracking-wider mt-0.5">{stat.label}</div>
             </div>

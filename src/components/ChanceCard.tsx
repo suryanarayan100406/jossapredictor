@@ -71,7 +71,7 @@ export function ChanceCard({ result, isCompared, onCompareToggle }: ChanceCardPr
           <ProbabilityMeter probability={result.probability} size={68} />
         </div>
         
-        <div className="flex flex-col sm:items-end gap-3 w-full sm:w-auto">
+        <div className="flex flex-col sm:items-end gap-3 flex-1 sm:w-auto">
           {/* Opening / Closing ranks */}
           <div className="flex gap-4 sm:justify-end">
             <div className="text-left sm:text-right">

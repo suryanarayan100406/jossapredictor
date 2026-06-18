@@ -45,7 +45,7 @@ export function CompareDrawer({ selectedItems, onRemove, onClear }: CompareDrawe
         </div>
 
         {/* Middle: Horizontal list of items */}
-        <div className="flex flex-wrap items-center gap-2 max-w-full md:max-w-2xl overflow-x-auto py-1 w-full md:w-auto">
+        <div className="flex flex-nowrap items-center gap-2 max-w-full md:max-w-2xl overflow-x-auto py-1 w-full md:w-auto">
           {selectedItems.map(item => (
             <div
               key={item.id}
