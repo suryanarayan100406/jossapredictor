@@ -48,7 +48,7 @@ export function Navbar() {
         
         {/* CTA */}
         <Link href="/predict" className="btn-brand" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>
-          Start Predicting <ArrowRight className="w-3.5 h-3.5" />
+          Predict My Colleges <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </nav>
